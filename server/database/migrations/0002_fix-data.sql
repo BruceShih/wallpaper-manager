@@ -1,5 +1,5 @@
 -- Migration number: 0002 	 2024-11-05T12:29:39.950Z
-DELETE * FROM images
+DELETE FROM images
 
 INSERT INTO images (key, nsfw, alive, createDate, deleteDate, favorite) VALUES('00fabaad20e5f3da4db0f16cb85c447d.jpg',0,1,'2024-08-13T09:24:43.278Z','',1);
 INSERT INTO images (key, nsfw, alive, createDate, deleteDate, favorite) VALUES('035f9715770328faedd62543875f83c3.jpg',0,1,'2024-08-13T09:24:47.126Z','',0);
