@@ -14,6 +14,8 @@ export default defineNuxtConfig({
   // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
     authKeySecret: process.env.AUTH_KEY_SECRET,
+    hubCloudflareAccessClientId: process.env.NUXT_HUB_CLOUDFLARE_ACCESS_CLIENT_ID,
+    hubCloudflareAccessClientSecret: process.env.NUXT_HUB_CLOUDFLARE_ACCESS_CLIENT_SECRET,
     public: {
       // Can be overridden by NUXT_PUBLIC_HELLO_TEXT environment variable
       helloText: 'Hello from the Edge 👋'
