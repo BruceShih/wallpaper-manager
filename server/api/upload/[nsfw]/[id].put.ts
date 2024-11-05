@@ -1,6 +1,6 @@
-import { images } from "~~/server/database/schema"
-import { apiUploadPathSchema } from "~~/server/types/api"
-import { eq, tables, useDrizzle } from "~~/server/utils/drizzle"
+import { images } from '~~/server/database/schema'
+import { apiUploadPathSchema } from '~~/server/types/api'
+import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
@@ -9,7 +9,7 @@ export default eventHandler(async (event) => {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid',
+      statusMessage: 'Param invalid'
     })
   }
 
@@ -18,7 +18,7 @@ export default eventHandler(async (event) => {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid',
+      statusMessage: 'Param invalid'
     })
   }
 
@@ -30,7 +30,7 @@ export default eventHandler(async (event) => {
       .select()
       .from(tables.images)
       .where(
-          eq(images.key, id)
+        eq(images.key, id)
       )
 
     const row = query[0]
@@ -47,7 +47,7 @@ export default eventHandler(async (event) => {
       console.error('[Wallpaper Service] No file provided')
       throw createError({
         statusCode: 400,
-        statusMessage: 'No file provided',
+        statusMessage: 'No file provided'
       })
     }
 
@@ -60,13 +60,14 @@ export default eventHandler(async (event) => {
 
     setResponseStatus(event, 201, 'Image uploaded')
     return 'Image uploaded'
-  } catch (error) {
+  }
+  catch (error) {
     await hubBlob().del(id)
 
     console.error('[Wallpaper Service] Server error:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Server error',
+      statusMessage: 'Server error'
     })
   }
 })

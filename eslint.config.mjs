@@ -1,12 +1,16 @@
-// @ts-check
-import withNuxt from './.nuxt/eslint.config.mjs'
+import antfu from '@antfu/eslint-config'
 
-export default withNuxt({
+export default antfu({
+  formatters: true,
+  vue: true,
+  ignores: [
+    '**/migrations'
+  ]
+}, {
   rules: {
-    '@stylistic/quotes': ['error', 'single'],
-    '@stylistic/comma-dangle': ['error', 'never']
+    'style/comma-dangle': ['error', 'never'],
+    'style/multiline-ternary': ['error', 'always-multiline'],
+    'style/no-tabs': ['error', { allowIndentationTabs: false }],
+    'style/quotes': ['error', 'single']
   }
-}
-).overrideRules({
-  'vue/max-attributes-per-line': ['warn', { singleline: 3 }]
 })

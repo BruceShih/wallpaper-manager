@@ -1,6 +1,6 @@
-import { images } from "~~/server/database/schema"
-import { apiGetQuerySchema } from "~~/server/types/api"
-import { and, eq, sql, tables, useDrizzle, type Image } from "~~/server/utils/drizzle"
+import { images } from '~~/server/database/schema'
+import { apiGetQuerySchema } from '~~/server/types/api'
+import { and, eq, type Image, sql, tables, useDrizzle } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
   let id = ''
@@ -12,7 +12,7 @@ export default eventHandler(async (event) => {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid',
+      statusMessage: 'Param invalid'
     })
   }
 
@@ -25,7 +25,7 @@ export default eventHandler(async (event) => {
         .select()
         .from(tables.images)
         .where(
-            and(
+          and(
             eq(images.alive, 1),
             eq(images.nsfw, nsfw)
           )
@@ -53,7 +53,7 @@ export default eventHandler(async (event) => {
       console.error('[Wallpaper Service] No image found')
       throw createError({
         statusCode: 404,
-        statusMessage: 'No image found',
+        statusMessage: 'No image found'
       })
     }
 
@@ -61,16 +61,17 @@ export default eventHandler(async (event) => {
     favorite = randomRow.favorite === 1
 
     setResponseHeaders(event, {
-      "Image-Id": id,
-      'Favorite': favorite.valueOf().toString(),
-    });
+      'Image-Id': id,
+      'Favorite': favorite.valueOf().toString()
+    })
 
     return hubBlob().serve(event, id)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[Wallpaper Service] Server error:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Server error',
+      statusMessage: 'Server error'
     })
   }
 })
