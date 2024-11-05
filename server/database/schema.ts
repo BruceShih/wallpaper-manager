@@ -1,6 +1,6 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 
-export const users = sqliteTable('images', {
+export const images = sqliteTable('images', {
   key: text('key').primaryKey(),
   nsfw: integer('nsfw').notNull().default(0),
   favorite: integer('favorite').notNull().default(0),
