@@ -15,6 +15,7 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "@atinux/kysely-d1": "^0.3.1",
     "@nuxt/ui": "3.0.0-alpha.7",
     "@nuxthub/core": "^0.8.5",
     "better-auth": "0.7.3-beta.10",
