@@ -1,18 +1,15 @@
 import process from 'node:process'
 import { betterAuth } from 'better-auth'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, anonymous } from 'better-auth/plugins'
-import { D1Dialect } from 'kysely-d1'
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
   if (!_auth) {
     _auth = betterAuth({
-      database: {
-        dialect: new D1Dialect({
-          database: hubDatabase()
-        }),
-        type: 'sqlite'
-      },
+      database: drizzleAdapter(useDrizzle(), {
+        provider: 'sqlite'
+      }),
       secondaryStorage: {
         get: key => hubKV().getItemRaw(`_auth:${key}`),
         set: (key, value, ttl) => {

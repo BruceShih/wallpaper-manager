@@ -23,9 +23,6 @@ importers:
       drizzle-orm:
         specifier: ^0.36.0
         version: 0.36.0(@cloudflare/workers-types@4.20241022.0)(kysely@0.27.4)(react@18.3.1)
-      kysely-d1:
-        specifier: ^0.3.0
-        version: 0.3.0(kysely@0.27.4)
       nuxt:
         specifier: ^3.14.0
         version: 3.14.0(@parcel/watcher@2.4.1)(@types/node@22.8.1)(drizzle-orm@0.36.0(@cloudflare/workers-types@4.20241022.0)(kysely@0.27.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.14.0(jiti@2.4.0))(ioredis@5.4.1)(lightningcss@1.28.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.24.4)(terser@5.34.1)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.1)(lightningcss@1.28.1)(terser@5.34.1))(vue-tsc@2.1.10(typescript@5.6.3))(webpack-sources@3.2.3)
@@ -4036,11 +4033,6 @@ packages:
 
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
-
-  kysely-d1@0.3.0:
-    resolution: {integrity: sha512-9wTbE6ooLiYtBa4wPg9e4fjfcmvRtgE/2j9pAjYrIq+iz+EsH/Hj9YbtxpEXA6JoRgfulVQ1EtGj6aycGGRpYw==}
-    peerDependencies:
-      kysely: '*'
 
   kysely@0.27.4:
     resolution: {integrity: sha512-dyNKv2KRvYOQPLCAOCjjQuCk4YFd33BvGdf/o5bC7FiW+BB6snA81Zt+2wT9QDFzKqxKa5rrOmvlK/anehCcgA==}
@@ -10174,10 +10166,6 @@ snapshots:
   knitwork@1.1.0: {}
 
   kolorist@1.8.0: {}
-
-  kysely-d1@0.3.0(kysely@0.27.4):
-    dependencies:
-      kysely: 0.27.4
 
   kysely@0.27.4: {}
 
