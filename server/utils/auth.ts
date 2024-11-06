@@ -22,7 +22,7 @@ export function serverAuth() {
       },
       baseURL: getBaseURL(),
       emailAndPassword: {
-        enabled: true
+        enabled: false
       },
       socialProviders: {
         github: {
