@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   // https://nuxt.com/modules
   modules: [
     '@nuxthub/core',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
+    '@nuxt/ui'
   ],
 
   // https://devtools.nuxt.com
@@ -29,6 +30,7 @@ export default defineNuxtConfig({
   hub: {
     blob: true,
     cache: true,
-    database: true
+    database: true,
+    kv: true
   }
 })

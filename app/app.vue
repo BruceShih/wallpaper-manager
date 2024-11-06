@@ -1,5 +1,16 @@
+<script setup lang="ts">
+import Header from './components/Header.vue'
+</script>
+
 <template>
-  <NuxtRouteAnnouncer />
-  <NuxtLoadingIndicator />
-  <NuxtPage />
+  <UApp>
+    <Header />
+    <NuxtRouteAnnouncer />
+    <NuxtLoadingIndicator />
+    <NuxtPage />
+  </UApp>
 </template>
+
+<style>
+@import './assets/app.css';
+</style>

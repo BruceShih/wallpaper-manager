@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/* added for intellisense */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+  --font-family-sans: 'Public Sans', sans-serif;
+}
