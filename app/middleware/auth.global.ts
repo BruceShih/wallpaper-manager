@@ -1,6 +1,33 @@
 import defu from 'defu'
 import { useAuth } from '~/composables/useAuth'
 
+type MiddlewareOptions = false | {
+  /**
+   * Only apply auth middleware to guest or user
+   */
+  only?: 'guest' | 'user'
+  /**
+   * Redirect authenticated user to this route
+   */
+  redirectUserTo?: string
+  /**
+   * Redirect guest to this route
+   */
+  redirectGuestTo?: string
+}
+
+declare module '#app' {
+  interface PageMeta {
+    auth?: MiddlewareOptions
+  }
+}
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    auth?: MiddlewareOptions
+  }
+}
+
 export default defineNuxtRouteMiddleware(async (to) => {
   // If auth is disabled, skip middleware
   if (to.meta?.auth === false) {
