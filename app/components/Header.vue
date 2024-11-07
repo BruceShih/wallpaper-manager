@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { signOut, loggedIn } = useAuth()
 </script>
 
 <template>
@@ -8,7 +9,9 @@
         Wallpaper Manager
       </div>
       <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-        Buttons
+        <UButton v-if="loggedIn" color="neutral" @click="signOut({ redirectTo: '/' })">
+          Sign Out
+        </UButton>
       </div>
     </div>
   </header>

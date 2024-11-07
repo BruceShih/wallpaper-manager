@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useAuth } from '~/composables/useAuth'
-
 definePageMeta({
   auth: {
     only: 'guest',
     redirectUserTo: '/gallery'
   }
 })
+
 const auth = useAuth()
 </script>
 
