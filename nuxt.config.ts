@@ -3,11 +3,7 @@ import process from 'node:process'
 
 export default defineNuxtConfig({
   // https://nuxt.com/modules
-  modules: [
-    '@nuxthub/core',
-    '@nuxt/eslint',
-    '@nuxt/ui'
-  ],
+  modules: ['@nuxthub/core', '@nuxt/eslint', '@nuxt/ui', '@nuxtjs/robots'],
 
   // https://devtools.nuxt.com
   devtools: { enabled: true },
@@ -32,5 +28,7 @@ export default defineNuxtConfig({
     cache: true,
     database: true,
     kv: true
-  }
+  },
+
+  site: { indexable: false }
 })

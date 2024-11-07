@@ -18,6 +18,7 @@
     "@atinux/kysely-d1": "^0.3.1",
     "@nuxt/ui": "3.0.0-alpha.7",
     "@nuxthub/core": "^0.8.5",
+    "@nuxtjs/robots": "^4.1.11",
     "better-auth": "0.7.3-beta.10",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.36.0",
