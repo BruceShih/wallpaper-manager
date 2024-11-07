@@ -19,35 +19,19 @@ export default eventHandler(async (event) => {
   const nsfw = result.data.nsfw === 'true' ? 1 : 0
 
   try {
-    if (nsfw) {
-      // parameter provided, get random image based on nsfw value
-      const query = await useDrizzle()
-        .select()
-        .from(tables.images)
-        .where(
-          and(
-            eq(images.alive, 1),
-            eq(images.nsfw, nsfw)
-          )
+    const query = await useDrizzle()
+      .select()
+      .from(tables.images)
+      .where(
+        and(
+          eq(images.alive, 1),
+          eq(images.nsfw, nsfw)
         )
-        .orderBy(sql`RANDOM()`)
-        .limit(1)
+      )
+      .orderBy(sql`RANDOM()`)
+      .limit(1)
 
-      randomRow = query[0]
-    }
-    else {
-      // parameter not provided, get random image
-      const query = await useDrizzle()
-        .select()
-        .from(tables.images)
-        .where(
-          eq(images.alive, 1)
-        )
-        .orderBy(sql`RANDOM()`)
-        .limit(1)
-
-      randomRow = query[0]
-    }
+    randomRow = query[0]
 
     if (!randomRow) {
       console.error('[Wallpaper Service] No image found')
