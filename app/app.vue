@@ -2,12 +2,12 @@
 </script>
 
 <template>
-  <UApp>
-    <Header />
-    <NuxtRouteAnnouncer />
-    <NuxtLoadingIndicator />
+  <Header />
+  <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator />
+  <div class="pt-4">
     <NuxtPage />
-  </UApp>
+  </div>
 </template>
 
 <style>
