@@ -20,9 +20,8 @@ export default defineNuxtConfig({
 
   // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
-    authKeySecret: process.env.AUTH_KEY_SECRET,
-    hubCloudflareAccessClientId: process.env.NUXT_HUB_CLOUDFLARE_ACCESS_CLIENT_ID,
-    hubCloudflareAccessClientSecret: process.env.NUXT_HUB_CLOUDFLARE_ACCESS_CLIENT_SECRET
+    origin: process.env.ORIGIN,
+    authKeySecret: process.env.AUTH_KEY_SECRET
   },
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
