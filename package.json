@@ -23,6 +23,7 @@
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/robots": "^4.1.11",
     "@nuxtjs/tailwindcss": "^6.12.2",
+    "@radix-icons/vue": "^1.0.0",
     "better-auth": "0.7.3-beta.10",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

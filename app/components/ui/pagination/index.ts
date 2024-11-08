@@ -6,5 +6,5 @@ export { default as PaginationPrev } from './PaginationPrev.vue'
 export {
   PaginationList,
   PaginationListItem,
-  PaginationRoot as Pagination,
+  PaginationRoot as Pagination
 } from 'radix-vue'
