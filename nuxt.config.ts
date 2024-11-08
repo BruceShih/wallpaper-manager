@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@formkit/auto-animate/nuxt',
     '@nuxt/fonts',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@vee-validate/nuxt'
   ],
 
   // https://devtools.nuxt.com

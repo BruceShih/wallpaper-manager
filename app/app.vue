@@ -5,6 +5,7 @@
   <Header />
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator />
+  <Toaster />
   <div class="pt-4">
     <NuxtPage />
   </div>

@@ -26,7 +26,7 @@ export function serverAuth() {
       },
       baseURL: getBaseURL(),
       emailAndPassword: {
-        enabled: false
+        enabled: true
       },
       socialProviders: {
         github: {
