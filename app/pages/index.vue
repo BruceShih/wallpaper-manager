@@ -70,7 +70,7 @@ const onSignup = signupForm.handleSubmit(async (values) => {
   else {
     await navigateTo('/gallery')
     toast({
-      title: 'Signup successful, please login'
+      title: 'Signup successful'
     })
   }
   signupLoading.value = false
