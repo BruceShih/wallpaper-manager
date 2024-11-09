@@ -29,6 +29,7 @@ const randomDate = (start: Date, end: Date) => new Date(start.getTime() + Math.r
 
 async function fetchData() {
   loading.value = true
+  wallpapers.images = []
 
   // FIXME: local dev code, remove after
   if (import.meta.dev) {
