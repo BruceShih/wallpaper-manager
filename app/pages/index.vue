@@ -52,7 +52,7 @@ const onLogin = form.handleSubmit(async (values) => {
         <CardTitle>Login</CardTitle>
       </CardHeader>
       <CardContent>
-        <form id="login-form" class="space-y-6" @submit.prevent="onLogin">
+        <form class="space-y-6" @submit.prevent="onLogin">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem v-auto-animate>
               <FormLabel>Email</FormLabel>
@@ -71,7 +71,7 @@ const onLogin = form.handleSubmit(async (values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button id="login-button" type="submit" :disabled="loading">
+          <Button type="submit" :disabled="loading">
             <Icon v-if="loading" name="radix-icons:reload" class="animate-spin" />
             <template v-if="loading">
               Logging in...
@@ -84,7 +84,6 @@ const onLogin = form.handleSubmit(async (values) => {
         <DevOnly>
           <Separator orientation="horizontal" label="Or" class="my-6" />
           <Button
-            id="github-login-button"
             type="button"
             variant="secondary"
             @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
