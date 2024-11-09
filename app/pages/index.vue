@@ -81,16 +81,18 @@ const onLogin = form.handleSubmit(async (values) => {
             </template>
           </Button>
         </form>
-        <!-- <Separator orientation="horizontal" label="Or" class="my-6" />
-        <Button
-          id="github-login-button"
-          type="button"
-          variant="secondary"
-          @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
-        >
-          <Icon name="radix-icons:github-logo" />
-          Sign In with Github
-        </Button> -->
+        <DevOnly>
+          <Separator orientation="horizontal" label="Or" class="my-6" />
+          <Button
+            id="github-login-button"
+            type="button"
+            variant="secondary"
+            @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
+          >
+            <Icon name="radix-icons:github-logo" />
+            Sign In with Github
+          </Button>
+        </DevOnly>
       </CardContent>
     </Card>
   </div>
