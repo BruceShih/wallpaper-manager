@@ -1,6 +1,6 @@
 import { images } from '~~/server/database/schema'
-import { type Image, tables, useDrizzle } from '~~/server/utils/drizzle'
-import { asc, count } from 'drizzle-orm'
+import { type Image, useDrizzle } from '~~/server/utils/drizzle'
+import { asc, desc, like } from 'drizzle-orm'
 import { apiListQuerySchema } from '../types/api'
 
 export default eventHandler(async (event) => {
@@ -17,20 +17,39 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    const totalQuery = await useDrizzle()
-      .select({ total: count(images.key) })
-      .from(tables.images)
-
-    total = totalQuery[0]?.total || 0
-
-    const query = await useDrizzle()
-      .select()
-      .from(tables.images)
-      .orderBy(asc(images.createDate))
-      .limit(result.data.size)
-      .offset((result.data.page - 1) * result.data.size)
-
-    list = query
+    if (result.data.name) {
+      list = await useDrizzle()
+        .select()
+        .from(images)
+        .where(like(images.key, `%${result.data.name}%`))
+        .orderBy(() => {
+          switch (result.data.sort) {
+            case 'date':
+              return result.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
+            case 'name':
+              return result.data.order === 'asc' ? asc(images.key) : desc(images.key)
+          }
+        })
+        .limit(result.data.size)
+        .offset((result.data.page - 1) * result.data.size)
+      total = list.length
+    }
+    else {
+      list = await useDrizzle()
+        .select()
+        .from(images)
+        .orderBy(() => {
+          switch (result.data.sort) {
+            case 'date':
+              return result.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
+            case 'name':
+              return result.data.order === 'asc' ? asc(images.key) : desc(images.key)
+          }
+        })
+        .limit(result.data.size)
+        .offset((result.data.page - 1) * result.data.size)
+      total = list.length
+    }
 
     setResponseHeaders(event, {
       total

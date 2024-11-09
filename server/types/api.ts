@@ -6,7 +6,10 @@ export const apiGetQuerySchema = z.object({
 
 export const apiListQuerySchema = z.object({
   size: z.coerce.number().default(20),
-  page: z.coerce.number().default(1)
+  page: z.coerce.number().default(1),
+  sort: z.enum(['date', 'name']).default('date'),
+  order: z.enum(['asc', 'desc']).default('asc'),
+  name: z.string().optional()
 })
 
 export const apiUpdateBodySchema = z.object({
