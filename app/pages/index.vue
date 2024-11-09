@@ -11,7 +11,6 @@ definePageMeta({
   }
 })
 
-const loading = ref(false)
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
@@ -21,6 +20,8 @@ const form = useForm({
   validationSchema: formSchema
 })
 const { toast } = useToast()
+
+const loading = ref(false)
 
 const onLogin = form.handleSubmit(async (values) => {
   if (loading.value)
