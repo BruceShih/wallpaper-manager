@@ -81,7 +81,7 @@ const onLogin = form.handleSubmit(async (values) => {
             </template>
           </Button>
         </form>
-        <Separator orientation="horizontal" label="Or" class="my-6" />
+        <!-- <Separator orientation="horizontal" label="Or" class="my-6" />
         <Button
           id="github-login-button"
           type="button"
@@ -90,7 +90,7 @@ const onLogin = form.handleSubmit(async (values) => {
         >
           <Icon name="radix-icons:github-logo" />
           Sign In with Github
-        </Button>
+        </Button> -->
       </CardContent>
     </Card>
   </div>
