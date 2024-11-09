@@ -68,6 +68,7 @@ const onSignup = signupForm.handleSubmit(async (values) => {
     })
   }
   else {
+    await navigateTo('/gallery')
     toast({
       title: 'Signup successful, please login'
     })
@@ -123,6 +124,7 @@ const onSignup = signupForm.handleSubmit(async (values) => {
               </Button>
               <Separator orientation="horizontal" label="Or" />
               <Button
+                variant="secondary"
                 @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
               >
                 <Icon name="radix-icons:github-logo" />
