@@ -1,5 +1,5 @@
 import { images } from '~~/server/database/schema'
-import { and, eq, type Image, sql, tables, useDrizzle } from '~~/server/utils/drizzle'
+import { type Image, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { asc, count } from 'drizzle-orm'
 import { apiListQuerySchema } from '../types/api'
 
