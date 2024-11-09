@@ -5,13 +5,10 @@ import * as z from 'zod'
 import { useToast } from '~/components/ui/toast/use-toast'
 
 definePageMeta({
-  auth: {
-    only: 'guest',
-    redirectUserTo: '/gallery'
-  }
+  auth: false
 })
 
-const loading = ref(false)
+const router = useRouter()
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
@@ -22,6 +19,11 @@ const form = useForm({
   validationSchema: formSchema
 })
 const { toast } = useToast()
+
+const loading = ref(false)
+
+// not open for signup
+router.removeRoute('signup')
 
 const onSignup = form.handleSubmit(async (values) => {
   if (loading.value)
