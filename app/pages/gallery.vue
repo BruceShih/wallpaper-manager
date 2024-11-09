@@ -28,6 +28,8 @@ const orderByOptions = [
 const randomDate = (start: Date, end: Date) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
 
 async function fetchData() {
+  loading.value = true
+
   // FIXME: local dev code, remove after
   if (import.meta.dev) {
     wallpapers.images = Array.from({ length: 20 }, (_, index) => ({
@@ -39,12 +41,19 @@ async function fetchData() {
       deleteDate: ''
     }))
     wallpapers.total = 101
+    loading.value = false
 
     return
   }
 
   const { data } = await useFetch('/api/list', {
-    query: { page: wallpapers.page, size: wallpapers.size },
+    query: {
+      page: wallpapers.page,
+      size: wallpapers.size,
+      name: name.value,
+      sort: sort.value,
+      order: order.value
+    },
     onResponse({ response }) {
       const total = response.headers.get('total')
       if (total)
@@ -52,11 +61,11 @@ async function fetchData() {
     }
   })
   wallpapers.images = data.value || []
+
+  loading.value = false
 }
 function onSearch() {
-  loading.value = true
   fetchData()
-  loading.value = false
 }
 function onPageChange(page: number) {
   wallpapers.page = page
