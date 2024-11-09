@@ -114,8 +114,8 @@ function onPageChange(page: number) {
         </template>
       </Button>
     </div>
-    <div class="grid gap-4 grid-cols-6 grid-flow-row place-items-center justify-center">
-      <Card v-for="(image, index) in wallpapers.images" :key="index" v-auto-animate class="w-56">
+    <div v-auto-animate class="grid gap-4 grid-cols-6 grid-flow-row place-items-center justify-center">
+      <Card v-for="(image, index) in wallpapers.images" :key="index" class="w-56">
         <CardHeader>
           <CardTitle class="text-base font-semibold truncate">
             {{ image.key }}
