@@ -11,23 +11,32 @@ definePageMeta({
   }
 })
 
-const loading = ref(false)
+const loginLoading = ref(false)
+const signupLoading = ref(false)
 const auth = useAuth()
-const formSchema = toTypedSchema(z.object({
-  username: z.string().min(2).max(50),
+const loginFormSchema = toTypedSchema(z.object({
+  email: z.string().min(2).max(50),
   password: z.string().min(6).max(50)
 }))
-const form = useForm({
-  validationSchema: formSchema
+const signupFormSchema = toTypedSchema(z.object({
+  email: z.string().min(2).max(50),
+  password: z.string().min(6).max(50),
+  name: z.string().min(2).max(50)
+}))
+const loginForm = useForm({
+  validationSchema: loginFormSchema
+})
+const signupForm = useForm({
+  validationSchema: signupFormSchema
 })
 const { toast } = useToast()
 
-const onSubmit = form.handleSubmit(async (values) => {
-  if (loading.value)
+const onLogin = loginForm.handleSubmit(async (values) => {
+  if (loginLoading.value)
     return
-  loading.value = true
+  loginLoading.value = true
   const { error } = await auth.signIn.email({
-    email: values.username,
+    email: values.email,
     password: values.password
   })
   if (error) {
@@ -40,31 +49,54 @@ const onSubmit = form.handleSubmit(async (values) => {
   else {
     await navigateTo('/gallery')
   }
-  loading.value = false
+  loginLoading.value = false
+})
+
+const onSignup = signupForm.handleSubmit(async (values) => {
+  if (signupLoading.value)
+    return
+  signupLoading.value = true
+  const { error } = await auth.signUp.email({
+    email: values.email,
+    password: values.password,
+    name: values.name
+  })
+  if (error) {
+    toast({
+      title: 'Signup failed',
+      variant: 'destructive'
+    })
+  }
+  else {
+    toast({
+      title: 'Signup successful, please login'
+    })
+  }
+  signupLoading.value = false
 })
 </script>
 
 <template>
   <div class="flex justify-center">
-    <Tabs default-value="email" class="w-[400px]">
+    <Tabs default-value="login" class="w-[400px]">
       <TabsList class="grid w-full grid-cols-2">
-        <TabsTrigger value="email">
-          Email
+        <TabsTrigger value="login">
+          Login
         </TabsTrigger>
-        <TabsTrigger value="github">
-          GitHub
+        <TabsTrigger value="signup">
+          Signup
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="email">
+      <TabsContent value="login">
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
           </CardHeader>
           <CardContent>
-            <form class="space-y-6" @submit="onSubmit">
-              <FormField v-slot="{ componentField }" name="username">
+            <form class="space-y-6" @submit="onLogin">
+              <FormField v-slot="{ componentField }" name="email">
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input type="text" v-bind="componentField" />
                   </FormControl>
@@ -80,20 +112,74 @@ const onSubmit = form.handleSubmit(async (values) => {
                   <FormMessage />
                 </FormItem>
               </FormField>
-              <Button type="submit" :disabled="loading">
-                <Icon v-if="loading" name="radix-icons:reload" class="w-4 h-4 mr-2 animate-spin" />
-                <template v-if="loading">
+              <Button type="submit" :disabled="loginLoading">
+                <Icon v-if="loginLoading" name="radix-icons:reload" class="w-4 h-4 mr-2 animate-spin" />
+                <template v-if="loginLoading">
                   Logging in...
                 </template>
                 <template v-else>
                   Login
                 </template>
               </Button>
+              <Separator orientation="horizontal" label="Or" />
+              <Button
+                @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
+              >
+                <Icon name="radix-icons:github-logo" />
+                Sign In with Github
+              </Button>
             </form>
           </CardContent>
         </Card>
       </TabsContent>
-      <TabsContent value="github">
+      <TabsContent value="signup">
+        <Card>
+          <CardHeader>
+            <CardTitle>Signup</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form class="space-y-6" @submit="onSignup">
+              <FormField v-slot="{ componentField }" name="email">
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="text" v-bind="componentField" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </FormField>
+              <FormField v-slot="{ componentField }" name="password">
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" v-bind="componentField" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </FormField>
+              <FormField v-slot="{ componentField }" name="name">
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" v-bind="componentField" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </FormField>
+              <Button type="submit" :disabled="signupLoading">
+                <Icon v-if="signupLoading" name="radix-icons:reload" class="w-4 h-4 mr-2 animate-spin" />
+                <template v-if="signupLoading">
+                  Signing up...
+                </template>
+                <template v-else>
+                  Signup
+                </template>
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <!-- <TabsContent value="github">
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
@@ -106,7 +192,7 @@ const onSubmit = form.handleSubmit(async (values) => {
             </Button>
           </CardContent>
         </Card>
-      </TabsContent>
+      </TabsContent> -->
     </Tabs>
   </div>
 </template>
