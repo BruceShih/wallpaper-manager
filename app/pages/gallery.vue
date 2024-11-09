@@ -54,7 +54,9 @@ async function fetchData() {
   wallpapers.images = data.value || []
 }
 function onSearch() {
+  loading.value = true
   fetchData()
+  loading.value = false
 }
 function onPageChange(page: number) {
   wallpapers.page = page
