@@ -15,30 +15,34 @@ const loading = ref(false)
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
-  password: z.string().min(6).max(50)
+  password: z.string().min(6).max(50),
+  name: z.string().min(2).max(50)
 }))
 const form = useForm({
   validationSchema: formSchema
 })
 const { toast } = useToast()
 
-const onLogin = form.handleSubmit(async (values) => {
+const onSignup = form.handleSubmit(async (values) => {
   if (loading.value)
     return
   loading.value = true
-  const { error } = await auth.signIn.email({
+  const { error } = await auth.signUp.email({
     email: values.email,
-    password: values.password
+    password: values.password,
+    name: values.name
   })
   if (error) {
-    console.error(error)
     toast({
-      title: 'Login failed',
+      title: 'Signup failed',
       variant: 'destructive'
     })
   }
   else {
     await navigateTo('/gallery')
+    toast({
+      title: 'Signup successful'
+    })
   }
   loading.value = false
 })
@@ -48,10 +52,10 @@ const onLogin = form.handleSubmit(async (values) => {
   <div class="flex justify-center">
     <Card class="w-[400px]">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Signup</CardTitle>
       </CardHeader>
       <CardContent>
-        <form id="login-form" class="space-y-6" @submit.prevent="onLogin">
+        <form id="signup-form" class="space-y-6" @submit.prevent="onSignup">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem v-auto-animate>
               <FormLabel>Email</FormLabel>
@@ -70,26 +74,25 @@ const onLogin = form.handleSubmit(async (values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button id="login-button" type="submit" :disabled="loading">
+          <FormField v-slot="{ componentField }" name="name">
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input type="text" v-bind="componentField" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
+          <Button id="signup-button" type="submit" :disabled="loading">
             <Icon v-if="loading" name="radix-icons:reload" class="animate-spin" />
             <template v-if="loading">
-              Logging in...
+              Signing up...
             </template>
             <template v-else>
-              Login
+              Signup
             </template>
           </Button>
         </form>
-        <Separator orientation="horizontal" label="Or" class="my-6" />
-        <Button
-          id="github-login-button"
-          type="button"
-          variant="secondary"
-          @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
-        >
-          <Icon name="radix-icons:github-logo" />
-          Sign In with Github
-        </Button>
       </CardContent>
     </Card>
   </div>
