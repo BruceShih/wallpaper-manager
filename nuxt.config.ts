@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@vee-validate/nuxt',
-    '@nuxt/image'
+    '@nuxt/image',
+    '@vueuse/nuxt'
   ],
 
   // https://devtools.nuxt.com

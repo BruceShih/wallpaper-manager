@@ -1,16 +1,12 @@
 import process from 'node:process'
 import { D1Dialect } from '@atinux/kysely-d1'
 import { betterAuth } from 'better-auth'
-// import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, anonymous } from 'better-auth/plugins'
+import { admin, anonymous, bearer } from 'better-auth/plugins'
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
   if (!_auth) {
     _auth = betterAuth({
-      // database: drizzleAdapter(useDrizzle(), {
-      //   provider: 'sqlite'
-      // }),
       database: {
         dialect: new D1Dialect({
           database: hubDatabase()
@@ -39,7 +35,7 @@ export function serverAuth() {
           enabled: true
         }
       },
-      plugins: [anonymous(), admin()]
+      plugins: [anonymous(), admin(), bearer()]
     })
   }
   return _auth

@@ -13,13 +13,15 @@ interface RuntimeAuthConfig {
 }
 
 export function useAuth() {
+  const token = localStorage.getItem('bearer_token')
   const url = useRequestURL()
-  const headers = import.meta.server ? useRequestHeaders() : undefined
 
   const client = createAuthClient({
     baseURL: url.origin,
     fetchOptions: {
-      headers
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }
   })
 

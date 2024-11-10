@@ -27,18 +27,19 @@ const onLogin = form.handleSubmit(async (values) => {
   if (loading.value)
     return
   loading.value = true
-  const { error } = await auth.signIn.email({
+  const { data, error } = await auth.signIn.email({
     email: values.email,
     password: values.password
   })
+
   if (error) {
-    console.error(error)
     toast({
       title: 'Login failed',
       variant: 'destructive'
     })
   }
   else {
+    localStorage.setItem('bearer_token', data?.session.id)
     await navigateTo('/gallery')
   }
   loading.value = false
