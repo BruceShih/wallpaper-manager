@@ -18,6 +18,8 @@ export default eventHandler(async (event) => {
 
   try {
     if (result.data.name) {
+      total = await useDrizzle()
+        .$count(images, like(images.key, `%${result.data.name}%`))
       list = await useDrizzle()
         .select()
         .from(images)
@@ -32,9 +34,9 @@ export default eventHandler(async (event) => {
         })
         .limit(result.data.size)
         .offset((result.data.page - 1) * result.data.size)
-      total = list.length
     }
     else {
+      total = await useDrizzle().$count(images)
       list = await useDrizzle()
         .select()
         .from(images)
@@ -48,7 +50,6 @@ export default eventHandler(async (event) => {
         })
         .limit(result.data.size)
         .offset((result.data.page - 1) * result.data.size)
-      total = list.length
     }
 
     setResponseHeaders(event, {
