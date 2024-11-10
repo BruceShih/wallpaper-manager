@@ -17,13 +17,14 @@ export function useAuth() {
   if (import.meta.client)
     token = localStorage.getItem('bearer_token') || ''
   const url = useRequestURL()
+  const headers = {
+    Authorization: `Bearer ${token}`
+  }
 
   const client = createAuthClient({
     baseURL: url.origin,
     fetchOptions: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers
     }
   })
 
