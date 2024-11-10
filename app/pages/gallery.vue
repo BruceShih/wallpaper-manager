@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
 const loading = ref(false)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
@@ -127,7 +126,7 @@ function onPageChange(page: number) {
             provider="cloudflare"
             class="w-full h-64"
             loading="lazy"
-            :src="`${config.public.imageOrigin}/images/${image.key}`"
+            :src="`/images/${image.key}`"
           />
         </CardContent>
         <CardFooter class="justify-start">

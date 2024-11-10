@@ -49,7 +49,7 @@ export default defineNuxtConfig({
 
   image: {
     cloudflare: {
-      baseURL: process.env.ORIGIN
+      baseURL: process.env.IMAGE_ORIGIN
     }
   },
 
