@@ -39,7 +39,7 @@ const onLogin = form.handleSubmit(async (values) => {
     })
   }
   else {
-    localStorage.setItem('bearer_token', data?.session.id)
+    window.localStorage.setItem('bearer_token', data?.session.id)
     await navigateTo('/gallery')
   }
   loading.value = false
