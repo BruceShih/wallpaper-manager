@@ -82,7 +82,7 @@ async function onFavoriteClick(image: Image) {
     body: JSON.stringify({ favorite: image.favorite === 0 })
   })
 
-  if (error) {
+  if (error.value) {
     toast({
       title: 'Update failed',
       variant: 'destructive'
@@ -101,8 +101,7 @@ async function onDeleteClick(image: Image) {
     method: 'DELETE'
   })
 
-  if (error) {
-    console.error(error)
+  if (error.value) {
     toast({
       title: 'Delete failed',
       variant: 'destructive'
