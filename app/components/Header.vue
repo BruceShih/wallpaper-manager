@@ -4,17 +4,31 @@ const colorMode = useColorMode()
 </script>
 
 <template>
-  <header class="backdrop-blur sticky top-0 z-50">
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-16">
-      <div class="lg:flex-1 flex items-center gap-1.5 min-w-0 text-lg font-semibold">
+  <header class="sticky top-0 z-50 backdrop-blur">
+    <div class="mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <div class="flex min-w-0 items-center gap-1.5 text-lg font-semibold lg:flex-1">
         Wallpaper Manager
       </div>
-      <div class="flex items-center justify-end lg:flex-1 gap-1.5">
+      <div class="flex items-center justify-end lg:flex-1">
+        <Button
+          v-if="loggedIn"
+          variant="ghost"
+          color="black"
+          @click="signOut({ redirectTo: '/' })"
+        >
+          <Icon name="radix-icons:exit" />
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline">
-              <Icon name="radix-icons:moon" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Icon name="radix-icons:sun" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Button variant="ghost">
+              <Icon
+                name="radix-icons:moon"
+                class="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+              />
+              <Icon
+                name="radix-icons:sun"
+                class="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+              />
               <span class="sr-only">Toggle theme</span>
             </Button>
           </DropdownMenuTrigger>
@@ -30,11 +44,6 @@ const colorMode = useColorMode()
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button
-          v-if="loggedIn" color="black" @click="signOut({ redirectTo: '/' })"
-        >
-          Sign Out
-        </Button>
       </div>
     </div>
   </header>

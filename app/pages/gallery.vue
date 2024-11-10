@@ -30,7 +30,9 @@ const orderByOptions = [
 ]
 
 // FIXME: local dev code, remove after
-const randomDate = (start: Date, end: Date) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+function randomDate(start: Date, end: Date) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+}
 
 async function fetchData() {
   loading.value = true
@@ -117,9 +119,14 @@ function onPageChange(page: number) {
 </script>
 
 <template>
-  <div class="space-y-6 mx-4">
-    <div class="flex justify-end items-center space-x-4">
-      <Input v-model="name" type="text" placeholder="File name" class="w-[200px]" />
+  <div class="mx-4 mb-4 space-y-6">
+    <div class="flex flex-wrap items-center justify-start gap-4 lg:justify-end">
+      <Input
+        v-model="name"
+        type="text"
+        placeholder="File name"
+        class="w-[200px]"
+      />
       <Select v-model="sort">
         <SelectTrigger class="w-[120px]">
           <SelectValue placeholder="Sort by" />
@@ -127,7 +134,11 @@ function onPageChange(page: number) {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Sort by</SelectLabel>
-            <SelectItem v-for="(item, index) in sortByOptions" :key="index" :value="item.value">
+            <SelectItem
+              v-for="(item, index) in sortByOptions"
+              :key="index"
+              :value="item.value"
+            >
               {{ item.label }}
             </SelectItem>
           </SelectGroup>
@@ -140,14 +151,25 @@ function onPageChange(page: number) {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Sort by</SelectLabel>
-            <SelectItem v-for="(item, index) in orderByOptions" :key="index" :value="item.value">
+            <SelectItem
+              v-for="(item, index) in orderByOptions"
+              :key="index"
+              :value="item.value"
+            >
               {{ item.label }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button :disabled="loading" @click="onSearch">
-        <Icon v-if="loading" name="radix-icons:reload" class="animate-spin" />
+      <Button
+        :disabled="loading"
+        @click="onSearch"
+      >
+        <Icon
+          v-if="loading"
+          name="radix-icons:reload"
+          class="animate-spin"
+        />
         <template v-if="loading">
           Searching...
         </template>
@@ -156,10 +178,17 @@ function onPageChange(page: number) {
         </template>
       </Button>
     </div>
-    <div v-auto-animate class="grid gap-4 grid-cols-6 grid-flow-row place-items-center justify-center">
-      <Card v-for="(image, index) in wallpapers.images" :key="index" class="w-56">
+    <div
+      v-auto-animate
+      class="grid grid-flow-row grid-cols-2 place-items-center justify-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+    >
+      <Card
+        v-for="(image, index) in wallpapers.images"
+        :key="index"
+        class="w-48 lg:w-56"
+      >
         <CardHeader>
-          <CardTitle class="text-base font-semibold truncate">
+          <CardTitle class="truncate text-base font-semibold">
             {{ image.key }}
           </CardTitle>
         </CardHeader>
@@ -172,20 +201,40 @@ function onPageChange(page: number) {
           />
         </CardContent>
         <CardFooter class="justify-start">
-          <Button variant="ghost" size="icon" @click="onFavoriteClick(image)">
-            <Icon v-if="image.favorite" name="radix-icons:heart-filled" class="text-red-500" />
-            <Icon v-else name="radix-icons:heart" class="text-red-500" />
+          <Button
+            variant="ghost"
+            size="icon"
+            @click="onFavoriteClick(image)"
+          >
+            <Icon
+              v-if="image.favorite"
+              name="radix-icons:heart-filled"
+              class="text-red-500"
+            />
+            <Icon
+              v-else
+              name="radix-icons:heart"
+              class="text-red-500"
+            />
           </Button>
-          <Button variant="ghost" size="icon" @click="onDeleteClick(image)">
+          <Button
+            variant="ghost"
+            size="icon"
+            @click="onDeleteClick(image)"
+          >
             <Icon name="radix-icons:trash" />
           </Button>
-          <Badge v-if="image.nsfw" variant="destructive" class="ml-auto">
+          <Badge
+            v-if="image.nsfw"
+            variant="destructive"
+            class="ml-auto"
+          >
             nsfw
           </Badge>
         </CardFooter>
       </Card>
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex items-center justify-center">
       <Pagination
         v-slot="{ page }"
         v-model:page="wallpapers.page"
@@ -195,17 +244,32 @@ function onPageChange(page: number) {
         :default-page="2"
         @update:page="onPageChange"
       >
-        <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+        <PaginationList
+          v-slot="{ items }"
+          class="flex items-center gap-1"
+        >
           <PaginationFirst />
           <PaginationPrev />
 
           <template v-for="(item, index) in items">
-            <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
-              <Button class="w-10 h-10 p-0" :variant="item.value === page ? 'default' : 'outline'">
+            <PaginationListItem
+              v-if="item.type === 'page'"
+              :key="index"
+              :value="item.value"
+              as-child
+            >
+              <Button
+                class="size-10 p-0"
+                :variant="item.value === page ? 'default' : 'outline'"
+              >
                 {{ item.value }}
               </Button>
             </PaginationListItem>
-            <PaginationEllipsis v-else :key="item.type" :index="index" />
+            <PaginationEllipsis
+              v-else
+              :key="item.type"
+              :index="index"
+            />
           </template>
 
           <PaginationNext />

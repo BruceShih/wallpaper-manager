@@ -52,27 +52,49 @@ const onLogin = form.handleSubmit(async (values) => {
         <CardTitle>Login</CardTitle>
       </CardHeader>
       <CardContent>
-        <form class="space-y-6" @submit.prevent="onLogin">
-          <FormField v-slot="{ componentField }" name="email">
+        <form
+          class="space-y-6"
+          @submit.prevent="onLogin"
+        >
+          <FormField
+            v-slot="{ componentField }"
+            name="email"
+          >
             <FormItem v-auto-animate>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" v-bind="componentField" />
+                <Input
+                  type="email"
+                  v-bind="componentField"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField v-slot="{ componentField }" name="password">
+          <FormField
+            v-slot="{ componentField }"
+            name="password"
+          >
             <FormItem v-auto-animate>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" v-bind="componentField" />
+                <Input
+                  type="password"
+                  v-bind="componentField"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button type="submit" :disabled="loading">
-            <Icon v-if="loading" name="radix-icons:reload" class="animate-spin" />
+          <Button
+            type="submit"
+            :disabled="loading"
+          >
+            <Icon
+              v-if="loading"
+              name="radix-icons:reload"
+              class="animate-spin"
+            />
             <template v-if="loading">
               Logging in...
             </template>
@@ -82,7 +104,11 @@ const onLogin = form.handleSubmit(async (values) => {
           </Button>
         </form>
         <DevOnly>
-          <Separator orientation="horizontal" label="Or" class="my-6" />
+          <Separator
+            orientation="horizontal"
+            label="Or"
+            class="my-6"
+          />
           <Button
             type="button"
             variant="secondary"

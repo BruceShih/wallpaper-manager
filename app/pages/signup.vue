@@ -54,36 +54,66 @@ const onSignup = form.handleSubmit(async (values) => {
         <CardTitle>Signup</CardTitle>
       </CardHeader>
       <CardContent>
-        <form id="signup-form" class="space-y-6" @submit.prevent="onSignup">
-          <FormField v-slot="{ componentField }" name="email">
+        <form
+          id="signup-form"
+          class="space-y-6"
+          @submit.prevent="onSignup"
+        >
+          <FormField
+            v-slot="{ componentField }"
+            name="email"
+          >
             <FormItem v-auto-animate>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" v-bind="componentField" />
+                <Input
+                  type="email"
+                  v-bind="componentField"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField v-slot="{ componentField }" name="password">
+          <FormField
+            v-slot="{ componentField }"
+            name="password"
+          >
             <FormItem v-auto-animate>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" v-bind="componentField" />
+                <Input
+                  type="password"
+                  v-bind="componentField"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField v-slot="{ componentField }" name="name">
+          <FormField
+            v-slot="{ componentField }"
+            name="name"
+          >
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input type="text" v-bind="componentField" />
+                <Input
+                  type="text"
+                  v-bind="componentField"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button id="signup-button" type="submit" :disabled="loading">
-            <Icon v-if="loading" name="radix-icons:reload" class="animate-spin" />
+          <Button
+            id="signup-button"
+            type="submit"
+            :disabled="loading"
+          >
+            <Icon
+              v-if="loading"
+              name="radix-icons:reload"
+              class="animate-spin"
+            />
             <template v-if="loading">
               Signing up...
             </template>
