@@ -125,7 +125,7 @@ function onPageChange(page: number) {
           <NuxtImg
             provider="cloudflare"
             loading="lazy"
-            :src="`/images/${image.key}`"
+            :src="`/${image.key}`"
           />
         </CardContent>
         <CardFooter class="justify-start">
