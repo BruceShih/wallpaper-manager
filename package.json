@@ -19,6 +19,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/fonts": "^0.10.2",
     "@nuxt/icon": "^1.6.1",
+    "@nuxt/image": "^1.8.1",
     "@nuxthub/core": "^0.8.5",
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/robots": "^4.1.11",

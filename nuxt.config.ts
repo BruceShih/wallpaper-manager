@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@formkit/auto-animate/nuxt',
     '@nuxt/fonts',
     '@nuxt/icon',
-    '@vee-validate/nuxt'
+    '@vee-validate/nuxt',
+    '@nuxt/image'
   ],
 
   // https://devtools.nuxt.com

@@ -122,8 +122,7 @@ function onPageChange(page: number) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <!-- TODO: image preview goes here -->
-          <Skeleton class="w-full h-64" />
+          <NuxtImg class="w-full h-64" :src="`/images/${image.key}`" />
         </CardContent>
         <CardFooter class="justify-start">
           <Button variant="ghost" size="icon">
