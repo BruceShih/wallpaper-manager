@@ -4,6 +4,7 @@ import { useToast } from '~/components/ui/toast/use-toast'
 
 const { toast } = useToast()
 
+const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
 const isDev = ref(import.meta.dev)
 const loading = ref(false)
 const name = ref('')
@@ -56,6 +57,9 @@ async function fetchData() {
   }
 
   const { data } = await useFetch('/api/list', {
+    headers: {
+      Authorization: `Bearer ${token.value}`
+    },
     query: {
       page: wallpapers.page,
       size: wallpapers.size,
@@ -79,6 +83,9 @@ function onSearch() {
 async function onFavoriteClick(image: Image) {
   const { error } = await useFetch(`/api/update/${image.key}`, {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`
+    },
     body: JSON.stringify({ favorite: image.favorite === 0 })
   })
 
@@ -98,7 +105,10 @@ async function onFavoriteClick(image: Image) {
 }
 async function onDeleteClick(image: Image) {
   const { error } = await useFetch(`/api/delete/${image.key}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token.value}`
+    }
   })
 
   if (error.value) {
