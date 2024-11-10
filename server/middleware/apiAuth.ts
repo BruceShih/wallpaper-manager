@@ -1,12 +1,16 @@
 export default defineEventHandler(async (event) => {
-  const session = await serverAuth().api.getSession({
-    headers: event.headers
-  })
+  const paths = ['/api/delete', '/api/list', '/api/get', '/api/update', '/api/upload']
 
-  if (!session) {
-    throw createError({
-      statusCode: 401,
-      message: 'Unauthorized'
+  if (paths.some(path => event.path.startsWith(path))) {
+    const session = await serverAuth().api.getSession({
+      headers: event.headers
     })
+
+    if (!session) {
+      throw createError({
+        statusCode: 401,
+        message: 'Unauthorized'
+      })
+    }
   }
 })
