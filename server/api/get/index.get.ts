@@ -49,7 +49,7 @@ export default eventHandler(async (event) => {
       'Favorite': favorite.valueOf().toString()
     })
 
-    return hubBlob().serve(event, id)
+    return hubBlob().serve(event, `images/${id}`)
   }
   catch (error) {
     console.error('[Wallpaper Service] Server error:', error)

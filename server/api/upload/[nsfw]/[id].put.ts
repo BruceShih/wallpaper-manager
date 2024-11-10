@@ -51,7 +51,7 @@ export default eventHandler(async (event) => {
       })
     }
 
-    await hubBlob().put(id, file)
+    await hubBlob().put(`images/${id}`, file)
 
     // write to database
     await useDrizzle()
@@ -62,7 +62,7 @@ export default eventHandler(async (event) => {
     return 'Image uploaded'
   }
   catch (error) {
-    await hubBlob().del(id)
+    await hubBlob().del(`images/${id}`)
 
     console.error('[Wallpaper Service] Server error:', error)
     throw createError({

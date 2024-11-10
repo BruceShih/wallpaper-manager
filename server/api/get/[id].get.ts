@@ -39,7 +39,7 @@ export default eventHandler(async (event) => {
       'ETag': crypto.randomUUID()
     })
 
-    return hubBlob().serve(event, id)
+    return hubBlob().serve(event, `images/${id}`)
   }
   catch (error) {
     console.error('[Wallpaper Service] Server error:', error)
