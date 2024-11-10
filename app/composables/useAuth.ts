@@ -13,7 +13,9 @@ interface RuntimeAuthConfig {
 }
 
 export function useAuth() {
-  const token = window.localStorage.getItem('bearer_token')
+  let token = ''
+  if (import.meta.client)
+    token = localStorage.getItem('bearer_token') || ''
   const url = useRequestURL()
 
   const client = createAuthClient({
