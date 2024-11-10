@@ -90,6 +90,7 @@ async function onFavoriteClick(image: Image) {
   }
   else {
     image.favorite = image.favorite === 0 ? 1 : 0
+
     toast({
       title: 'Image updated'
     })
@@ -108,6 +109,9 @@ async function onDeleteClick(image: Image) {
     })
   }
   else {
+    const index = wallpapers.images.findIndex(item => item.key === image.key)
+    wallpapers.images.splice(index, 1)
+
     toast({
       title: 'Image deleted'
     })
