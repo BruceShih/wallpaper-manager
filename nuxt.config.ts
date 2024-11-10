@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
     origin: process.env.ORIGIN,
+    imageOrigin: process.env.IMAGE_ORIGIN,
     authKeySecret: process.env.AUTH_KEY_SECRET
   },
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
@@ -44,6 +45,12 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './app/components/ui'
+  },
+
+  image: {
+    cloudflare: {
+      baseURL: process.env.ORIGIN
+    }
   },
 
   // https://hub.nuxt.com/docs/getting-started/installation#options

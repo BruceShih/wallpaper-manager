@@ -14,7 +14,7 @@ export default eventHandler(async (event) => {
 
   try {
     // delete image from r2
-    await hubBlob().del(`images/${id}`)
+    await hubBlob().del(id)
     // update database
     await useDrizzle()
       .delete(images)

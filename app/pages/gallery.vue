@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const config = useRuntimeConfig()
 const loading = ref(false)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
@@ -122,7 +123,12 @@ function onPageChange(page: number) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <NuxtImg class="w-full h-64" :src="`/api/get/${image.key}`" />
+          <NuxtImg
+            provider="cloudflare"
+            class="w-full h-64"
+            loading="lazy"
+            :src="`${config.public.imageOrigin}/images/${image.key}`"
+          />
         </CardContent>
         <CardFooter class="justify-start">
           <Button variant="ghost" size="icon">
