@@ -4,6 +4,7 @@ import { useToast } from '~/components/ui/toast/use-toast'
 
 const { toast } = useToast()
 
+const isDev = ref(import.meta.dev)
 const loading = ref(false)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
@@ -185,7 +186,7 @@ function onPageChange(page: number) {
       <Card
         v-for="(image, index) in wallpapers.images"
         :key="index"
-        class="w-48 lg:w-56"
+        class="w-44 md:w-56"
       >
         <CardHeader>
           <CardTitle class="truncate text-base font-semibold">
@@ -193,12 +194,21 @@ function onPageChange(page: number) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <NuxtImg
-            provider="cloudflare"
-            loading="lazy"
-            :class="{ 'backdrop-blur': image.nsfw }"
-            :src="`/${image.key}`"
-          />
+          <!-- TODO: dev only, remove later -->
+          <template v-if="isDev">
+            <img
+              src="https://picsum.photos/120"
+              alt="placeholder"
+            >
+          </template>
+          <template v-else>
+            <NuxtImg
+              provider="cloudflare"
+              loading="lazy"
+              :class="{ 'backdrop-blur': image.nsfw }"
+              :src="`/${image.key}`"
+            />
+          </template>
         </CardContent>
         <CardFooter class="justify-start">
           <Button
