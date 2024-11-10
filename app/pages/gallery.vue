@@ -208,7 +208,7 @@ function onPageChange(page: number) {
             <NuxtImg
               provider="cloudflare"
               loading="lazy"
-              :class="{ 'backdrop-blur': image.nsfw }"
+              :class="{ blur: image.nsfw }"
               :src="`/${image.key}`"
             />
           </template>
