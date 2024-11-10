@@ -124,7 +124,6 @@ function onPageChange(page: number) {
         <CardContent>
           <NuxtImg
             provider="cloudflare"
-            class="w-full h-64"
             loading="lazy"
             :src="`/images/${image.key}`"
           />
