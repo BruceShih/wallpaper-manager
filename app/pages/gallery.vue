@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import type { Image } from '~~/server/utils/drizzle'
+import { useToast } from '~/components/ui/toast/use-toast'
+
+const { toast } = useToast()
+
 const loading = ref(false)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
@@ -68,6 +73,43 @@ async function fetchData() {
 function onSearch() {
   fetchData()
 }
+async function onFavoriteClick(image: Image) {
+  const { error } = await useFetch(`/api/update/${image.key}`, {
+    method: 'POST',
+    body: JSON.stringify({ favorite: image.favorite === 0 })
+  })
+
+  if (error) {
+    toast({
+      title: 'Update failed',
+      variant: 'destructive'
+    })
+  }
+  else {
+    image.favorite = image.favorite === 0 ? 1 : 0
+    toast({
+      title: 'Image updated'
+    })
+  }
+}
+async function onDeleteClick(image: Image) {
+  const { error } = await useFetch(`/api/delete/${image.key}`, {
+    method: 'DELETE'
+  })
+
+  if (error) {
+    console.error(error)
+    toast({
+      title: 'Delete failed',
+      variant: 'destructive'
+    })
+  }
+  else {
+    toast({
+      title: 'Image deleted'
+    })
+  }
+}
 function onPageChange(page: number) {
   wallpapers.page = page
   fetchData()
@@ -130,11 +172,11 @@ function onPageChange(page: number) {
           />
         </CardContent>
         <CardFooter class="justify-start">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" @click="onFavoriteClick(image)">
             <Icon v-if="image.favorite" name="radix-icons:heart-filled" class="text-red-500" />
             <Icon v-else name="radix-icons:heart" class="text-red-500" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" @click="onDeleteClick(image)">
             <Icon name="radix-icons:trash" />
           </Button>
           <Badge v-if="image.nsfw" variant="destructive" class="ml-auto">
