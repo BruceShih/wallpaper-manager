@@ -219,7 +219,7 @@ function onPageChange(page: number) {
               provider="cloudflare"
               loading="lazy"
               :class="{ blur: image.nsfw }"
-              :src="`/${image.key}`"
+              :src="`/source/${image.key}`"
             />
           </template>
         </CardContent>
