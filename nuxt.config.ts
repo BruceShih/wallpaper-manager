@@ -23,9 +23,10 @@ export default defineNuxtConfig({
 
   // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
-    origin: process.env.ORIGIN,
-    imageOrigin: process.env.IMAGE_ORIGIN,
-    authKeySecret: process.env.AUTH_KEY_SECRET
+    public: {
+      origin: process.env.ORIGIN,
+      imageOrigin: process.env.IMAGE_ORIGIN
+    }
   },
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },

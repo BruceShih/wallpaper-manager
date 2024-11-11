@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const paths = ['/api/delete', '/api/list', '/api/get', '/api/update', '/api/upload']
+  const paths = ['/api/delete', '/api/list', '/api/get', '/api/images', '/api/update', '/api/upload']
 
   if (paths.some(path => event.path.startsWith(path))) {
     const session = await serverAuth().api.getSession({

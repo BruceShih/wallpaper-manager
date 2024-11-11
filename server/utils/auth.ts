@@ -1,12 +1,12 @@
 import process from 'node:process'
 import { D1Dialect } from '@atinux/kysely-d1'
-import { betterAuth } from 'better-auth'
+import { betterAuth, type BetterAuthOptions } from 'better-auth'
 import { admin, anonymous, bearer } from 'better-auth/plugins'
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
   if (!_auth) {
-    _auth = betterAuth({
+    const options: BetterAuthOptions = {
       database: {
         dialect: new D1Dialect({
           database: hubDatabase()
@@ -36,7 +36,8 @@ export function serverAuth() {
         }
       },
       plugins: [anonymous(), admin(), bearer()]
-    })
+    }
+    _auth = betterAuth(options)
   }
   return _auth
 }

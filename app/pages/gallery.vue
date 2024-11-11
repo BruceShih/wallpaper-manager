@@ -216,10 +216,9 @@ function onPageChange(page: number) {
           </template>
           <template v-else>
             <NuxtImg
-              provider="cloudflare"
               loading="lazy"
               :class="{ blur: image.nsfw }"
-              :src="`/${image.key}`"
+              :src="`/api/images/${image.key}`"
             />
           </template>
         </CardContent>
