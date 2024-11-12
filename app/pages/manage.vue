@@ -17,21 +17,21 @@ const userTokens = ref<UserToken[]>([])
 const columns: ColumnDef<UserToken>[] = [
   {
     accessorKey: 'token',
-    header: () => h('div', {}, 'Token'),
+    header: () => h('div', { class: 'w-4/6' }, 'Token'),
     cell: ({ row }) => {
       return h('div', {}, row.getValue('token'))
     }
   },
   {
     accessorKey: 'createDate',
-    header: () => h('div', {}, 'Create Date'),
+    header: () => h('div', { class: 'w-1/6' }, 'Create Date'),
     cell: ({ row }) => {
       return h('div', {}, row.getValue('createDate'))
     }
   },
   {
     accessorKey: 'enabled',
-    header: () => h('div', {}, 'Enabled'),
+    header: () => h('div', { class: 'w-1/6' }, 'Enabled'),
     cell: ({ row }) => {
       return h(Checkbox, {
         'checked': row.getValue<boolean>('enabled'),
@@ -41,7 +41,7 @@ const columns: ColumnDef<UserToken>[] = [
   },
   {
     id: 'actions',
-    header: () => h('div', {}, ''),
+    header: () => h('div', { class: 'w-1/6' }, ''),
     cell: ({ row }) => {
       return h(Button, {
         variant: 'destructive',
