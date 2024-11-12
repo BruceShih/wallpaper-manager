@@ -21,6 +21,7 @@ const columns: ColumnDef<UserToken>[] = [
     cell: ({ row }) => {
       return h('pre', {}, row.getValue('token'))
     },
+    size: 400,
     minSize: 286
   },
   {
