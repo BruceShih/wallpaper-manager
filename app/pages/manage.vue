@@ -121,12 +121,16 @@ async function onSearch() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>
+          <TableHead class="w-2/3">
             Token
           </TableHead>
-          <TableHead>Create Date</TableHead>
-          <TableHead>Enabled</TableHead>
-          <TableHead />
+          <TableHead class="w-1/6">
+            Create Date
+          </TableHead>
+          <TableHead class="w-1/6">
+            Enabled
+          </TableHead>
+          <TableHead class="w-1/6" />
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -148,7 +152,12 @@ async function onSearch() {
             <Button
               variant="destructive"
               @click="deleteToken(token.id)"
-            />
+            >
+              <Icon
+                name="radix-icons:trash"
+                class="size-4"
+              />
+            </Button>
           </TableCell>
         </TableRow>
       </TableBody>
