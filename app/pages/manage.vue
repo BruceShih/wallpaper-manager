@@ -30,7 +30,7 @@ const columns: ColumnDef<UserToken>[] = [
   },
   {
     accessorKey: 'enabled',
-    header: () => h('div', { class: 'text-right' }, 'Create Date'),
+    header: () => h('div', { class: 'text-right' }, 'Enabled'),
     cell: ({ row }) => {
       return h(Checkbox, {
         'checked': row.getValue<boolean>('enabled'),
@@ -60,7 +60,7 @@ async function fetchTokens() {
     }
   })
 
-  userTokens.value = data.value || []
+  userTokens.value = data.value || [] as UserToken[]
 }
 async function createToken() {
   const { error } = await useFetch('/api/token', {
