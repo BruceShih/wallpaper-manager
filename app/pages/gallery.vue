@@ -31,30 +31,9 @@ const orderByOptions = [
   { label: 'Descending', value: 'desc' }
 ]
 
-// FIXME: local dev code, remove after
-function randomDate(start: Date, end: Date) {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-}
-
 async function fetchData() {
   loading.value = true
   wallpapers.images = []
-
-  // FIXME: local dev code, remove after
-  if (import.meta.dev) {
-    wallpapers.images = Array.from({ length: 20 }, (_, index) => ({
-      key: `Image ${wallpapers.page * (index + 1)}`,
-      favorite: (index % 2 === 0),
-      nsfw: (index % 2 === 0),
-      alive: true,
-      createDate: randomDate(new Date(2023, 0, 1), new Date()).toISOString(),
-      deleteDate: ''
-    }))
-    wallpapers.total = 101
-    loading.value = false
-
-    return
-  }
 
   const { data } = await useFetch('/api/list', {
     headers: {
@@ -77,8 +56,8 @@ async function fetchData() {
 
   loading.value = false
 }
-function onSearch() {
-  fetchData()
+async function onSearch() {
+  await fetchData()
 }
 async function onFavoriteClick(image: Image) {
   const { error } = await useFetch(`/api/image/update/${image.key}`, {
@@ -126,9 +105,9 @@ async function onDeleteClick(image: Image) {
     })
   }
 }
-function onPageChange(page: number) {
+async function onPageChange(page: number) {
   wallpapers.page = page
-  fetchData()
+  await fetchData()
 }
 </script>
 

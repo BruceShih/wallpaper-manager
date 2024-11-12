@@ -10,6 +10,7 @@ import { useToast } from '~/components/ui/toast/use-toast'
 
 const { toast } = useToast()
 
+const loading = ref(false)
 const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
 const userTokens = ref<UserToken[]>([])
 
@@ -54,14 +55,17 @@ const columns: ColumnDef<UserToken>[] = [
 ]
 
 async function fetchTokens() {
+  loading.value = true
+  userTokens.value = []
+
   const { data } = await useFetch('/api/token/list', {
     headers: {
       Authorization: `Bearer ${token.value}`
     }
   })
 
-  console.info('token list', data)
   userTokens.value = data.value || []
+  loading.value = false
 }
 async function createToken() {
   const { error } = await useFetch('/api/token', {
@@ -125,17 +129,36 @@ async function deleteToken(id: number) {
     })
   }
 }
-
-onMounted(async () => {
+async function onSearch() {
   await fetchTokens()
-})
+}
 </script>
 
 <template>
   <div class="mx-4 mb-4 space-y-6">
     <div class="flex justify-end">
-      <Button @click="createToken">
+      <Button
+        variant="secondary"
+        class="mr-4"
+        @click="createToken"
+      >
         Create new token
+      </Button>
+      <Button
+        :disabled="loading"
+        @click="onSearch"
+      >
+        <Icon
+          v-if="loading"
+          name="radix-icons:reload"
+          class="animate-spin"
+        />
+        <template v-if="loading">
+          Searching...
+        </template>
+        <template v-else>
+          Search
+        </template>
       </Button>
     </div>
     <DataTable
