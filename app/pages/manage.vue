@@ -60,7 +60,7 @@ async function fetchTokens() {
     }
   })
 
-  userTokens.value = data.value || [] as UserToken[]
+  userTokens.value = data.value || []
 }
 async function createToken() {
   const { error } = await useFetch('/api/token', {

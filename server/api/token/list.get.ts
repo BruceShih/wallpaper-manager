@@ -1,5 +1,5 @@
 import { userToken } from '~~/server/database/schema'
-import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { eq, useDrizzle, type UserToken } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
   const session = await serverAuth().api.getSession({
@@ -14,7 +14,7 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    const list = await useDrizzle()
+    const list: UserToken[] = await useDrizzle()
       .select()
       .from(userToken)
       .where(eq(userToken.userId, session?.user.id))
