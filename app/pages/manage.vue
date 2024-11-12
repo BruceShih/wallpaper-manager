@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type {
-  ColumnDef
-} from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/utils/drizzle'
 import { Icon } from '#components'
 import { Button } from '@/components/ui/button'
@@ -11,53 +8,8 @@ import { useToast } from '~/components/ui/toast/use-toast'
 const { toast } = useToast()
 
 const loading = ref(false)
-const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
+const sessionToken = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
 const userTokens = ref<UserToken[]>([])
-
-const columns: ColumnDef<UserToken>[] = [
-  {
-    accessorKey: 'token',
-    header: () => 'Token',
-    cell: ({ row }) => {
-      return h('pre', {}, row.getValue('token'))
-    },
-    size: 400,
-    minSize: 286
-  },
-  {
-    accessorKey: 'createDate',
-    header: () => 'Create Date',
-    cell: ({ row }) => {
-      return row.getValue('createDate')
-    },
-    size: 180
-  },
-  {
-    accessorKey: 'enabled',
-    header: () => 'Enabled',
-    cell: ({ row }) => {
-      return h(Checkbox, {
-        'checked': row.getValue<boolean>('enabled'),
-        'onUpdate:checked': value => updateToken(row.getValue('id'), value)
-      })
-    },
-    size: 60
-  },
-  {
-    id: 'actions',
-    header: () => '',
-    cell: ({ row }) => {
-      return h(Button, {
-        variant: 'destructive',
-        onClick: () => deleteToken(row.getValue('id'))
-      }, h(Icon, {
-        name: 'radix-icons:trash',
-        class: 'size-4'
-      }))
-    },
-    size: 60
-  }
-]
 
 async function fetchTokens() {
   loading.value = true
@@ -65,7 +17,7 @@ async function fetchTokens() {
 
   const { data } = await useFetch('/api/token/list', {
     headers: {
-      Authorization: `Bearer ${token.value}`
+      Authorization: `Bearer ${sessionToken.value}`
     }
   })
 
@@ -76,7 +28,7 @@ async function createToken() {
   const { error } = await useFetch('/api/token', {
     method: 'PUT',
     headers: {
-      Authorization: `Bearer ${token.value}`
+      Authorization: `Bearer ${sessionToken.value}`
     }
   })
 
@@ -97,7 +49,7 @@ async function updateToken(id: number, enable: boolean) {
   const { error } = await useFetch(`/api/token/${id}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${token.value}`
+      Authorization: `Bearer ${sessionToken.value}`
     },
     body: JSON.stringify({ enable })
   })
@@ -118,7 +70,7 @@ async function deleteToken(id: number) {
   const { error } = await useFetch(`/api/token/${id}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${token.value}`
+      Authorization: `Bearer ${sessionToken.value}`
     }
   })
 
@@ -166,9 +118,40 @@ async function onSearch() {
         </template>
       </Button>
     </div>
-    <DataTable
-      :columns="columns"
-      :data="userTokens"
-    />
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>
+            Token
+          </TableHead>
+          <TableHead>Create Date</TableHead>
+          <TableHead>Enabled</TableHead>
+          <TableHead />
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow
+          v-for="(token, index) in userTokens"
+          :key="index"
+        >
+          <TableCell>
+            <pre>{{ token.token }}</pre>
+          </TableCell>
+          <TableCell>{{ token.createDate }}</TableCell>
+          <TableCell>
+            <Checkbox
+              :checked="token.enabled"
+              @update:checked="updateToken(token.id, $event)"
+            />
+          </TableCell>
+          <TableCell>
+            <Button
+              variant="destructive"
+              @click="deleteToken(token.id)"
+            />
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   </div>
 </template>
