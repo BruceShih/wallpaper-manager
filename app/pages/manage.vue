@@ -81,7 +81,7 @@ async function createToken() {
     }
   })
 
-  if (error) {
+  if (error.value) {
     toast({
       title: 'Create token failed',
       variant: 'destructive'
@@ -103,7 +103,7 @@ async function updateToken(id: number, enable: boolean) {
     body: JSON.stringify({ enable })
   })
 
-  if (error) {
+  if (error.value) {
     toast({
       title: 'Update token failed',
       variant: 'destructive'
@@ -123,7 +123,7 @@ async function deleteToken(id: number) {
     }
   })
 
-  if (error) {
+  if (error.value) {
     toast({
       title: 'Delete token failed',
       variant: 'destructive'
