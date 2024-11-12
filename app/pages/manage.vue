@@ -17,31 +17,34 @@ const userTokens = ref<UserToken[]>([])
 const columns: ColumnDef<UserToken>[] = [
   {
     accessorKey: 'token',
-    header: () => h('div', { class: 'w-4/6' }, 'Token'),
+    header: () => 'Token',
     cell: ({ row }) => {
-      return h('div', {}, row.getValue('token'))
-    }
+      return h('pre', {}, row.getValue('token'))
+    },
+    minSize: 286
   },
   {
     accessorKey: 'createDate',
-    header: () => h('div', { class: 'w-1/6' }, 'Create Date'),
+    header: () => 'Create Date',
     cell: ({ row }) => {
-      return h('div', {}, row.getValue('createDate'))
-    }
+      return row.getValue('createDate')
+    },
+    minSize: 180
   },
   {
     accessorKey: 'enabled',
-    header: () => h('div', { class: 'w-1/6' }, 'Enabled'),
+    header: () => 'Enabled',
     cell: ({ row }) => {
       return h(Checkbox, {
         'checked': row.getValue<boolean>('enabled'),
         'onUpdate:checked': value => updateToken(row.getValue('id'), value)
       })
-    }
+    },
+    minSize: 60
   },
   {
     id: 'actions',
-    header: () => h('div', { class: 'w-1/6' }, ''),
+    header: () => '',
     cell: ({ row }) => {
       return h(Button, {
         variant: 'destructive',
@@ -50,7 +53,8 @@ const columns: ColumnDef<UserToken>[] = [
         name: 'radix-icons:trash',
         class: 'size-4'
       }))
-    }
+    },
+    minSize: 60
   }
 ]
 
