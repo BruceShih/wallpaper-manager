@@ -20,10 +20,6 @@ import {
 import { useToast } from '~/components/ui/toast/use-toast'
 import { cn, valueUpdater } from '~/lib/utils'
 
-definePageMeta({
-  auth: false
-})
-
 const { toast } = useToast()
 
 const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
