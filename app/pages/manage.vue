@@ -29,7 +29,7 @@ const columns: ColumnDef<UserToken>[] = [
     cell: ({ row }) => {
       return row.getValue('createDate')
     },
-    minSize: 180
+    size: 180
   },
   {
     accessorKey: 'enabled',
@@ -40,7 +40,7 @@ const columns: ColumnDef<UserToken>[] = [
         'onUpdate:checked': value => updateToken(row.getValue('id'), value)
       })
     },
-    minSize: 60
+    size: 60
   },
   {
     id: 'actions',
@@ -54,7 +54,7 @@ const columns: ColumnDef<UserToken>[] = [
         class: 'size-4'
       }))
     },
-    minSize: 60
+    size: 60
   }
 ]
 
