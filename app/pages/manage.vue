@@ -60,6 +60,7 @@ async function fetchTokens() {
     }
   })
 
+  console.info('token list', data)
   userTokens.value = data.value || []
 }
 async function createToken() {
