@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
+
 const { signOut, loggedIn } = useAuth()
 const colorMode = useColorMode()
+
+const links = [
+  { href: '/gallery', text: 'Wallpapers' },
+  { href: '/manage', text: 'Tokens' }
+]
 </script>
 
 <template>
@@ -9,6 +16,21 @@ const colorMode = useColorMode()
       <div class="flex min-w-0 items-center gap-1.5 text-lg font-semibold lg:flex-1">
         Wallpaper Manager
       </div>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem
+            v-for="(link, index) in links"
+            :key="index"
+          >
+            <NavigationMenuLink
+              :href="link.href"
+              :class="navigationMenuTriggerStyle()"
+            >
+              {{ link.text }}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
       <div class="flex items-center justify-end lg:flex-1">
         <Button
           v-if="loggedIn"
