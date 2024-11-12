@@ -19,6 +19,7 @@ export default eventHandler(async (event) => {
       .values({
         userId: session?.user.id,
         token: crypto.randomUUID(),
+        enabled: true,
         createDate: new Date().toISOString()
       })
 
