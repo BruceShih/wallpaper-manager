@@ -11,3 +11,4 @@ export function useDrizzle() {
 }
 
 export type Image = typeof schema.images.$inferSelect
+export type UserToken = typeof schema.userToken.$inferSelect

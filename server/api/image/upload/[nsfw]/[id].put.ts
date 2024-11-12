@@ -1,5 +1,5 @@
 import { images } from '~~/server/database/schema'
-import { apiUploadPathSchema } from '~~/server/types/api'
+import { apiImageUploadPathSchema } from '~~/server/types/api'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
@@ -13,7 +13,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const result = await getValidatedRouterParams(event, param => apiUploadPathSchema.safeParse(param))
+  const result = await getValidatedRouterParams(event, param => apiImageUploadPathSchema.safeParse(param))
   if (!result.success) {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({

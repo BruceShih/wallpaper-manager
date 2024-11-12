@@ -1,5 +1,5 @@
 import { images } from '~~/server/database/schema'
-import { apiUpdateBodySchema } from '~~/server/types/api'
+import { apiImageUpdateBodySchema } from '~~/server/types/api'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
@@ -13,7 +13,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const result = await readValidatedBody(event, body => apiUpdateBodySchema.safeParse(body))
+  const result = await readValidatedBody(event, body => apiImageUpdateBodySchema.safeParse(body))
   if (!result.success) {
     console.error('[Wallpaper Service] Body invalid')
     throw createError({

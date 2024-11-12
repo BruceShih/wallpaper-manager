@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const paths = ['/api/delete', '/api/list', '/api/get', '/api/images', '/api/update', '/api/upload']
-
-  if (paths.some(path => event.path.startsWith(path))) {
+  if (event.path.startsWith('/api/image')) {
     const session = await serverAuth().api.getSession({
       headers: event.headers
     })

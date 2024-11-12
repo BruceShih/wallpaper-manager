@@ -1,5 +1,5 @@
 import { images } from '~~/server/database/schema'
-import { apiGetQuerySchema } from '~~/server/types/api'
+import { apiImageGetQuerySchema } from '~~/server/types/api'
 import { and, eq, type Image, sql, tables, useDrizzle } from '~~/server/utils/drizzle'
 
 export default eventHandler(async (event) => {
@@ -7,7 +7,7 @@ export default eventHandler(async (event) => {
   let favorite = false
   let randomRow: Image | undefined
 
-  const result = await getValidatedQuery(event, query => apiGetQuerySchema.safeParse(query))
+  const result = await getValidatedQuery(event, query => apiImageGetQuerySchema.safeParse(query))
   if (!result.success) {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({

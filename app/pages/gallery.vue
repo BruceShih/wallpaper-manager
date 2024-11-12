@@ -44,9 +44,9 @@ async function fetchData() {
   if (import.meta.dev) {
     wallpapers.images = Array.from({ length: 20 }, (_, index) => ({
       key: `Image ${wallpapers.page * (index + 1)}`,
-      favorite: Math.floor(Math.random() * 2),
-      nsfw: Math.floor(Math.random() * 2),
-      alive: 1,
+      favorite: (index % 2 === 0),
+      nsfw: (index % 2 === 0),
+      alive: true,
       createDate: randomDate(new Date(2023, 0, 1), new Date()).toISOString(),
       deleteDate: ''
     }))
@@ -81,12 +81,12 @@ function onSearch() {
   fetchData()
 }
 async function onFavoriteClick(image: Image) {
-  const { error } = await useFetch(`/api/update/${image.key}`, {
+  const { error } = await useFetch(`/api/image/update/${image.key}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token.value}`
     },
-    body: JSON.stringify({ favorite: image.favorite === 0 })
+    body: JSON.stringify({ favorite: !image.favorite })
   })
 
   if (error.value) {
@@ -96,7 +96,7 @@ async function onFavoriteClick(image: Image) {
     })
   }
   else {
-    image.favorite = image.favorite === 0 ? 1 : 0
+    image.favorite = !image.favorite
 
     toast({
       title: 'Image updated'

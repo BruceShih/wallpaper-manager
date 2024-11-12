@@ -1,13 +1,13 @@
 import { images } from '~~/server/database/schema'
 import { type Image, useDrizzle } from '~~/server/utils/drizzle'
 import { asc, desc, like } from 'drizzle-orm'
-import { apiListQuerySchema } from '../types/api'
+import { apiImageListQuerySchema } from '../types/api'
 
 export default eventHandler(async (event) => {
   let total = 0
   let list: Image[] = []
 
-  const result = await getValidatedQuery(event, query => apiListQuerySchema.safeParse(query))
+  const result = await getValidatedQuery(event, query => apiImageListQuerySchema.safeParse(query))
   if (!result.success) {
     console.error('[Wallpaper Service] Param invalid')
     throw createError({

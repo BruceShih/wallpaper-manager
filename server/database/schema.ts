@@ -2,9 +2,18 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const images = sqliteTable('images', {
   key: text('key').primaryKey(),
-  nsfw: integer('nsfw').notNull().default(0),
-  favorite: integer('favorite').notNull().default(0),
-  alive: integer('alive').notNull().default(1),
+  nsfw: integer({ mode: 'boolean' }).notNull().default(false),
+  favorite: integer({ mode: 'boolean' }).notNull().default(false),
+  alive: integer({ mode: 'boolean' }).notNull().default(true),
+  createDate: text('createDate').notNull(),
+  deleteDate: text('deleteDate')
+})
+
+export const userToken = sqliteTable('userToken', {
+  id: integer({ mode: 'number' }).primaryKey({ autoIncrement: true }),
+  userId: text('userId').notNull(),
+  token: text('token').notNull(),
+  enabled: integer({ mode: 'boolean' }).notNull().default(false),
   createDate: text('createDate').notNull(),
   deleteDate: text('deleteDate')
 })
