@@ -94,7 +94,7 @@ const table = useVueTable({
 })
 
 async function fetchTokens() {
-  const { data } = await useFetch('/api/user-token/list', {
+  const { data } = await useFetch('/api/token/list', {
     headers: {
       Authorization: `Bearer ${token.value}`
     }
@@ -103,7 +103,7 @@ async function fetchTokens() {
   userToken.tokens = data.value || []
 }
 async function createToken() {
-  const { error } = await useFetch('/api/user-token', {
+  const { error } = await useFetch('/api/token', {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token.value}`
@@ -124,7 +124,7 @@ async function createToken() {
   }
 }
 async function updateToken(id: number, enable: boolean) {
-  const { error } = await useFetch(`/api/user-token/${id}`, {
+  const { error } = await useFetch(`/api/token/${id}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token.value}`
@@ -145,7 +145,7 @@ async function updateToken(id: number, enable: boolean) {
   }
 }
 async function deleteToken(id: number) {
-  const { error } = await useFetch(`/api/user-token/${id}`, {
+  const { error } = await useFetch(`/api/token/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token.value}`
