@@ -121,7 +121,7 @@ async function onSearch() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="w-2/3">
+          <TableHead class="w-1/2">
             Token
           </TableHead>
           <TableHead class="w-1/6">
