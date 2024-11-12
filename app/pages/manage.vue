@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '~/components/ui/toast/use-toast'
 
+definePageMeta({
+  auth: false
+})
+
 const { toast } = useToast()
 
 const loading = ref(false)
@@ -121,16 +125,16 @@ async function onSearch() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="w-1/2">
+          <TableHead class="w-7/12">
             Token
           </TableHead>
-          <TableHead class="w-1/6">
+          <TableHead class="w-3/12">
             Create Date
           </TableHead>
-          <TableHead class="w-1/6">
+          <TableHead class="w-1/12">
             Enabled
           </TableHead>
-          <TableHead class="w-1/6" />
+          <TableHead class="w-1/12" />
         </TableRow>
       </TableHeader>
       <TableBody>
