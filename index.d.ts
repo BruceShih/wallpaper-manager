@@ -1,8 +1,8 @@
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
+    origin: string | undefined
   }
   interface PublicRuntimeConfig {
-    origin: string | undefined
     imageOrigin: string | undefined
   }
 }
