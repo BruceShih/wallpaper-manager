@@ -2,6 +2,12 @@
 import type { Image } from '~~/server/utils/drizzle'
 import { useToast } from '~/components/ui/toast/use-toast'
 
+definePageMeta({
+  auth: import.meta.dev
+    ? false
+    : { only: 'user' }
+})
+
 const { toast } = useToast()
 
 const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')

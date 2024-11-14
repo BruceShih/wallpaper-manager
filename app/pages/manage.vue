@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '~/components/ui/toast/use-toast'
 
+definePageMeta({
+  auth: import.meta.dev
+    ? false
+    : { only: 'user' }
+})
+
 const { toast } = useToast()
 
 const loading = ref(false)
