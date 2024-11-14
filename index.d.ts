@@ -6,5 +6,6 @@ declare module 'nuxt/schema' {
     imageOrigin: string | undefined
   }
 }
+
 // It is always important to ensure you import/export something when augmenting a type
 export {}
