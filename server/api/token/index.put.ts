@@ -14,7 +14,7 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    await useDrizzle()
+    const token = await useDrizzle()
       .insert(userToken)
       .values({
         userId: session?.user.id,
@@ -24,7 +24,7 @@ export default eventHandler(async (event) => {
       })
       .returning()
 
-    return 'Token created'
+    return token
   }
   catch (error) {
     if (error instanceof Error)
