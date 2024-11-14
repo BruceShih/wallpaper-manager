@@ -203,6 +203,7 @@ async function onPageChange(page: number) {
             <NuxtImg
               provider="cloudflare"
               loading="lazy"
+              fit="fill"
               class="aspect-square w-full"
               :class="{ blur: image.nsfw }"
               :src="`/source/${image.key}`"
