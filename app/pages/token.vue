@@ -107,8 +107,8 @@ async function onSearch() {
   <div class="mx-4 mb-4 space-y-6">
     <div class="flex justify-end">
       <Button
-        variant="secondary"
         class="mr-4"
+        variant="secondary"
         @click="createToken"
       >
         Create new token
@@ -119,8 +119,8 @@ async function onSearch() {
       >
         <Icon
           v-if="loading"
-          name="radix-icons:reload"
           class="animate-spin"
+          name="radix-icons:reload"
         />
         <template v-if="loading">
           Searching...
@@ -166,8 +166,8 @@ async function onSearch() {
               @click="deleteToken(token.id)"
             >
               <Icon
-                name="radix-icons:trash"
                 class="size-4"
+                name="radix-icons:trash"
               />
             </Button>
           </TableCell>

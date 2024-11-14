@@ -21,10 +21,6 @@ export default defineNuxtConfig({
   // https://devtools.nuxt.com
   devtools: { enabled: true },
 
-  typescript: {
-    typeCheck: true
-  },
-
   // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
     origin: process.env.ORIGIN,

@@ -23,8 +23,8 @@ const links = [
             :key="index"
           >
             <NuxtLink
-              :to="link.href"
               :class="navigationMenuTriggerStyle()"
+              :to="link.href"
             >
               {{ link.text }}
             </NuxtLink>
@@ -34,8 +34,8 @@ const links = [
       <div class="flex items-center justify-end lg:flex-1">
         <Button
           v-if="loggedIn"
-          variant="ghost"
           color="black"
+          variant="ghost"
           @click="signOut({ redirectTo: '/' })"
         >
           <Icon name="radix-icons:exit" />
@@ -44,12 +44,12 @@ const links = [
           <DropdownMenuTrigger as-child>
             <Button variant="ghost">
               <Icon
-                name="radix-icons:moon"
                 class="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+                name="radix-icons:moon"
               />
               <Icon
-                name="radix-icons:sun"
                 class="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+                name="radix-icons:sun"
               />
               <span class="sr-only">Toggle theme</span>
             </Button>

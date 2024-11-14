@@ -89,13 +89,13 @@ const onLogin = form.handleSubmit(async (values) => {
             </FormItem>
           </FormField>
           <Button
-            type="submit"
             :disabled="loading"
+            type="submit"
           >
             <Icon
               v-if="loading"
-              name="radix-icons:reload"
               class="animate-spin"
+              name="radix-icons:reload"
             />
             <template v-if="loading">
               Logging in...
@@ -107,9 +107,9 @@ const onLogin = form.handleSubmit(async (values) => {
         </form>
         <DevOnly>
           <Separator
-            orientation="horizontal"
-            label="Or"
             class="my-6"
+            label="Or"
+            orientation="horizontal"
           />
           <Button
             type="button"

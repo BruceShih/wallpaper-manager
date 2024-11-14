@@ -18,7 +18,7 @@
     "@atinux/kysely-d1": "^0.3.1",
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/fonts": "^0.10.2",
-    "@nuxt/icon": "^1.7.2",
+    "@nuxt/icon": "^1.7.5",
     "@nuxt/image": "^1.8.1",
     "@nuxthub/core": "^0.8.5",
     "@nuxtjs/color-mode": "^3.5.2",
@@ -47,7 +47,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.8.0",
+    "@antfu/eslint-config": "^3.9.1",
     "@iconify-json/radix-icons": "^1.2.1",
     "@nuxt/eslint": "^0.6.1",
     "@types/eslint-plugin-tailwindcss": "^3.17.0",

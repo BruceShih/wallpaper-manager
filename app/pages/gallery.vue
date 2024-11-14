@@ -122,9 +122,9 @@ async function onPageChange(page: number) {
     <div class="flex flex-wrap items-center justify-start gap-4 lg:justify-end">
       <Input
         v-model="name"
-        type="text"
-        placeholder="File name"
         class="w-[200px]"
+        placeholder="File name"
+        type="text"
       />
       <Select v-model="sort">
         <SelectTrigger class="w-[120px]">
@@ -166,8 +166,8 @@ async function onPageChange(page: number) {
       >
         <Icon
           v-if="loading"
-          name="radix-icons:reload"
           class="animate-spin"
+          name="radix-icons:reload"
         />
         <template v-if="loading">
           Searching...
@@ -195,48 +195,49 @@ async function onPageChange(page: number) {
           <!-- TODO: dev only, remove later -->
           <template v-if="isDev">
             <img
-              src="https://picsum.photos/120"
               alt="placeholder"
+              src="https://picsum.photos/120"
             >
           </template>
           <template v-else>
             <NuxtImg
-              provider="cloudflare"
-              loading="lazy"
               class="aspect-square object-cover"
               :class="{ blur: image.nsfw }"
+              loading="lazy"
+              placeholder
+              provider="cloudflare"
               :src="`/source/${image.key}`"
             />
           </template>
         </CardContent>
         <CardFooter class="justify-start">
           <Button
-            variant="ghost"
             size="icon"
+            variant="ghost"
             @click="onFavoriteClick(image)"
           >
             <Icon
               v-if="image.favorite"
-              name="radix-icons:heart-filled"
               class="text-red-500"
+              name="radix-icons:heart-filled"
             />
             <Icon
               v-else
-              name="radix-icons:heart"
               class="text-red-500"
+              name="radix-icons:heart"
             />
           </Button>
           <Button
-            variant="ghost"
             size="icon"
+            variant="ghost"
             @click="onDeleteClick(image)"
           >
             <Icon name="radix-icons:trash" />
           </Button>
           <Badge
             v-if="image.nsfw"
-            variant="destructive"
             class="ml-auto"
+            variant="destructive"
           >
             nsfw
           </Badge>
@@ -247,10 +248,10 @@ async function onPageChange(page: number) {
       <Pagination
         v-slot="{ page }"
         v-model:page="wallpapers.page"
-        show-edges
-        :total="wallpapers.total"
-        :sibling-count="1"
         :default-page="2"
+        show-edges
+        :sibling-count="1"
+        :total="wallpapers.total"
         @update:page="onPageChange"
       >
         <PaginationList
@@ -264,8 +265,8 @@ async function onPageChange(page: number) {
             <PaginationListItem
               v-if="item.type === 'page'"
               :key="index"
-              :value="item.value"
               as-child
+              :value="item.value"
             >
               <Button
                 class="size-10 p-0"

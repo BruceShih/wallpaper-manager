@@ -106,13 +106,13 @@ const onSignup = form.handleSubmit(async (values) => {
           </FormField>
           <Button
             id="signup-button"
-            type="submit"
             :disabled="loading"
+            type="submit"
           >
             <Icon
               v-if="loading"
-              name="radix-icons:reload"
               class="animate-spin"
+              name="radix-icons:reload"
             />
             <template v-if="loading">
               Signing up...
