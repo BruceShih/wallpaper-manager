@@ -5,8 +5,8 @@ const { signOut, loggedIn } = useAuth()
 const colorMode = useColorMode()
 
 const links = [
-  { href: '/gallery', text: 'Wallpapers' },
-  { href: '/manage', text: 'Tokens' }
+  { href: '/gallery', text: 'Gallery' },
+  { href: '/token', text: 'Token' }
 ]
 </script>
 

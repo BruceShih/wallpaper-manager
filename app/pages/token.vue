@@ -40,7 +40,7 @@ async function createToken() {
 
   if (error.value) {
     toast({
-      title: 'Create token failed',
+      title: 'Failed to create token',
       variant: 'destructive'
     })
   }
@@ -62,7 +62,7 @@ async function updateToken(id: number, enable: boolean) {
 
   if (error.value) {
     toast({
-      title: 'Update token failed',
+      title: 'Failed to update token',
       variant: 'destructive'
     })
   }
@@ -82,7 +82,7 @@ async function deleteToken(id: number) {
 
   if (error.value) {
     toast({
-      title: 'Delete token failed',
+      title: 'Failed to delete token',
       variant: 'destructive'
     })
   }
@@ -124,7 +124,7 @@ async function onSearch() {
         </template>
       </Button>
     </div>
-    <Table>
+    <Table v-auto-animate>
       <TableHeader>
         <TableRow>
           <TableHead class="w-7/12">

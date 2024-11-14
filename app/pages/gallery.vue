@@ -76,7 +76,7 @@ async function onFavoriteClick(image: Image) {
 
   if (error.value) {
     toast({
-      title: 'Update failed',
+      title: 'Failed to update wallpaper',
       variant: 'destructive'
     })
   }
@@ -84,7 +84,7 @@ async function onFavoriteClick(image: Image) {
     image.favorite = !image.favorite
 
     toast({
-      title: 'Image updated'
+      title: 'Image liked'
     })
   }
 }
@@ -98,7 +98,7 @@ async function onDeleteClick(image: Image) {
 
   if (error.value) {
     toast({
-      title: 'Delete failed',
+      title: 'Failed to delete wallpaper',
       variant: 'destructive'
     })
   }
@@ -203,6 +203,7 @@ async function onPageChange(page: number) {
             <NuxtImg
               provider="cloudflare"
               loading="lazy"
+              class="aspect-square w-full"
               :class="{ blur: image.nsfw }"
               :src="`/source/${image.key}`"
             />
