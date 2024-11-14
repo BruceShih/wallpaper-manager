@@ -91,6 +91,8 @@ async function deleteToken(id: number) {
     })
   }
   else {
+    userTokens.value = userTokens.value.filter(token => token.id !== id)
+
     toast({
       title: 'Token deleted'
     })
