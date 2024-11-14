@@ -23,7 +23,6 @@ const links = [
             :key="index"
           >
             <NuxtLink
-              active-class="bg-accent/50"
               :to="link.href"
               :class="navigationMenuTriggerStyle()"
             >
