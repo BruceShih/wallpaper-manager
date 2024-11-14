@@ -22,12 +22,12 @@ const links = [
             v-for="(link, index) in links"
             :key="index"
           >
-            <NuxtLink :to="link.href">
-              <NavigationMenuLink
-                :class="navigationMenuTriggerStyle()"
-              >
-                {{ link.text }}
-              </NavigationMenuLink>
+            <NuxtLink
+              active-class="bg-accent/50"
+              :to="link.href"
+              :class="navigationMenuTriggerStyle()"
+            >
+              {{ link.text }}
             </NuxtLink>
           </NavigationMenuItem>
         </NavigationMenuList>
