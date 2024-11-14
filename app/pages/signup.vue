@@ -12,7 +12,7 @@ definePageMeta({
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
-  password: z.string().min(6).max(50),
+  password: z.string().min(8).max(32),
   name: z.string().min(2).max(50)
 }))
 const form = useForm({
