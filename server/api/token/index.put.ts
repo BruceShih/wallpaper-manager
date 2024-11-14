@@ -22,6 +22,7 @@ export default eventHandler(async (event) => {
         enabled: true,
         createDate: new Date().toISOString()
       })
+      .returning()
 
     return 'Token created'
   }

@@ -31,7 +31,7 @@ async function fetchTokens() {
   loading.value = false
 }
 async function createToken() {
-  const { error } = await useFetch('/api/token', {
+  const { data, error } = await useFetch<UserToken>('/api/token', {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${sessionToken.value}`
@@ -45,7 +45,9 @@ async function createToken() {
     })
   }
   else {
-    await fetchTokens()
+    if (data.value)
+      userTokens.value.push(data.value)
+
     toast({
       title: 'Token created'
     })
