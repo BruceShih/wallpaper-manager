@@ -1,34 +1,28 @@
 import { images } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { apiGenericPathSchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
-
-  if (!id) {
-    console.error('[Wallpaper Service] Param invalid')
+  const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
+  if (!path.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: path.error
     })
   }
 
   try {
-    // delete image from r2
-    await hubBlob().del(id)
-    // update database
+    await hubBlob().del(path.data.id)
     await useDrizzle()
       .delete(images)
       .where(
-        eq(images.key, id)
+        eq(images.key, path.data.id)
       )
 
     return 'Image deleted'
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

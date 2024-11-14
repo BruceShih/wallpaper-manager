@@ -1,27 +1,23 @@
 import { userToken } from '~~/server/database/schema'
-import { apiTokenUpdateBodySchema } from '~~/server/types/api'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { apiTokenPostPathSchema, apiTokenUpdateBodySchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
-  let tokenId = 0
-
-  if (!id || Number.isNaN(tokenId)) {
-    console.error('[Wallpaper Service] Param invalid')
+  const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
+  if (!path.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: path.error
     })
   }
 
-  tokenId = Number.parseInt(id)
+  const tokenId = path.data.id
 
-  const result = await readValidatedBody(event, body => apiTokenUpdateBodySchema.safeParse(body))
-  if (!result.success) {
-    console.error('[Wallpaper Service] Body invalid')
+  const body = await readValidatedBody(event, data => apiTokenUpdateBodySchema.safeParse(data))
+  if (!body.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Body invalid'
+      cause: body.error
     })
   }
 
@@ -29,17 +25,14 @@ export default eventHandler(async (event) => {
     await useDrizzle()
       .update(userToken)
       .set({
-        enabled: result.data.enabled
+        enabled: body.data.enabled
       })
       .where(eq(userToken.id, tokenId))
 
     return 'Token updated'
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

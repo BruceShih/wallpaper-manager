@@ -1,22 +1,19 @@
-export default eventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
+import { apiGenericPathSchema } from '~~/server/utils/validator'
 
-  if (!id) {
-    console.error('[Wallpaper Service] Param invalid')
+export default eventHandler(async (event) => {
+  const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
+  if (!path.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: path.error
     })
   }
 
   try {
-    return hubBlob().serve(event, id)
+    return hubBlob().serve(event, path.data.id)
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

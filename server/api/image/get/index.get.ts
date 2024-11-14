@@ -1,22 +1,21 @@
 import { images } from '~~/server/database/schema'
-import { apiImageGetQuerySchema } from '~~/server/types/api'
 import { and, eq, type Image, sql, tables, useDrizzle } from '~~/server/utils/drizzle'
+import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
   let id = ''
   let favorite = false
   let randomRow: Image | undefined
 
-  const result = await getValidatedQuery(event, query => apiImageGetQuerySchema.safeParse(query))
-  if (!result.success) {
-    console.error('[Wallpaper Service] Param invalid')
+  const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
+  if (!query.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: query.error
     })
   }
 
-  const nsfw = result.data.nsfw === 'true' ? 1 : 0
+  const nsfw = query.data.nsfw === 'true'
 
   try {
     const query = await useDrizzle()
@@ -24,7 +23,7 @@ export default eventHandler(async (event) => {
       .from(tables.images)
       .where(
         and(
-          eq(images.alive, 1),
+          eq(images.alive, true),
           eq(images.nsfw, nsfw)
         )
       )
@@ -34,15 +33,13 @@ export default eventHandler(async (event) => {
     randomRow = query[0]
 
     if (!randomRow) {
-      console.error('[Wallpaper Service] No image found')
       throw createError({
-        statusCode: 404,
-        statusMessage: 'No image found'
+        statusCode: 404
       })
     }
 
     id = randomRow.key
-    favorite = randomRow.favorite === 1
+    favorite = randomRow.favorite
 
     setResponseHeaders(event, {
       'Image-Id': id,
@@ -52,10 +49,7 @@ export default eventHandler(async (event) => {
     return hubBlob().serve(event, id)
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

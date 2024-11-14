@@ -6,7 +6,7 @@ import {
   MenubarRadioItem,
   type MenubarRadioItemEmits,
   type MenubarRadioItemProps,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
@@ -30,9 +30,9 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       props.class,
     )"
   >
-    <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span class="absolute left-2 flex size-3.5 items-center justify-center">
       <MenubarItemIndicator>
-        <DotFilledIcon class="h-4 w-4 fill-current" />
+        <DotFilledIcon class="size-4 fill-current" />
       </MenubarItemIndicator>
     </span>
     <slot />

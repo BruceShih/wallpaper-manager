@@ -4,7 +4,7 @@ import {
   MenubarItem,
   type MenubarItemEmits,
   type MenubarItemProps,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 

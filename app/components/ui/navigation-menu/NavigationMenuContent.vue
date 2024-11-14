@@ -4,7 +4,7 @@ import {
   NavigationMenuContent,
   type NavigationMenuContentEmits,
   type NavigationMenuContentProps,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 

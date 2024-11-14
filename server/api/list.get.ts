@@ -1,39 +1,38 @@
 import { images } from '~~/server/database/schema'
 import { type Image, useDrizzle } from '~~/server/utils/drizzle'
 import { asc, desc, like } from 'drizzle-orm'
-import { apiImageListQuerySchema } from '../types/api'
+import { apiImageListQuerySchema } from '../utils/validator'
 
 export default eventHandler(async (event) => {
   let total = 0
   let list: Image[] = []
 
-  const result = await getValidatedQuery(event, query => apiImageListQuerySchema.safeParse(query))
-  if (!result.success) {
-    console.error('[Wallpaper Service] Param invalid')
+  const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
+  if (!query.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: query.error
     })
   }
 
   try {
-    if (result.data.name) {
+    if (query.data.name) {
       total = await useDrizzle()
-        .$count(images, like(images.key, `%${result.data.name}%`))
+        .$count(images, like(images.key, `%${query.data.name}%`))
       list = await useDrizzle()
         .select()
         .from(images)
-        .where(like(images.key, `%${result.data.name}%`))
+        .where(like(images.key, `%${query.data.name}%`))
         .orderBy(() => {
-          switch (result.data.sort) {
+          switch (query.data.sort) {
             case 'date':
-              return result.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
+              return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
             case 'name':
-              return result.data.order === 'asc' ? asc(images.key) : desc(images.key)
+              return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
           }
         })
-        .limit(result.data.size)
-        .offset((result.data.page - 1) * result.data.size)
+        .limit(query.data.size)
+        .offset((query.data.page - 1) * query.data.size)
     }
     else {
       total = await useDrizzle().$count(images)
@@ -41,15 +40,15 @@ export default eventHandler(async (event) => {
         .select()
         .from(images)
         .orderBy(() => {
-          switch (result.data.sort) {
+          switch (query.data.sort) {
             case 'date':
-              return result.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
+              return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
             case 'name':
-              return result.data.order === 'asc' ? asc(images.key) : desc(images.key)
+              return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
           }
         })
-        .limit(result.data.size)
-        .offset((result.data.page - 1) * result.data.size)
+        .limit(query.data.size)
+        .offset((query.data.page - 1) * query.data.size)
     }
 
     setResponseHeaders(event, {
@@ -59,10 +58,7 @@ export default eventHandler(async (event) => {
     return list
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

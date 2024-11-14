@@ -1,45 +1,37 @@
 import { images } from '~~/server/database/schema'
-import { apiImageUpdateBodySchema } from '~~/server/types/api'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
-
-  if (!id) {
-    console.error('[Wallpaper Service] Param invalid')
+  const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
+  if (!path.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: path.error
     })
   }
 
-  const result = await readValidatedBody(event, body => apiImageUpdateBodySchema.safeParse(body))
-  if (!result.success) {
-    console.error('[Wallpaper Service] Body invalid')
+  const body = await readValidatedBody(event, data => apiImageUpdateBodySchema.safeParse(data))
+  if (!body.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Body invalid'
+      cause: body.error
     })
   }
 
   try {
-    // get request body
-    const favorite = result.data.favorite
-    // preparing sql statement
+    const favorite = body.data.favorite
     await useDrizzle()
       .update(images)
-      .set({ favorite: favorite ? 1 : 0 })
+      .set({ favorite })
       .where(
-        eq(images.key, id)
+        eq(images.key, path.data.id)
       )
 
     return 'Image marked as favorite'
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

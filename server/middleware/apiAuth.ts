@@ -1,13 +1,11 @@
 import { userToken } from '../database/schema'
 
-// only authenticate requests not from cloudflare workers
 export default defineEventHandler(async (event) => {
   const { origin } = useRuntimeConfig(event)
 
   if (!origin) {
     throw createError({
-      statusCode: 401,
-      message: 'Unauthorized'
+      statusCode: 500
     })
   }
 
@@ -24,8 +22,7 @@ export default defineEventHandler(async (event) => {
 
       if (!authHeader) {
         throw createError({
-          statusCode: 401,
-          message: 'Unauthorized'
+          statusCode: 401
         })
       }
 
@@ -41,17 +38,13 @@ export default defineEventHandler(async (event) => {
 
         if (!validToken) {
           throw createError({
-            statusCode: 401,
-            message: 'Unauthorized'
+            statusCode: 401
           })
         }
       }
       catch (error) {
-        console.error('[Wallpaper Service] Server error:', error)
-        throw createError({
-          statusCode: 500,
-          message: 'Server error'
-        })
+        if (error instanceof Error)
+          throw createError(error)
       }
     }
   }

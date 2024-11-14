@@ -1,19 +1,17 @@
 import { userToken } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { apiTokenDeletePathSchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
-  let tokenId = 0
-
-  if (!id || Number.isNaN(tokenId)) {
-    console.error('[Wallpaper Service] Param invalid')
+  const path = await getValidatedRouterParams(event, data => apiTokenDeletePathSchema.safeParse(data))
+  if (!path.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Param invalid'
+      cause: path.error
     })
   }
 
-  tokenId = Number.parseInt(id)
+  const tokenId = path.data.id
 
   try {
     await useDrizzle()
@@ -23,10 +21,7 @@ export default eventHandler(async (event) => {
     return 'Token deleted'
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

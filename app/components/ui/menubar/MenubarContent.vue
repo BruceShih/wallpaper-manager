@@ -4,7 +4,7 @@ import {
   MenubarContent,
   type MenubarContentProps,
   MenubarPortal,
-  useForwardProps,
+  useForwardProps
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
@@ -13,8 +13,8 @@ const props = withDefaults(
   {
     align: 'start',
     alignOffset: -4,
-    sideOffset: 8,
-  },
+    sideOffset: 8
+  }
 )
 
 const delegatedProps = computed(() => {

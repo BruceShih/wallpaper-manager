@@ -9,7 +9,7 @@ export default eventHandler(async (event) => {
   if (!session) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Unauthorized'
+      cause: 'User not authenticated'
     })
   }
 
@@ -26,10 +26,7 @@ export default eventHandler(async (event) => {
     return 'Token created'
   }
   catch (error) {
-    console.error('[Wallpaper Service] Server error:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Server error'
-    })
+    if (error instanceof Error)
+      throw createError(error)
   }
 })

@@ -5,7 +5,7 @@ import {
   MenubarSubContent,
   type MenubarSubContentEmits,
   type MenubarSubContentProps,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
