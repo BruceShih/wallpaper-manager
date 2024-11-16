@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { Table } from '@tanstack/vue-table'
-import type { Image } from '~~/server/utils/drizzle'
-
 const emit = defineEmits(['search'])
 // interface DataTableToolbarProps {
 //   table: Table<Image>

@@ -5,20 +5,20 @@ import {
   type PopoverContentEmits,
   type PopoverContentProps,
   PopoverPortal,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const props = withDefaults(
   defineProps<PopoverContentProps & { class?: HTMLAttributes['class'] }>(),
   {
     align: 'center',
-    sideOffset: 4,
-  },
+    sideOffset: 4
+  }
 )
 const emits = defineEmits<PopoverContentEmits>()
 
