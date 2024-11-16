@@ -31,6 +31,7 @@ const wallpapers = reactive<{
 
 async function fetchData() {
   wallpapers.images = []
+  loading.value = true
 
   const { data } = await useFetch('/api/list', {
     headers: {
@@ -50,6 +51,7 @@ async function fetchData() {
     }
   })
   wallpapers.images = data.value || []
+  loading.value = false
 }
 async function onFavoriteClick(image: Image) {
   const { error } = await useFetch(`/api/image/update/${image.key}`, {
