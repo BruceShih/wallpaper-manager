@@ -7,7 +7,7 @@ const colorMode = useColorMode()
 
 <template>
   <header
-    :class="cn('sticky top-0 border-b', $attrs.class ?? '')"
+    :class="cn('sticky top-0 border-b z-50', $attrs.class ?? '')"
   >
     <div class="flex h-16 items-center">
       <div class="flex items-center px-6 text-lg font-semibold">
