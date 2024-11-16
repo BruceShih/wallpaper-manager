@@ -15,6 +15,7 @@ const isDev = ref(import.meta.dev)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
 const order = ref<'asc' | 'desc'>('asc')
+const loading = ref(false)
 
 const wallpapers = reactive<{
   images: Image[]
@@ -106,7 +107,13 @@ async function onPageChange() {
 
 <template>
   <div class="space-y-4">
-    <GalleryFilter @search="onSearch" />
+    <GalleryFilter
+      v-model:loading="loading"
+      v-model:name="name"
+      v-model:order="order"
+      v-model:sort="sort"
+      @search="onSearch"
+    />
     <div
       v-auto-animate
       class="grid grid-flow-row grid-cols-2 place-items-center justify-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"

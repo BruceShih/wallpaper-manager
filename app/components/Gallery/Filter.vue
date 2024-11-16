@@ -8,7 +8,7 @@ const emit = defineEmits(['search'])
 const name = defineModel<string>('name')
 const sort = defineModel<'date' | 'name'>('sort')
 const order = defineModel<'asc' | 'desc'>('order')
-const loading = ref(false)
+const loading = defineModel<boolean>('loading')
 
 const sortByOptions = [
   { label: 'Date', value: 'date' },
