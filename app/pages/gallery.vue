@@ -12,10 +12,10 @@ const { toast } = useToast()
 
 const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
 const isDev = ref(import.meta.dev)
-const loading = ref(false)
 const name = ref('')
 const sort = ref<'date' | 'name'>('date')
 const order = ref<'asc' | 'desc'>('asc')
+
 const wallpapers = reactive<{
   images: Image[]
   page: number
@@ -25,20 +25,10 @@ const wallpapers = reactive<{
   images: [],
   page: 1,
   size: 20,
-  total: 0
+  total: 1
 })
 
-const sortByOptions = [
-  { label: 'Date', value: 'date' },
-  { label: 'Name', value: 'name' }
-]
-const orderByOptions = [
-  { label: 'Ascending', value: 'asc' },
-  { label: 'Descending', value: 'desc' }
-]
-
 async function fetchData() {
-  loading.value = true
   wallpapers.images = []
 
   const { data } = await useFetch('/api/list', {
@@ -59,11 +49,6 @@ async function fetchData() {
     }
   })
   wallpapers.images = data.value || []
-
-  loading.value = false
-}
-async function onSearch() {
-  await fetchData()
 }
 async function onFavoriteClick(image: Image) {
   const { error } = await useFetch(`/api/image/update/${image.key}`, {
@@ -111,72 +96,17 @@ async function onDeleteClick(image: Image) {
     })
   }
 }
-async function onPageChange(page: number) {
-  wallpapers.page = page
+async function onSearch() {
+  await fetchData()
+}
+async function onPageChange() {
   await fetchData()
 }
 </script>
 
 <template>
-  <div class="mx-4 mb-4 space-y-6">
-    <div class="flex flex-wrap items-center justify-start gap-4 lg:justify-end">
-      <Input
-        v-model="name"
-        class="w-[200px]"
-        placeholder="File name"
-        type="text"
-      />
-      <Select v-model="sort">
-        <SelectTrigger class="w-[120px]">
-          <SelectValue placeholder="Sort by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Sort by</SelectLabel>
-            <SelectItem
-              v-for="(item, index) in sortByOptions"
-              :key="index"
-              :value="item.value"
-            >
-              {{ item.label }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <Select v-model="order">
-        <SelectTrigger class="w-[120px]">
-          <SelectValue placeholder="Order by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Sort by</SelectLabel>
-            <SelectItem
-              v-for="(item, index) in orderByOptions"
-              :key="index"
-              :value="item.value"
-            >
-              {{ item.label }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <Button
-        :disabled="loading"
-        @click="onSearch"
-      >
-        <Icon
-          v-if="loading"
-          class="animate-spin"
-          name="radix-icons:reload"
-        />
-        <template v-if="loading">
-          Searching...
-        </template>
-        <template v-else>
-          Search
-        </template>
-      </Button>
-    </div>
+  <div class="space-y-4">
+    <GalleryFilter @search="onSearch" />
     <div
       v-auto-animate
       class="grid grid-flow-row grid-cols-2 place-items-center justify-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
@@ -244,48 +174,10 @@ async function onPageChange(page: number) {
         </CardFooter>
       </Card>
     </div>
-    <div class="flex items-center justify-center">
-      <Pagination
-        v-slot="{ page }"
-        v-model:page="wallpapers.page"
-        :default-page="2"
-        show-edges
-        :sibling-count="1"
-        :total="wallpapers.total"
-        @update:page="onPageChange"
-      >
-        <PaginationList
-          v-slot="{ items }"
-          class="flex items-center gap-1"
-        >
-          <PaginationFirst />
-          <PaginationPrev />
-
-          <template v-for="(item, index) in items">
-            <PaginationListItem
-              v-if="item.type === 'page'"
-              :key="index"
-              as-child
-              :value="item.value"
-            >
-              <Button
-                class="size-10 p-0"
-                :variant="item.value === page ? 'default' : 'outline'"
-              >
-                {{ item.value }}
-              </Button>
-            </PaginationListItem>
-            <PaginationEllipsis
-              v-else
-              :key="item.type"
-              :index="index"
-            />
-          </template>
-
-          <PaginationNext />
-          <PaginationLast />
-        </PaginationList>
-      </Pagination>
-    </div>
+    <GalleryPagination
+      v-model:page="wallpapers.page"
+      :total="wallpapers.total"
+      @change="onPageChange"
+    />
   </div>
 </template>

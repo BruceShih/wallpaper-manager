@@ -6,7 +6,7 @@
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator />
   <Toaster />
-  <div class="pt-4">
+  <div class="p-6">
     <NuxtPage />
   </div>
 </template>

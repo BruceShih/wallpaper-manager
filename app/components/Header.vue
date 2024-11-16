@@ -1,40 +1,24 @@
 <script setup lang="ts">
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
+import { cn } from '@/lib/utils'
 
 const { signOut, loggedIn } = useAuth()
 const colorMode = useColorMode()
-
-const links = [
-  { href: '/gallery', text: 'Gallery' },
-  { href: '/token', text: 'Token' }
-]
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 backdrop-blur">
-    <div class="mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-      <div class="flex min-w-0 items-center gap-1.5 text-lg font-semibold lg:flex-1">
+  <header
+    :class="cn('sticky top-0 border-b', $attrs.class ?? '')"
+  >
+    <div class="flex h-16 items-center">
+      <div class="flex items-center px-6 text-lg font-semibold">
         Wallpaper Manager
       </div>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem
-            v-for="(link, index) in links"
-            :key="index"
-          >
-            <NuxtLink
-              :class="navigationMenuTriggerStyle()"
-              :to="link.href"
-            >
-              {{ link.text }}
-            </NuxtLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-      <div class="flex items-center justify-end lg:flex-1">
+      <HeaderNav />
+      <div class="ml-auto flex items-center space-x-2 px-6 lg:space-x-4">
         <Button
           v-if="loggedIn"
           color="black"
+          size="icon"
           variant="ghost"
           @click="signOut({ redirectTo: '/' })"
         >
@@ -42,13 +26,16 @@ const links = [
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="ghost">
+            <Button
+              size="icon"
+              variant="ghost"
+            >
               <Icon
-                class="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+                class="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
                 name="radix-icons:moon"
               />
               <Icon
-                class="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+                class="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
                 name="radix-icons:sun"
               />
               <span class="sr-only">Toggle theme</span>
