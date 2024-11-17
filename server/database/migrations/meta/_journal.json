@@ -15,6 +15,13 @@
       "when": 1731854665513,
       "tag": "0001_handy_dracula",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1731855310523,
+      "tag": "0002_worthless_fabian_cortez",
+      "breakpoints": true
     }
   ]
 }

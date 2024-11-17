@@ -2,8 +2,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const images = sqliteTable('images', {
   key: text('key').primaryKey(),
-  tags: text('tags', { mode: 'json' }).$type<number[]>().notNull(),
-  nsfw: integer({ mode: 'boolean' }).notNull().default(false),
+  tags: text('tags', { mode: 'json' }).$type<number[]>().notNull().default([]),
   favorite: integer({ mode: 'boolean' }).notNull().default(false),
   alive: integer({ mode: 'boolean' }).notNull().default(true),
   createDate: text('createDate').notNull(),
