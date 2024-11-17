@@ -22,6 +22,20 @@
       "when": 1731855310523,
       "tag": "0002_worthless_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1731863724494,
+      "tag": "0003_daily_doctor_spectrum",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1731863785312,
+      "tag": "0004_sudden_grandmaster",
+      "breakpoints": true
     }
   ]
 }

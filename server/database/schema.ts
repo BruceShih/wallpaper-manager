@@ -1,8 +1,8 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { relations } from 'drizzle-orm'
+import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const images = sqliteTable('images', {
   key: text('key').primaryKey(),
-  tags: text('tags', { mode: 'json' }).$type<number[]>().notNull().default([]),
   favorite: integer({ mode: 'boolean' }).notNull().default(false),
   alive: integer({ mode: 'boolean' }).notNull().default(true),
   createDate: text('createDate').notNull(),
@@ -23,3 +23,29 @@ export const tags = sqliteTable('tags', {
   tag: text('tag').notNull(),
   enabled: integer({ mode: 'boolean' }).notNull().default(true)
 })
+
+export const imagesToTags = sqliteTable(
+  'imagesToTags',
+  {
+    imageKey: text('imageKey')
+      .notNull()
+      .references(() => images.key),
+    tagId: integer('tagId')
+      .notNull()
+      .references(() => tags.id)
+  },
+  t => ({
+    pk: primaryKey({ columns: [t.imageKey, t.tagId] })
+  })
+)
+
+export const imagesToTagsRelations = relations(imagesToTags, ({ one }) => ({
+  image: one(images, {
+    fields: [imagesToTags.imageKey],
+    references: [images.key]
+  }),
+  tag: one(tags, {
+    fields: [imagesToTags.tagId],
+    references: [tags.id]
+  })
+}))
