@@ -8,9 +8,8 @@ CREATE TABLE `__new_images` (
 	`deleteDate` text
 );
 --> statement-breakpoint
-INSERT INTO `__new_images`("key", "tags", "favorite", "alive", "createDate", "deleteDate") SELECT "key", "tags", "favorite", "alive", "createDate", "deleteDate" FROM `images`;--> statement-breakpoint
+INSERT INTO `__new_images`("key", "tags", "favorite", "alive", "createDate", "deleteDate") SELECT "key", "[1]", "favorite", "alive", "createDate", "deleteDate" FROM `images` WHERE `nsfw` = 1;--> statement-breakpoint
+INSERT INTO `__new_images`("key", "tags", "favorite", "alive", "createDate", "deleteDate") SELECT "key", "[]", "favorite", "alive", "createDate", "deleteDate" FROM `images` WHERE `nsfw` = 0;--> statement-breakpoint
 DROP TABLE `images`;--> statement-breakpoint
-UPDATE `__new_images` SET `tags` = '[1]' WHERE `nsfw` = 1;--> statement-breakpoint
-UPDATE `__new_images` SET `tags` = '[]' WHERE `nsfw` = 0;--> statement-breakpoint
 ALTER TABLE `__new_images` RENAME TO `images`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;
