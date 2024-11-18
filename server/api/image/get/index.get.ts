@@ -1,7 +1,7 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { type ImagesToTags, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
-import { and, eq, isNull, ne, sql } from 'drizzle-orm'
+import { and, eq, isNull, sql } from 'drizzle-orm'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
 interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
@@ -42,7 +42,7 @@ export default eventHandler(async (event) => {
       imageQuery = await useDrizzle()
         .select()
         .from(images)
-        .leftJoin(imagesToTags, ne(images.key, imagesToTags.imageKey))
+        .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
         .where(and(
           isNull(imagesToTags.imageKey),
           eq(images.alive, true)
