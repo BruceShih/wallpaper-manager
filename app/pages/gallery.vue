@@ -173,22 +173,24 @@ async function onPageChange() {
           >
             <Icon name="radix-icons:trash" />
           </Button>
-          <HoverCard>
-            <HoverCardTrigger>
-              <Icon
-                class="size-4"
-                name="radix-icons:bookmark"
-              />
-            </HoverCardTrigger>
-            <HoverCardContent class="w-40">
-              <Badge
-                v-for="tag in image.tags"
-                :key="tag.id"
-              >
-                {{ tag.tag }}
-              </Badge>
-            </HoverCardContent>
-          </HoverCard>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Icon
+                  class="ml-auto size-4"
+                  name="radix-icons:bookmark"
+                />
+              </TooltipTrigger>
+              <TooltipContent class="w-40">
+                <Badge
+                  v-for="tag in image.tags"
+                  :key="tag.id"
+                >
+                  {{ tag.tag }}
+                </Badge>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardFooter>
       </Card>
     </div>
