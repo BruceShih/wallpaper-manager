@@ -19,6 +19,7 @@ export default eventHandler(async (event) => {
 
   try {
     const sensitive = query.data.sensitive
+    console.log('sensitive', sensitive)
     if (sensitive) {
       imageQuery = await useDrizzle()
         .select()
