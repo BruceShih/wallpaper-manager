@@ -14,25 +14,15 @@ export default eventHandler(async (event) => {
 
   try {
     const sensitive = query.data.sensitive ? query.data.sensitive : false
-    const tagsQuery = await useDrizzle()
-      .select()
-      .from(tags)
-      .where(and(
-        eq(tags.sensitive, sensitive),
-        eq(tags.enabled, true)
-      ))
-    const selectedTags = tagsQuery.map(tag => tag.id)
-    const imagesToTagsQuery = await useDrizzle()
-      .selectDistinct()
-      .from(imagesToTags)
-      .where(inArray(imagesToTags.tagId, selectedTags))
     const imageQuery = await useDrizzle()
       .select()
       .from(images)
       .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
+      .leftJoin(tags, eq(imagesToTags.tagId, tags.id))
       .where(and(
         eq(images.alive, true),
-        inArray(images.key, imagesToTagsQuery.map(row => row.imageKey))
+        eq(tags.enabled, true),
+        eq(tags.sensitive, sensitive)
       ))
       .orderBy(sql`RANDOM()`)
       .limit(1)
