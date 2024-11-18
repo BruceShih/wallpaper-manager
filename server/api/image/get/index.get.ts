@@ -26,16 +26,25 @@ export default eventHandler(async (event) => {
       .selectDistinct()
       .from(imagesToTags)
       .where(inArray(imagesToTags.tagId, selectedTags))
-    // utilize findFirst
-    const imageQuery = await useDrizzle().query.images.findFirst({
-      where: and(
+    const imageQuery = await useDrizzle()
+      .select()
+      .from(images)
+      .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
+      .where(and(
         eq(images.alive, true),
         inArray(images.key, imagesToTagsQuery.map(row => row.imageKey))
-      ),
-      orderBy: sql`RANDOM()`
-    })
+      ))
+      .orderBy(sql`RANDOM()`)
+      .limit(1)
+    // const imageQuery = await useDrizzle().query.images.findFirst({
+    //   where: and(
+    //     eq(images.alive, true),
+    //     inArray(images.key, imagesToTagsQuery.map(row => row.imageKey))
+    //   ),
+    //   orderBy: sql`RANDOM()`
+    // })
 
-    const randomRow = imageQuery
+    const randomRow = imageQuery[0]
 
     if (!randomRow) {
       throw createError({
@@ -43,8 +52,8 @@ export default eventHandler(async (event) => {
       })
     }
 
-    const id = randomRow.key
-    const favorite = randomRow.favorite
+    const id = randomRow.images.key
+    const favorite = randomRow.images.favorite
 
     setResponseHeaders(event, {
       'Image-Id': id,
