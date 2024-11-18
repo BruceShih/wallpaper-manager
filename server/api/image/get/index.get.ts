@@ -15,19 +15,15 @@ export default eventHandler(async (event) => {
   const filterTags = query.data.tags || []
 
   try {
-    const imageQuery = await useDrizzle().query.images.findMany({
-      with: {
-        tags: true
-      },
+    const imageQuery = await useDrizzle().query.images.findFirst({
       where: and(
         eq(images.alive, true),
-        filterTags?.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
+        filterTags.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
       ),
-      orderBy: sql`RANDOM()`,
-      limit: 1
+      orderBy: sql`RANDOM()`
     })
 
-    const randomRow = imageQuery[0]
+    const randomRow = imageQuery
 
     if (!randomRow) {
       throw createError({

@@ -12,11 +12,11 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    const imageQuery = await useDrizzle().query.images.findMany({
+    const imageQuery = await useDrizzle().query.images.findFirst({
       where: eq(images.key, path.data.id)
     })
 
-    const row = imageQuery[0]
+    const row = imageQuery
 
     if (!row) {
       console.error('[Wallpaper Service] No image found')
