@@ -59,6 +59,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error)
-      throw createError(error)
+      console.error(error)
+    throw createError(error)
   }
 })
