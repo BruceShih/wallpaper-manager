@@ -38,7 +38,7 @@ export default eventHandler(async (event) => {
     }
     else {
       const imagesToTagsQuery = useDrizzle()
-        .select()
+        .select({ key: imagesToTags.imageKey })
         .from(imagesToTags)
       imageQuery = await useDrizzle()
         .select()
