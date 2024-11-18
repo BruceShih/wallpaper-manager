@@ -7,7 +7,7 @@ export { and, asc, desc, eq, inArray, isNull, like, ne, notExists, or, sql } fro
 export const tables = schema
 
 export function useDrizzle() {
-  return drizzle(hubDatabase(), { schema, logger: true })
+  return drizzle(hubDatabase(), { schema })
 }
 
 export type Image = typeof schema.images.$inferSelect
