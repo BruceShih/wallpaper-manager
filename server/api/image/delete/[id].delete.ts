@@ -16,11 +16,11 @@ export default eventHandler(async (event) => {
 
     await useDrizzle().batch([
       useDrizzle()
-        .delete(images)
-        .where(eq(images.key, path.data.id)),
-      useDrizzle()
         .delete(imagesToTags)
-        .where(eq(imagesToTags.imageKey, path.data.id))
+        .where(eq(imagesToTags.imageKey, path.data.id)),
+      useDrizzle()
+        .delete(images)
+        .where(eq(images.key, path.data.id))
     ])
 
     return 'Image deleted'
