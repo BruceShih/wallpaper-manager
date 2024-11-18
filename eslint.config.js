@@ -49,7 +49,8 @@ export default antfu({
     'style/no-tabs': ['error', {
       allowIndentationTabs: false
     }],
-    'style/quotes': ['error', 'single']
+    'style/quotes': ['error', 'single'],
+    'ts/no-explicit-any': ['error']
   }
 })
   .prepend(...tailwind.configs['flat/recommended'])
