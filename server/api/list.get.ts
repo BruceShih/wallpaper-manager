@@ -1,6 +1,6 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
-import { asc, desc, inArray, like } from 'drizzle-orm'
+import { asc, desc, eq, inArray, like } from 'drizzle-orm'
 import { apiImageListQuerySchema } from '../utils/validator'
 
 export default eventHandler(async (event) => {

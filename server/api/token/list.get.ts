@@ -1,5 +1,6 @@
 import { userToken } from '~~/server/database/schema'
-import { eq, useDrizzle, type UserToken } from '~~/server/utils/drizzle'
+import { useDrizzle, type UserToken } from '~~/server/utils/drizzle'
+import { eq } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   const session = await serverAuth().api.getSession({

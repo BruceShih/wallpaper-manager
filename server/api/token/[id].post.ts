@@ -1,6 +1,7 @@
 import { userToken } from '~~/server/database/schema'
-import { eq, useDrizzle } from '~~/server/utils/drizzle'
+import { useDrizzle } from '~~/server/utils/drizzle'
 import { apiTokenPostPathSchema, apiTokenUpdateBodySchema } from '~~/server/utils/validator'
+import { eq } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
