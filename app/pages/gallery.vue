@@ -157,12 +157,12 @@ async function onPageChange() {
           >
             <Icon
               v-if="image.images.favorite"
-              class="text-red-500"
+              class="size-4 text-red-500"
               name="radix-icons:heart-filled"
             />
             <Icon
               v-else
-              class="text-red-500"
+              class="size-4 text-red-500"
               name="radix-icons:heart"
             />
           </Button>
@@ -171,15 +171,23 @@ async function onPageChange() {
             variant="ghost"
             @click="onDeleteClick(image.images)"
           >
-            <Icon name="radix-icons:trash" />
+            <Icon
+              class="size-4"
+              name="radix-icons:trash"
+            />
           </Button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Icon
-                  class="ml-auto size-4"
-                  name="radix-icons:bookmark"
-                />
+                <Button
+                  size="icon"
+                  variant="ghost"
+                >
+                  <Icon
+                    class="ml-auto size-4"
+                    name="radix-icons:bookmark"
+                  />
+                </Button>
               </TooltipTrigger>
               <TooltipContent class="w-40">
                 <Badge
