@@ -1,4 +1,4 @@
-import { images, imagesToTags } from '~~/server/database/schema'
+import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { and, eq, sql, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 import { inArray } from 'drizzle-orm'
@@ -13,13 +13,19 @@ export default eventHandler(async (event) => {
   }
 
   const filterTags = query.data.tags || []
+  const sensitive = query.data.sensitive
 
   try {
     const imageQuery = await useDrizzle().query.images.findFirst({
-      where: and(
-        eq(images.alive, true),
-        filterTags.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
-      ),
+      with: {
+        imagesToTags: {
+          where: filterTags.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
+        },
+        tags: {
+          where: eq(tags.sensitive, sensitive)
+        }
+      },
+      where: eq(images.alive, true),
       orderBy: sql`RANDOM()`
     })
 

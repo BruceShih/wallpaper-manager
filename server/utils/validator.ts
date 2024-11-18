@@ -1,13 +1,11 @@
 import { z } from 'zod'
 
-/**
- * schema for validates path parameter '/:id' with a minimum length of 1 (which means it's required)
- */
 export const apiGenericPathSchema = z.object({
   id: z.string().min(1)
 })
 
 export const apiImageGetQuerySchema = z.object({
+  sensitive: z.boolean().default(false),
   tags: z.array(z.number()).optional()
 })
 
