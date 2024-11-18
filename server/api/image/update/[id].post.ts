@@ -33,33 +33,29 @@ export default eventHandler(async (event) => {
     const tagsToAdd = tags.filter(tag => !ownedTags.includes(tag))
     const tagsToRemove = ownedTags.filter(tag => !tags.includes(tag))
 
-    const statement1 = useDrizzle()
-      .update(images)
-      .set({ favorite })
-      .where(eq(images.key, path.data.id))
-    const statement2 = useDrizzle()
-      .insert(imagesToTags)
-      .values(tagsToAdd.map(tagId => ({ imageKey: path.data.id, tagId })))
-    const statement3 = useDrizzle()
-      .delete(imagesToTags)
-      .where(
-        and(
-          eq(imagesToTags.imageKey, path.data.id),
-          inArray(imagesToTags.tagId, tagsToRemove)
-        )
-      )
-
     await useDrizzle().batch([
-      statement1,
-      ...tagsToAdd.length > 0 ? [statement2] : [],
-      ...tagsToRemove.length > 0 ? [statement3] : []
+      useDrizzle().update(images).set({ favorite }),
+      ...tagsToAdd.length > 0
+        ? [useDrizzle()
+            .insert(imagesToTags)
+            .values(tagsToAdd.map(tagId => ({ imageKey: path.data.id, tagId })))]
+        : [],
+      ...tagsToRemove.length > 0
+        ? [useDrizzle()
+            .delete(imagesToTags)
+            .where(
+              and(
+                eq(imagesToTags.imageKey, path.data.id),
+                inArray(imagesToTags.tagId, tagsToRemove)
+              )
+            )]
+        : []
     ])
 
     return 'Image updated'
   }
   catch (error) {
     if (error instanceof Error)
-      console.error(error)
-    throw createError(error)
+      throw createError(error)
   }
 })
