@@ -1,5 +1,3 @@
-import type { BatchItem } from 'drizzle-orm/batch'
-import type { RunnableQuery } from 'drizzle-orm/runnable-query'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
