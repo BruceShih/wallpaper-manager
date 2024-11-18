@@ -52,6 +52,8 @@ export default eventHandler(async (event) => {
             )
           )
       }
+    }, {
+      behavior: 'deferred'
     })
 
     return 'Image updated'
