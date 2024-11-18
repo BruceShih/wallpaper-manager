@@ -10,7 +10,7 @@ interface DataTableFacetedFilterOption {
 }
 
 interface DataTableFacetedFilter {
-  column?: Column<Image, any>
+  column?: Column<Image, unknown>
   title?: string
   options: DataTableFacetedFilterOption[]
 }
