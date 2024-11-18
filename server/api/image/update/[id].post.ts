@@ -1,4 +1,5 @@
 import type { BatchItem } from 'drizzle-orm/batch'
+import type { RunnableQuery } from 'drizzle-orm/runnable-query'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
@@ -47,7 +48,12 @@ export default eventHandler(async (event) => {
           inArray(imagesToTags.tagId, tagsToRemove)
         )
       )
-    await useDrizzle().batch([statement1, statement2, statement3])
+
+    await useDrizzle().batch([
+      statement1,
+      ...tagsToAdd.length > 0 ? [statement2] : [],
+      ...tagsToRemove.length > 0 ? [statement3] : []
+    ])
 
     return 'Image updated'
   }
