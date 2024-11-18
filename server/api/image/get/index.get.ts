@@ -12,20 +12,25 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const filterTags = query.data.tags || []
-  const sensitive = query.data.sensitive
-
   try {
+    const sensitive = query.data.sensitive ? query.data.sensitive : false
+    const tagsQuery = await useDrizzle().query.tags.findMany({
+      where: and(
+        eq(tags.sensitive, sensitive),
+        eq(tags.enabled, true)
+      )
+    })
+    const filterTags = query.data.tags ? query.data.tags : []
+    const selectedTags = tagsQuery.map(tag => tag.id)
+    const set = new Set([...selectedTags, ...filterTags])
+    const imagesToTagsQuery = await useDrizzle().query.imagesToTags.findMany({
+      where: inArray(imagesToTags.tagId, Array.from(set))
+    })
     const imageQuery = await useDrizzle().query.images.findFirst({
-      with: {
-        imagesToTags: {
-          where: filterTags.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
-        },
-        tags: {
-          where: eq(tags.sensitive, sensitive)
-        }
-      },
-      where: eq(images.alive, true),
+      where: and(
+        eq(images.alive, true),
+        inArray(images.key, imagesToTagsQuery.map(row => row.imageKey))
+      ),
       orderBy: sql`RANDOM()`
     })
 
