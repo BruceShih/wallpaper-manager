@@ -19,7 +19,8 @@ export default eventHandler(async (event) => {
   let favorite: boolean = false
 
   try {
-    const sensitive = query.data.sensitive
+    const sensitive = query.data.sensitive === 'true'
+
     if (sensitive) {
       imageQuery = await useDrizzle()
         .select()
