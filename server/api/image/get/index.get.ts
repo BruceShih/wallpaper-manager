@@ -1,12 +1,9 @@
-import { images } from '~~/server/database/schema'
-import { and, eq, type Image, sql, tables, useDrizzle } from '~~/server/utils/drizzle'
+import { images, imagesToTags } from '~~/server/database/schema'
+import { and, eq, sql, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
+import { inArray } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
-  let id = ''
-  let favorite = false
-  let randomRow: Image | undefined
-
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
     throw createError({
@@ -15,22 +12,22 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const nsfw = query.data.nsfw === 'true'
+  const filterTags = query.data.tags || []
 
   try {
-    const query = await useDrizzle()
-      .select()
-      .from(tables.images)
-      .where(
-        and(
-          eq(images.alive, true),
-          eq(images.nsfw, nsfw)
-        )
-      )
-      .orderBy(sql`RANDOM()`)
-      .limit(1)
+    const imageQuery = await useDrizzle().query.images.findMany({
+      with: {
+        imagesToTags: true
+      },
+      where: and(
+        eq(images.alive, true),
+        filterTags?.length > 0 ? inArray(imagesToTags.tagId, filterTags) : undefined
+      ),
+      orderBy: sql`RANDOM()`,
+      limit: 1
+    })
 
-    randomRow = query[0]
+    const randomRow = imageQuery[0]
 
     if (!randomRow) {
       throw createError({
@@ -38,8 +35,8 @@ export default eventHandler(async (event) => {
       })
     }
 
-    id = randomRow.key
-    favorite = randomRow.favorite
+    const id = randomRow.key
+    const favorite = randomRow.favorite
 
     setResponseHeaders(event, {
       'Image-Id': id,

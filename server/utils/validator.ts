@@ -8,7 +8,7 @@ export const apiGenericPathSchema = z.object({
 })
 
 export const apiImageGetQuerySchema = z.object({
-  nsfw: z.enum(['true', 'false']).default('false')
+  tags: z.array(z.number()).optional()
 })
 
 export const apiImageListQuerySchema = z.object({
@@ -20,12 +20,13 @@ export const apiImageListQuerySchema = z.object({
 })
 
 export const apiImageUpdateBodySchema = z.object({
-  favorite: z.boolean()
+  favorite: z.boolean(),
+  tags: z.array(z.number()).optional()
 })
 
 export const apiImageUploadPathSchema = z.object({
   id: z.string(),
-  nsfw: z.enum(['nsfw', 'sfw']).default('sfw')
+  tags: z.array(z.number()).optional()
 })
 
 export const apiTokenDeletePathSchema = z.object({

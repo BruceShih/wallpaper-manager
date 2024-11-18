@@ -1,10 +1,8 @@
 import { images } from '~~/server/database/schema'
-import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
+import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
-  let favorite = false
-
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
     throw createError({
@@ -14,14 +12,11 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    const query = await useDrizzle()
-      .select()
-      .from(tables.images)
-      .where(
-        eq(images.key, path.data.id)
-      )
+    const imageQuery = await useDrizzle().query.images.findMany({
+      where: eq(images.key, path.data.id)
+    })
 
-    const row = query[0]
+    const row = imageQuery[0]
 
     if (!row) {
       console.error('[Wallpaper Service] No image found')
@@ -30,7 +25,7 @@ export default eventHandler(async (event) => {
       })
     }
 
-    favorite = row.favorite
+    const favorite = row.favorite
 
     setResponseHeaders(event, {
       'Image-Id': path.data.id,

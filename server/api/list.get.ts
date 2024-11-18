@@ -1,12 +1,9 @@
-import { images } from '~~/server/database/schema'
-import { type Image, useDrizzle } from '~~/server/utils/drizzle'
-import { asc, desc, like } from 'drizzle-orm'
+import { images, imagesToTags, tags } from '~~/server/database/schema'
+import { useDrizzle } from '~~/server/utils/drizzle'
+import { asc, desc, inArray, like } from 'drizzle-orm'
 import { apiImageListQuerySchema } from '../utils/validator'
 
 export default eventHandler(async (event) => {
-  let total = 0
-  let list: Image[] = []
-
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
     throw createError({
@@ -16,43 +13,39 @@ export default eventHandler(async (event) => {
   }
 
   try {
-    if (query.data.name) {
-      total = await useDrizzle()
-        .$count(images, like(images.key, `%${query.data.name}%`))
-      list = await useDrizzle()
-        .select()
-        .from(images)
-        .where(like(images.key, `%${query.data.name}%`))
-        .orderBy(() => {
-          switch (query.data.sort) {
-            case 'date':
-              return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
-            case 'name':
-              return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
-          }
-        })
-        .limit(query.data.size)
-        .offset((query.data.page - 1) * query.data.size)
-    }
-    else {
-      total = await useDrizzle().$count(images)
-      list = await useDrizzle()
-        .select()
-        .from(images)
-        .orderBy(() => {
-          switch (query.data.sort) {
-            case 'date':
-              return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
-            case 'name':
-              return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
-          }
-        })
-        .limit(query.data.size)
-        .offset((query.data.page - 1) * query.data.size)
-    }
+    const imageTotal = await useDrizzle()
+      .$count(images, like(images.key, `%${query.data.name}%`))
+    const tagList = await useDrizzle().query.tags.findMany({
+      where: eq(tags.enabled, true)
+    })
+    const imageList = await useDrizzle().query.images.findMany({
+      where: query.data.name ? like(images.key, `%${query.data.name}%`) : undefined,
+      orderBy: () => {
+        switch (query.data.sort) {
+          case 'date':
+            return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
+          case 'name':
+            return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
+        }
+      },
+      limit: query.data.size,
+      offset: (query.data.page - 1) * query.data.size
+    })
+    const imagesToTagsList = await useDrizzle().query.imagesToTags.findMany({
+      where: inArray(imagesToTags.imageKey, imageList.map(row => row.key))
+    })
+
+    const list = imageList.map((row) => {
+      const tags = imagesToTagsList
+        .filter(imagesToTagsRow => imagesToTagsRow.imageKey === row.key)
+        .map(imagesToTagsRow => tagList.find(tagRow => tagRow.id === imagesToTagsRow.tagId))
+        .filter(tagRow => tagRow !== undefined)
+
+      return { images: row, tags }
+    })
 
     setResponseHeaders(event, {
-      total
+      total: imageTotal
     })
 
     return list

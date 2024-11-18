@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Image } from '~~/server/utils/drizzle'
+import type { Image, Tag } from '~~/server/utils/drizzle'
 import { useToast } from '~/components/ui/toast/use-toast'
 
 definePageMeta({
@@ -18,7 +18,7 @@ const order = ref<'asc' | 'desc'>('asc')
 const loading = ref(false)
 
 const wallpapers = reactive<{
-  images: Image[]
+  images: { images: Image, tags: Tag[] }[]
   page: number
   size: number
   total: number
@@ -91,7 +91,7 @@ async function onDeleteClick(image: Image) {
     })
   }
   else {
-    const index = wallpapers.images.findIndex(item => item.key === image.key)
+    const index = wallpapers.images.findIndex(item => item.images.key === image.key)
     wallpapers.images.splice(index, 1)
 
     toast({
@@ -127,7 +127,7 @@ async function onPageChange() {
       >
         <CardHeader>
           <CardTitle class="truncate text-base font-semibold">
-            {{ image.key }}
+            {{ image.images.key }}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -141,11 +141,11 @@ async function onPageChange() {
           <template v-else>
             <NuxtImg
               class="aspect-square object-cover"
-              :class="{ blur: image.nsfw }"
+              :class="{ blur: image.tags.findIndex(t => t.tag === 'nsfw') !== -1 }"
               loading="lazy"
               placeholder
               provider="cloudflare"
-              :src="`/source/${image.key}`"
+              :src="`/source/${image.images.key}`"
             />
           </template>
         </CardContent>
@@ -153,10 +153,10 @@ async function onPageChange() {
           <Button
             size="icon"
             variant="ghost"
-            @click="onFavoriteClick(image)"
+            @click="onFavoriteClick(image.images)"
           >
             <Icon
-              v-if="image.favorite"
+              v-if="image.images.favorite"
               class="text-red-500"
               name="radix-icons:heart-filled"
             />
@@ -169,17 +169,26 @@ async function onPageChange() {
           <Button
             size="icon"
             variant="ghost"
-            @click="onDeleteClick(image)"
+            @click="onDeleteClick(image.images)"
           >
             <Icon name="radix-icons:trash" />
           </Button>
-          <Badge
-            v-if="image.nsfw"
-            class="ml-auto"
-            variant="destructive"
-          >
-            nsfw
-          </Badge>
+          <HoverCard>
+            <HoverCardTrigger>
+              <Icon
+                class="size-4"
+                name="radix-icons:bookmark"
+              />
+            </HoverCardTrigger>
+            <HoverCardContent class="w-40">
+              <Badge
+                v-for="tag in image.tags"
+                :key="tag.id"
+              >
+                {{ tag.tag }}
+              </Badge>
+            </HoverCardContent>
+          </HoverCard>
         </CardFooter>
       </Card>
     </div>

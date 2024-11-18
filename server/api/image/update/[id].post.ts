@@ -1,6 +1,7 @@
-import { images } from '~~/server/database/schema'
+import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
+import { inArray } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
@@ -21,14 +22,39 @@ export default eventHandler(async (event) => {
 
   try {
     const favorite = body.data.favorite
-    await useDrizzle()
-      .update(images)
-      .set({ favorite })
-      .where(
-        eq(images.key, path.data.id)
-      )
+    const tags = body.data.tags || []
+    const ownedTagsQuery = await useDrizzle()
+      .select()
+      .from(imagesToTags)
+      .where(eq(imagesToTags.imageKey, path.data.id))
+    const ownedTags = ownedTagsQuery.map(row => row.tagId)
+    const tagsToAdd = tags.filter(tag => !ownedTags.includes(tag))
+    const tagsToRemove = ownedTags.filter(tag => !tags.includes(tag))
 
-    return 'Image marked as favorite'
+    await useDrizzle().transaction(async (tx) => {
+      await tx
+        .update(images)
+        .set({ favorite })
+        .where(eq(images.key, path.data.id))
+
+      if (tagsToAdd.length > 0) {
+        await tx
+          .insert(imagesToTags)
+          .values(tagsToAdd.map(tagId => ({ imageKey: path.data.id, tagId })))
+      }
+      if (tagsToRemove.length > 0) {
+        await tx
+          .delete(imagesToTags)
+          .where(
+            and(
+              eq(imagesToTags.imageKey, path.data.id),
+              inArray(imagesToTags.tagId, tagsToRemove)
+            )
+          )
+      }
+    })
+
+    return 'Image updated'
   }
   catch (error) {
     if (error instanceof Error)

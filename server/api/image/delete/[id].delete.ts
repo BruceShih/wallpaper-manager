@@ -1,4 +1,4 @@
-import { images } from '~~/server/database/schema'
+import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema } from '~~/server/utils/validator'
 
@@ -13,11 +13,15 @@ export default eventHandler(async (event) => {
 
   try {
     await hubBlob().del(path.data.id)
-    await useDrizzle()
-      .delete(images)
-      .where(
-        eq(images.key, path.data.id)
-      )
+
+    await useDrizzle().transaction(async (tx) => {
+      await tx
+        .delete(images)
+        .where(eq(images.key, path.data.id))
+      await tx
+        .delete(imagesToTags)
+        .where(eq(imagesToTags.imageKey, path.data.id))
+    })
 
     return 'Image deleted'
   }
