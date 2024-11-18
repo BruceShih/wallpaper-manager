@@ -43,6 +43,7 @@ export default eventHandler(async (event) => {
         .from(images)
         .leftJoin(imagesToTags, ne(images.key, imagesToTags.imageKey))
         .where(and(
+          isNull(imagesToTags.imageKey),
           eq(images.alive, true)
         ))
         .orderBy(sql`RANDOM()`)
