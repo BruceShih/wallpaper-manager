@@ -17,7 +17,7 @@ export default eventHandler(async (event) => {
   try {
     const imageQuery = await useDrizzle().query.images.findMany({
       with: {
-        imagesToTags: true
+        tags: true
       },
       where: and(
         eq(images.alive, true),
