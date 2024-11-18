@@ -1,3 +1,4 @@
+import type { BatchItem } from 'drizzle-orm/batch'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
@@ -31,30 +32,22 @@ export default eventHandler(async (event) => {
     const tagsToAdd = tags.filter(tag => !ownedTags.includes(tag))
     const tagsToRemove = ownedTags.filter(tag => !tags.includes(tag))
 
-    await useDrizzle().transaction(async (tx) => {
-      await tx
-        .update(images)
-        .set({ favorite })
-        .where(eq(images.key, path.data.id))
-
-      if (tagsToAdd.length > 0) {
-        await tx
-          .insert(imagesToTags)
-          .values(tagsToAdd.map(tagId => ({ imageKey: path.data.id, tagId })))
-      }
-      if (tagsToRemove.length > 0) {
-        await tx
-          .delete(imagesToTags)
-          .where(
-            and(
-              eq(imagesToTags.imageKey, path.data.id),
-              inArray(imagesToTags.tagId, tagsToRemove)
-            )
-          )
-      }
-    }, {
-      behavior: 'deferred'
-    })
+    const statement1 = useDrizzle()
+      .update(images)
+      .set({ favorite })
+      .where(eq(images.key, path.data.id))
+    const statement2 = useDrizzle()
+      .insert(imagesToTags)
+      .values(tagsToAdd.map(tagId => ({ imageKey: path.data.id, tagId })))
+    const statement3 = useDrizzle()
+      .delete(imagesToTags)
+      .where(
+        and(
+          eq(imagesToTags.imageKey, path.data.id),
+          inArray(imagesToTags.tagId, tagsToRemove)
+        )
+      )
+    await useDrizzle().batch([statement1, statement2, statement3])
 
     return 'Image updated'
   }
