@@ -1,8 +1,9 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
-import { and, eq, type ImagesToTags, notExists, sql, useDrizzle } from '~~/server/utils/drizzle'
+import { and, eq, type ImagesToTags, isNull, sql, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
+interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
@@ -13,7 +14,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  let imageQuery: Image[] | SensitiveImages[]
+  let imageQuery: InsensitiveImages[] | SensitiveImages[]
   let id: string = ''
   let favorite: boolean = false
 
@@ -37,21 +38,19 @@ export default eventHandler(async (event) => {
       favorite = imageQuery[0]?.images?.favorite || false
     }
     else {
-      const imagesToTagsQuery = useDrizzle()
-        .select({ key: imagesToTags.imageKey })
-        .from(imagesToTags)
       imageQuery = await useDrizzle()
         .select()
         .from(images)
+        .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
         .where(and(
-          notExists(imagesToTagsQuery),
+          isNull(imagesToTags.imageKey),
           eq(images.alive, true)
         ))
         .orderBy(sql`RANDOM()`)
         .limit(1)
 
-      id = imageQuery[0].key
-      favorite = imageQuery[0].favorite
+      id = imageQuery[0]?.images.key || ''
+      favorite = imageQuery[0]?.images.favorite || false
     }
 
     const randomRow = imageQuery[0]

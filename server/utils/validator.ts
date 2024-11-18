@@ -5,7 +5,7 @@ export const apiGenericPathSchema = z.object({
 })
 
 export const apiImageGetQuerySchema = z.object({
-  sensitive: z.preprocess(val => Boolean(val), z.boolean())
+  sensitive: z.boolean().or(z.string()).pipe(z.coerce.boolean())
 })
 
 export const apiImageListQuerySchema = z.object({
