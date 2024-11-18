@@ -184,7 +184,7 @@ async function onPageChange() {
                   variant="ghost"
                 >
                   <Icon
-                    class="ml-auto size-4"
+                    class="size-4"
                     name="radix-icons:bookmark"
                   />
                 </Button>
