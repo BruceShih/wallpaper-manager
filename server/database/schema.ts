@@ -21,6 +21,7 @@ export const userToken = sqliteTable('userToken', {
 export const tags = sqliteTable('tags', {
   id: integer({ mode: 'number' }).primaryKey({ autoIncrement: true }),
   tag: text('tag').notNull(),
+  sensitive: integer({ mode: 'boolean' }).notNull().default(false),
   enabled: integer({ mode: 'boolean' }).notNull().default(true)
 })
 

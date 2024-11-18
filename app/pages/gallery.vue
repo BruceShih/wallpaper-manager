@@ -141,7 +141,7 @@ async function onPageChange() {
           <template v-else>
             <NuxtImg
               class="aspect-square object-cover"
-              :class="{ blur: image.tags.findIndex(t => t.tag === 'nsfw') !== -1 }"
+              :class="{ blur: image.tags.findIndex(t => t.sensitive) !== -1 }"
               loading="lazy"
               placeholder
               provider="cloudflare"
