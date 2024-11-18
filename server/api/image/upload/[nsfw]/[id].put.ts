@@ -1,7 +1,6 @@
 import { images, imagesToTags } from '~~/server/database/schema'
-import { tables, useDrizzle } from '~~/server/utils/drizzle'
+import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageUploadPathSchema } from '~~/server/utils/validator'
-import { eq } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))

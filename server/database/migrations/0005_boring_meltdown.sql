@@ -1,1 +1,0 @@
-ALTER TABLE `tags` ADD `sensitive` integer DEFAULT false NOT NULL;
