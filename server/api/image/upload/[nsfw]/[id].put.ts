@@ -38,12 +38,10 @@ export default eventHandler(async (event) => {
 
     await hubBlob().put(path.data.id, file)
 
-    await useDrizzle().transaction(async (tx) => {
-      await tx.insert(images)
-        .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' })
-      await tx.insert(imagesToTags)
-        .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
-    })
+    await useDrizzle().batch([
+      useDrizzle().insert(images).values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
+      useDrizzle().insert(imagesToTags).values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+    ])
 
     setResponseStatus(event, 201, 'Image uploaded')
     return 'Image uploaded'

@@ -14,14 +14,14 @@ export default eventHandler(async (event) => {
   try {
     await hubBlob().del(path.data.id)
 
-    await useDrizzle().transaction(async (tx) => {
-      await tx
+    await useDrizzle().batch([
+      useDrizzle()
         .delete(images)
-        .where(eq(images.key, path.data.id))
-      await tx
+        .where(eq(images.key, path.data.id)),
+      useDrizzle()
         .delete(imagesToTags)
         .where(eq(imagesToTags.imageKey, path.data.id))
-    })
+    ])
 
     return 'Image deleted'
   }
