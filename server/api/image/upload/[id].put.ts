@@ -1,3 +1,4 @@
+import type { ImagesToTags } from '~~/server/utils/drizzle'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
@@ -59,7 +60,7 @@ export default eventHandler(async (event) => {
         .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
       useDrizzle()
         .insert(imagesToTags)
-        .values(imagesToTagsRows)
+        .values([{} as ImagesToTags, ...imagesToTagsRows])
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
