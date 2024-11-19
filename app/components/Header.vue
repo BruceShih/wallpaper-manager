@@ -3,6 +3,12 @@ import { cn } from '@/lib/utils'
 
 const { signOut, loggedIn } = useAuth()
 const colorMode = useColorMode()
+
+function onSignOut() {
+  if (import.meta.dev)
+    localStorage.removeItem('bearer_token')
+  signOut({ redirectTo: '/' })
+}
 </script>
 
 <template>
@@ -20,7 +26,7 @@ const colorMode = useColorMode()
           color="black"
           size="icon"
           variant="ghost"
-          @click="signOut({ redirectTo: '/' })"
+          @click="onSignOut"
         >
           <Icon name="radix-icons:exit" />
         </Button>
