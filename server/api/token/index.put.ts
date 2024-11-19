@@ -1,5 +1,6 @@
 import { userToken } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
+import { consola } from 'consola'
 
 export default eventHandler(async (event) => {
   const session = await serverAuth().api.getSession({
@@ -7,9 +8,9 @@ export default eventHandler(async (event) => {
   })
 
   if (!session) {
+    consola.error('[Wallpaper Service] Unauthorized')
     throw createError({
-      statusCode: 401,
-      cause: 'User not authenticated'
+      statusCode: 401
     })
   }
 

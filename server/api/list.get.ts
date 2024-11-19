@@ -1,13 +1,16 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { asc, desc, eq, inArray, like, useDrizzle } from '~~/server/utils/drizzle'
+import { consola } from 'consola'
 import { apiImageListQuerySchema } from '../utils/validator'
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
+    consola.error(query.error)
     throw createError({
       statusCode: 400,
-      cause: query.error
+      message: query.error.message,
+      cause: query.error.cause
     })
   }
 
@@ -50,7 +53,9 @@ export default eventHandler(async (event) => {
     return list
   }
   catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
+      consola.error(error)
       throw createError(error)
+    }
   }
 })

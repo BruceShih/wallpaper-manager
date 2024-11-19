@@ -6,24 +6,26 @@ import { consola } from 'consola'
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
   if (!path.success) {
+    consola.error(path.error)
     throw createError({
       statusCode: 400,
-      cause: path.error
+      message: path.error.message,
+      cause: path.error.cause
     })
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
   if (!query.success) {
+    consola.error(query.error)
     throw createError({
       statusCode: 400,
-      cause: query.error
+      message: query.error.message,
+      cause: query.error.cause
     })
   }
 
   const tags = query.data.tags || []
   const imagesToTagsRows = tags.map(tagId => ({ imageKey: path.data.id, tagId }))
-
-  consola.info(imagesToTagsRows)
 
   try {
     const imageQuery = await useDrizzle()
@@ -42,9 +44,10 @@ export default eventHandler(async (event) => {
 
     const file = await readRawBody(event)
     if (!file) {
+      consola.error('No file attached')
       throw createError({
         statusCode: 400,
-        cause: 'No file attached'
+        message: 'No file attached'
       })
     }
 
@@ -65,7 +68,9 @@ export default eventHandler(async (event) => {
   catch (error) {
     await hubBlob().del(path.data.id)
 
-    if (error instanceof Error)
+    if (error instanceof Error) {
+      consola.error(error)
       throw createError(error)
+    }
   }
 })

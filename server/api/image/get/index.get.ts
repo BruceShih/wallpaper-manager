@@ -1,6 +1,7 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { and, eq, type ImagesToTags, isNull, sql, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
+import { consola } from 'consola'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
 interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
@@ -8,9 +9,11 @@ interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
+    consola.error(query.error)
     throw createError({
       statusCode: 400,
-      cause: query.error
+      message: query.error.message,
+      cause: query.error.cause
     })
   }
 
@@ -57,6 +60,7 @@ export default eventHandler(async (event) => {
     const randomRow = imageQuery[0]
 
     if (!randomRow) {
+      consola.error('[Wallpaper Service] No image found')
       throw createError({
         statusCode: 404
       })
@@ -70,7 +74,9 @@ export default eventHandler(async (event) => {
     return hubBlob().serve(event, id)
   }
   catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
+      consola.error(error)
       throw createError(error)
+    }
   }
 })

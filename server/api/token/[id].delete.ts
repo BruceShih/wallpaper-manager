@@ -7,7 +7,8 @@ export default eventHandler(async (event) => {
   if (!path.success) {
     throw createError({
       statusCode: 400,
-      cause: path.error
+      message: path.error.message,
+      cause: path.error.cause
     })
   }
 

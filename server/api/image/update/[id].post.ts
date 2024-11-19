@@ -1,21 +1,26 @@
 import { images, imagesToTags } from '~~/server/database/schema'
 import { and, eq, inArray, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
+import { consola } from 'consola'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
+    consola.error(path.error)
     throw createError({
       statusCode: 400,
-      cause: path.error
+      message: path.error.message,
+      cause: path.error.cause
     })
   }
 
   const body = await readValidatedBody(event, data => apiImageUpdateBodySchema.safeParse(data))
   if (!body.success) {
+    consola.error(body.error)
     throw createError({
       statusCode: 400,
-      cause: body.error
+      message: body.error.message,
+      cause: body.error.cause
     })
   }
 
@@ -52,7 +57,9 @@ export default eventHandler(async (event) => {
     return 'Image updated'
   }
   catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
+      consola.error(error)
       throw createError(error)
+    }
   }
 })
