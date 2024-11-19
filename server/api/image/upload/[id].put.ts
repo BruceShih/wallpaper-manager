@@ -25,7 +25,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  consola.info(query.data.tags)
+  consola.error(query.data.tags)
 
   const tags = query.data.tags || []
   const imagesToTagsRows = tags.map(tagId => ({ imageKey: path.data.id, tagId }))
