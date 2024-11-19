@@ -1,4 +1,3 @@
-import type { ImagesToTags } from '~~/server/utils/drizzle'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
@@ -16,6 +15,7 @@ export default eventHandler(async (event) => {
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
+  consola.error(query)
   if (!query.success) {
     consola.error(query.error)
     throw createError({
@@ -25,10 +25,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  consola.error(query.data.tags)
-
   const tags = query.data.tags || []
-  const imagesToTagsRows = tags.map(tagId => ({ imageKey: path.data.id, tagId }))
 
   try {
     const imageQuery = await useDrizzle()
@@ -62,7 +59,7 @@ export default eventHandler(async (event) => {
         .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
       useDrizzle()
         .insert(imagesToTags)
-        .values(imagesToTagsRows)
+        .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
