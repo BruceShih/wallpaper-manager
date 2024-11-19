@@ -21,8 +21,9 @@ export default eventHandler(async (event) => {
   }
 
   const tags = query.data.tags || []
+  const imagesToTagsRows = tags.map(tagId => ({ imageKey: path.data.id, tagId }))
 
-  consola.info(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+  consola.info(imagesToTagsRows)
 
   try {
     const imageQuery = await useDrizzle()
@@ -55,7 +56,7 @@ export default eventHandler(async (event) => {
         .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
       useDrizzle()
         .insert(imagesToTags)
-        .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+        .values(imagesToTagsRows)
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
