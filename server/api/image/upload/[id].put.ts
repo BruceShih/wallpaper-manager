@@ -1,6 +1,7 @@
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
+import { consola } from 'consola'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
@@ -21,7 +22,7 @@ export default eventHandler(async (event) => {
 
   const tags = query.data.tags || []
 
-  console.info(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+  consola.info(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
 
   try {
     const imageQuery = await useDrizzle()
