@@ -1,6 +1,6 @@
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
-import { apiImageUploadPathSchema } from '~~/server/utils/validator'
+import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
@@ -11,7 +11,15 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const tags = path.data.tags || []
+  const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
+  if (!query.success) {
+    throw createError({
+      statusCode: 400,
+      cause: query.error
+    })
+  }
+
+  const tags = query.data.tags || []
 
   try {
     const imageQuery = await useDrizzle()

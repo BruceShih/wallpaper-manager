@@ -22,7 +22,10 @@ export const apiImageUpdateBodySchema = z.object({
 })
 
 export const apiImageUploadPathSchema = z.object({
-  id: z.string(),
+  id: z.string()
+})
+
+export const apiImageUploadQuerySchema = z.object({
   tags: z.array(z.number()).optional()
 })
 
