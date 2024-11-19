@@ -60,7 +60,7 @@ export default eventHandler(async (event) => {
         .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
       useDrizzle()
         .insert(imagesToTags)
-        .values([{} as ImagesToTags, ...imagesToTagsRows])
+        .values([...imagesToTagsRows])
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
