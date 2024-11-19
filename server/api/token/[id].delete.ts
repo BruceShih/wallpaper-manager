@@ -1,15 +1,13 @@
 import { userToken } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiTokenDeletePathSchema } from '~~/server/utils/validator'
+import { consola } from 'consola'
 
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiTokenDeletePathSchema.safeParse(data))
   if (!path.success) {
-    throw createError({
-      statusCode: 400,
-      message: path.error.message,
-      cause: path.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    throw createError({ statusCode: 400 })
   }
 
   const tokenId = path.data.id
@@ -22,7 +20,9 @@ export default eventHandler(async (event) => {
     return 'Token deleted'
   }
   catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
+    }
   }
 })

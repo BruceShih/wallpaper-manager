@@ -6,22 +6,14 @@ import { consola } from 'consola'
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
   if (!path.success) {
-    consola.error(path.error)
-    throw createError({
-      statusCode: 400,
-      message: path.error.message,
-      cause: path.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    throw createError({ statusCode: 400 })
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.error(query.error)
-    throw createError({
-      statusCode: 400,
-      message: query.error.message,
-      cause: query.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    throw createError({ statusCode: 400 })
   }
 
   const tags = query.data.tags ? [...[query.data?.tags]].flat() : []
@@ -43,11 +35,8 @@ export default eventHandler(async (event) => {
 
     const file = await readRawBody(event)
     if (!file) {
-      consola.error('No file attached')
-      throw createError({
-        statusCode: 400,
-        message: 'No file attached'
-      })
+      consola.withTag(`In server route: ${event.path}`).error('No file attached')
+      throw createError({ statusCode: 400 })
     }
 
     await hubBlob().put(path.data.id, file)
@@ -68,7 +57,7 @@ export default eventHandler(async (event) => {
     await hubBlob().del(path.data.id)
 
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

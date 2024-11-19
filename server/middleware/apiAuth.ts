@@ -1,12 +1,12 @@
+import { consola } from 'consola'
 import { userToken } from '../database/schema'
 
 export default defineEventHandler(async (event) => {
   const { origin } = useRuntimeConfig(event)
 
   if (!origin) {
-    throw createError({
-      statusCode: 500
-    })
+    consola.withTag('In server middleware').error(new Error('Missing runtime config'))
+    throw createError({ statusCode: 500 })
   }
 
   const headers = {
@@ -21,9 +21,8 @@ export default defineEventHandler(async (event) => {
       const authHeader = event.headers.get('Authorization')
 
       if (!authHeader) {
-        throw createError({
-          statusCode: 401
-        })
+        consola.withTag('In server middleware').error(new Error('Missing authorization header'))
+        throw createError({ statusCode: 401 })
       }
 
       const token = authHeader.replace('Bearer ', '')
@@ -37,14 +36,15 @@ export default defineEventHandler(async (event) => {
         const validToken = allTokens.find(t => t.token === token)
 
         if (!validToken) {
-          throw createError({
-            statusCode: 401
-          })
+          consola.withTag('In server middleware').error(new Error('No valid token found'))
+          throw createError({ statusCode: 401 })
         }
       }
       catch (error) {
-        if (error instanceof Error)
+        if (error instanceof Error) {
+          consola.withTag('In server middleware').error(new Error('Server error'))
           throw createError(error)
+        }
       }
     }
   }

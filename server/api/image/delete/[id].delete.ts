@@ -6,12 +6,8 @@ import { consola } from 'consola'
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
-    consola.error(path.error)
-    throw createError({
-      statusCode: 400,
-      message: path.error.message,
-      cause: path.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    throw createError({ statusCode: 400 })
   }
 
   try {
@@ -30,7 +26,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

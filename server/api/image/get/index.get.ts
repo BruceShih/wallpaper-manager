@@ -9,12 +9,8 @@ interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.error(query.error)
-    throw createError({
-      statusCode: 400,
-      message: query.error.message,
-      cause: query.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    throw createError({ statusCode: 400 })
   }
 
   let imageQuery: InsensitiveImages[] | SensitiveImages[]
@@ -60,10 +56,8 @@ export default eventHandler(async (event) => {
     const randomRow = imageQuery[0]
 
     if (!randomRow) {
-      consola.error('[Wallpaper Service] No image found')
-      throw createError({
-        statusCode: 404
-      })
+      consola.withTag(`In server route: ${event.path}`).error('No image found')
+      throw createError({ statusCode: 404 })
     }
 
     setResponseHeaders(event, {
@@ -75,7 +69,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

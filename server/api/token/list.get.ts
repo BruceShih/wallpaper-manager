@@ -8,10 +8,8 @@ export default eventHandler(async (event) => {
   })
 
   if (!session) {
-    consola.error('[Wallpaper Service] Unauthorized')
-    throw createError({
-      statusCode: 401
-    })
+    consola.withTag(`In server route: ${event.path}`).error('Unauthorized')
+    throw createError({ statusCode: 401 })
   }
 
   try {
@@ -24,7 +22,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

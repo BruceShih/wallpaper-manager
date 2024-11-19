@@ -6,12 +6,8 @@ import { apiImageListQuerySchema } from '../utils/validator'
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.error(query.error)
-    throw createError({
-      statusCode: 400,
-      message: query.error.message,
-      cause: query.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    throw createError({ statusCode: 400 })
   }
 
   try {
@@ -54,7 +50,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

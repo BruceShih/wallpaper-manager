@@ -6,24 +6,16 @@ import { consola } from 'consola'
 export default eventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
   if (!path.success) {
-    consola.error(path.error)
-    throw createError({
-      statusCode: 400,
-      message: path.error.message,
-      cause: path.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    throw createError({ statusCode: 400 })
   }
 
   const tokenId = path.data.id
 
   const body = await readValidatedBody(event, data => apiTokenUpdateBodySchema.safeParse(data))
   if (!body.success) {
-    consola.error(body.error)
-    throw createError({
-      statusCode: 400,
-      message: body.error.message,
-      cause: body.error.cause
-    })
+    consola.withTag(`In server route: ${event.path}`).error(body.error)
+    throw createError({ statusCode: 400 })
   }
 
   try {
@@ -38,7 +30,7 @@ export default eventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }
