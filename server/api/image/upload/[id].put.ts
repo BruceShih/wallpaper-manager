@@ -15,7 +15,6 @@ export default eventHandler(async (event) => {
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
-  consola.error(query)
   if (!query.success) {
     consola.error(query.error)
     throw createError({
@@ -25,7 +24,7 @@ export default eventHandler(async (event) => {
     })
   }
 
-  const tags = query.data.tags || []
+  const tags = query.data.tags ? [...[query.data?.tags]].flat() : []
 
   try {
     const imageQuery = await useDrizzle()
