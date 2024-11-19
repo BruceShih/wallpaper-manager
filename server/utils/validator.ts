@@ -26,7 +26,7 @@ export const apiImageUploadPathSchema = z.object({
 })
 
 export const apiImageUploadQuerySchema = z.object({
-  tags: z.array(z.number()).optional()
+  tags: z.array(z.coerce.number()).optional()
 })
 
 export const apiTokenDeletePathSchema = z.object({
