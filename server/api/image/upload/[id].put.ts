@@ -21,6 +21,8 @@ export default eventHandler(async (event) => {
 
   const tags = query.data.tags || []
 
+  console.info(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+
   try {
     const imageQuery = await useDrizzle()
       .select()
@@ -47,8 +49,12 @@ export default eventHandler(async (event) => {
     await hubBlob().put(path.data.id, file)
 
     await useDrizzle().batch([
-      useDrizzle().insert(images).values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
-      useDrizzle().insert(imagesToTags).values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+      useDrizzle()
+        .insert(images)
+        .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
+      useDrizzle()
+        .insert(imagesToTags)
+        .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
