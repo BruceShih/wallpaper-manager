@@ -32,6 +32,12 @@ export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
 
+  eslint: {
+    config: {
+      standalone: false
+    }
+  },
+
   // temporary fix: https://github.com/unovue/shadcn-vue/issues/864
   colorMode: {
     classSuffix: ''
