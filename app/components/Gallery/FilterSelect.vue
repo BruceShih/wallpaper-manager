@@ -3,6 +3,7 @@
 import type { Column } from '@tanstack/vue-table'
 import type { Image } from '~~/server/utils/drizzle'
 import { cn } from '@/lib/utils'
+import { computed } from 'vue'
 
 interface DataTableFacetedFilterOption {
   label: string

@@ -1,3 +1,6 @@
+import { defineNuxtPlugin } from '#app'
+import { useAuth } from '#build/imports'
+
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (!nuxtApp.payload.serverRendered) {
     await useAuth().fetchSession()

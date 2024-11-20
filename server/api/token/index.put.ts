@@ -1,8 +1,9 @@
+import { createError, defineEventHandler, serverAuth } from '#imports'
 import { userToken } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
 import { consola } from 'consola'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const session = await serverAuth().api.getSession({
     headers: event.headers
   })

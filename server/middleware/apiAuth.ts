@@ -1,4 +1,6 @@
+import { createError, defineEventHandler, useDrizzle, useRuntimeConfig } from '#imports'
 import { consola } from 'consola'
+import { eq } from 'drizzle-orm'
 import { userToken } from '../database/schema'
 
 export default defineEventHandler(async (event) => {

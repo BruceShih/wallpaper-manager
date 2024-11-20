@@ -1,9 +1,10 @@
+import { createError, defineEventHandler, getValidatedRouterParams, readValidatedBody } from '#imports'
 import { userToken } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiTokenPostPathSchema, apiTokenUpdateBodySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
   if (!path.success) {
     consola.withTag(`In server route: ${event.path}`).error(path.error)

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAuth, useColorMode } from '#build/imports'
 import { cn } from '@/lib/utils'
 
 const { signOut, loggedIn } = useAuth()

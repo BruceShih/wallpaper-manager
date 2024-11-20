@@ -1,3 +1,4 @@
+import { defineEventHandler, toWebRequest } from '#imports'
 import { serverAuth } from '../utils/auth'
 
-export default eventHandler(event => serverAuth().handler(toWebRequest(event)))
+export default defineEventHandler(event => serverAuth().handler(toWebRequest(event)))

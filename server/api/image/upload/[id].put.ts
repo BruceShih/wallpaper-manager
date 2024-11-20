@@ -1,9 +1,10 @@
+import { createError, defineEventHandler, getValidatedQuery, getValidatedRouterParams, hubBlob, readRawBody, setResponseStatus } from '#imports'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
   if (!path.success) {
     consola.withTag(`In server route: ${event.path}`).error(path.error)

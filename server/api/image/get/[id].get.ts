@@ -1,9 +1,10 @@
+import { createError, defineEventHandler, getValidatedRouterParams, hubBlob, setResponseHeaders } from '#imports'
 import { images } from '~~/server/database/schema'
 import { eq, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
     consola.withTag(`In server route: ${event.path}`).error(path.error)

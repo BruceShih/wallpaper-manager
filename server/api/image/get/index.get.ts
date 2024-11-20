@@ -1,12 +1,14 @@
+import type { Image, ImagesToTags, Tag } from '~~/server/utils/drizzle'
+import { createError, defineEventHandler, getValidatedQuery, hubBlob, setResponseHeaders } from '#imports'
 import { images, imagesToTags, tags } from '~~/server/database/schema'
-import { and, eq, type ImagesToTags, isNull, sql, useDrizzle } from '~~/server/utils/drizzle'
+import { and, eq, isNull, sql, useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
 interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
     consola.withTag(`In server route: ${event.path}`).error(query.error)

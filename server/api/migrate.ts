@@ -1,7 +1,8 @@
+import { defineEventHandler } from '#imports'
 import { getMigrations } from 'better-auth/db'
 import { serverAuth } from '../utils/auth'
 
-export default eventHandler(async () => {
+export default defineEventHandler(async () => {
   const auth = serverAuth()
   const { toBeCreated, toBeAdded, runMigrations } = await getMigrations(auth.options)
   if (!toBeCreated.length && !toBeAdded.length) {

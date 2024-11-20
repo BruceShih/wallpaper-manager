@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Image, Tag } from '~~/server/utils/drizzle'
+import { useFetch } from '#app'
+import { reactive, ref } from 'vue'
 import { useToast } from '~/components/ui/toast/use-toast'
 
 const { toast } = useToast()

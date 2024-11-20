@@ -1,9 +1,10 @@
+import { createError, defineEventHandler, getValidatedRouterParams, readValidatedBody } from '#imports'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { and, eq, inArray, useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
     consola.withTag(`In server route: ${event.path}`).error(path.error)

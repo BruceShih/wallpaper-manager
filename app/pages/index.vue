@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { navigateTo } from '#app'
+import { definePageMeta, useAuth } from '#build/imports'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import * as z from 'zod'
+import { ref } from 'vue'
+import { z } from 'zod'
 import { useToast } from '~/components/ui/toast/use-toast'
 
 definePageMeta({

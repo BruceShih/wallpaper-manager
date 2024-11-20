@@ -1,3 +1,4 @@
+import { defineNitroPlugin, onHubReady } from '#imports'
 import { getMigrations } from 'better-auth/db'
 import { consola } from 'consola'
 import { serverAuth } from '../utils/auth'

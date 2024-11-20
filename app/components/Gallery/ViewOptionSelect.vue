@@ -2,6 +2,7 @@
 // TODO: WIP component
 import type { Table } from '@tanstack/vue-table'
 import type { Image } from '~~/server/utils/drizzle'
+import { computed } from 'vue'
 
 interface DataTableViewOptionsProps {
   table: Table<Image>

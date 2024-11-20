@@ -1,9 +1,10 @@
+import { createError, defineEventHandler, getValidatedQuery, setResponseHeaders } from '#imports'
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { asc, desc, eq, inArray, like, useDrizzle } from '~~/server/utils/drizzle'
 import { consola } from 'consola'
 import { apiImageListQuerySchema } from '../utils/validator'
 
-export default eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
     consola.withTag(`In server route: ${event.path}`).error(query.error)
