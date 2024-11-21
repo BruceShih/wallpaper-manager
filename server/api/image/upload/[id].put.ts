@@ -46,9 +46,11 @@ export default defineEventHandler(async (event) => {
       useDrizzle()
         .insert(images)
         .values({ key: path.data.id, createDate: new Date().toISOString(), deleteDate: '' }),
-      useDrizzle()
-        .insert(imagesToTags)
-        .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))
+      ...tags.length > 0
+        ? [useDrizzle()
+            .insert(imagesToTags)
+            .values(tags.map(tagId => ({ imageKey: path.data.id, tagId })))]
+        : []
     ])
 
     setResponseStatus(event, 201, 'Image uploaded')
