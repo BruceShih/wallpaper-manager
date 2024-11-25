@@ -1,207 +1,36 @@
 <script setup lang="ts">
-import type { Image, Tag } from '~~/server/utils/drizzle'
-import { useFetch } from '#app'
-import { reactive, ref } from 'vue'
+import type { WallpaperAndTags } from '~/components/Gallery'
+import { columns } from '~/components/Gallery/columns'
 import { useToast } from '~/components/ui/toast/use-toast'
+import { useGalleryAPIs } from '~/composables/useGalleryAPIs'
 
+const store = useGalleryStore()
+const api = useGalleryAPIs()
 const { toast } = useToast()
 
-const token = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
-const isDev = ref(import.meta.dev)
-const name = ref('')
-const sort = ref<'date' | 'name'>('date')
-const order = ref<'asc' | 'desc'>('asc')
-const loading = ref(false)
+const wallpapers = ref<WallpaperAndTags[]>([])
 
-const wallpapers = reactive<{
-  images: { images: Image, tags: Tag[] }[]
-  page: number
-  size: number
-  total: number
-}>({
-  images: [],
-  page: 1,
-  size: 20,
-  total: 1
+onMounted(async () => {
+  const { data, error } = await api.fetchWallpapers()
+  if (error.value) {
+    toast({
+      title: 'Failed to fetch wallpapers',
+      variant: 'destructive'
+    })
+  }
+  else {
+    wallpapers.value = data.value || []
+  }
+
+  await store.fetchTags()
 })
-
-async function fetchData() {
-  wallpapers.images = []
-  loading.value = true
-
-  const { data } = await useFetch('/api/list', {
-    headers: {
-      Authorization: `Bearer ${token.value}`
-    },
-    query: {
-      page: wallpapers.page,
-      size: wallpapers.size,
-      name: name.value,
-      sort: sort.value,
-      order: order.value
-    },
-    onResponse({ response }) {
-      const total = response.headers.get('total')
-      if (total)
-        wallpapers.total = Number.parseInt(total, 10)
-    }
-  })
-  wallpapers.images = data.value || []
-  loading.value = false
-}
-async function onFavoriteClick(image: Image) {
-  const { error } = await useFetch(`/api/image/update/${image.key}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token.value}`
-    },
-    body: JSON.stringify({ favorite: !image.favorite })
-  })
-
-  if (error.value) {
-    toast({
-      title: 'Failed to update wallpaper',
-      variant: 'destructive'
-    })
-  }
-  else {
-    image.favorite = !image.favorite
-
-    toast({
-      title: 'Image liked'
-    })
-  }
-}
-async function onDeleteClick(image: Image) {
-  const { error } = await useFetch(`/api/delete/${image.key}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token.value}`
-    }
-  })
-
-  if (error.value) {
-    toast({
-      title: 'Failed to delete wallpaper',
-      variant: 'destructive'
-    })
-  }
-  else {
-    const index = wallpapers.images.findIndex(item => item.images.key === image.key)
-    wallpapers.images.splice(index, 1)
-
-    toast({
-      title: 'Image deleted'
-    })
-  }
-}
-async function onSearch() {
-  await fetchData()
-}
-async function onPageChange() {
-  await fetchData()
-}
 </script>
 
 <template>
   <div class="space-y-4">
-    <GalleryFilter
-      v-model:loading="loading"
-      v-model:name="name"
-      v-model:order="order"
-      v-model:sort="sort"
-      @search="onSearch"
-    />
-    <div
-      v-auto-animate
-      class="grid grid-flow-row grid-cols-2 place-items-center justify-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
-    >
-      <Card
-        v-for="(image, index) in wallpapers.images"
-        :key="index"
-        class="w-44 md:w-56"
-      >
-        <CardHeader>
-          <CardTitle class="truncate text-base font-semibold">
-            {{ image.images.key }}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <!-- TODO: dev only, remove later -->
-          <template v-if="isDev">
-            <img
-              alt="placeholder"
-              src="https://picsum.photos/120"
-            >
-          </template>
-          <template v-else>
-            <NuxtImg
-              class="aspect-square object-cover"
-              :class="{ blur: image.tags.findIndex(t => t.sensitive) !== -1 }"
-              loading="lazy"
-              placeholder
-              provider="cloudflare"
-              :src="`/source/${image.images.key}`"
-            />
-          </template>
-        </CardContent>
-        <CardFooter class="justify-start">
-          <Button
-            size="icon"
-            variant="ghost"
-            @click="onFavoriteClick(image.images)"
-          >
-            <Icon
-              v-if="image.images.favorite"
-              class="size-4 text-red-500"
-              name="radix-icons:heart-filled"
-            />
-            <Icon
-              v-else
-              class="size-4 text-red-500"
-              name="radix-icons:heart"
-            />
-          </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            @click="onDeleteClick(image.images)"
-          >
-            <Icon
-              class="size-4"
-              name="radix-icons:trash"
-            />
-          </Button>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                >
-                  <Icon
-                    class="size-4"
-                    name="radix-icons:bookmark"
-                  />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent class="w-40">
-                <Badge
-                  v-for="tag in image.tags"
-                  :key="tag.id"
-                >
-                  {{ tag.tag }}
-                </Badge>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </CardFooter>
-      </Card>
-    </div>
-    <GalleryPagination
-      v-model:page="wallpapers.page"
-      :total="wallpapers.total"
-      @change="onPageChange"
+    <GalleryTable
+      :columns="columns"
+      :data="wallpapers"
     />
   </div>
 </template>

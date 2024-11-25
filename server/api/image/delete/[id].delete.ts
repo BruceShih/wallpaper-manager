@@ -1,7 +1,4 @@
-import { createError, defineEventHandler, getValidatedRouterParams, hubBlob } from '#imports'
 import { images, imagesToTags } from '~~/server/database/schema'
-import { eq, useDrizzle } from '~~/server/utils/drizzle'
-import { apiGenericPathSchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

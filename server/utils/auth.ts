@@ -1,5 +1,4 @@
 import process from 'node:process'
-import { getRequestURL, hubDatabase, hubKV, useEvent } from '#imports'
 import { D1Dialect } from '@atinux/kysely-d1'
 import { betterAuth, type BetterAuthOptions } from 'better-auth'
 import { admin, anonymous, bearer } from 'better-auth/plugins'
@@ -11,7 +10,8 @@ export function serverAuth() {
     const options: BetterAuthOptions = {
       database: {
         /**
-         * NOTE: after upgrade to "@nuxthub/core": "^0.8.7", 'dump()' function is removed due to deprecation by cloudflare
+         * NOTE: after upgrade to "@nuxthub/core": "^0.8.7", 'dump()' function is removed due to deprecation
+         * by cloudflare
          * the type of @atinux/kysely-d1 needs to be updated
          */
         dialect: new D1Dialect({

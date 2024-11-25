@@ -1,5 +1,3 @@
-import { createError, defineEventHandler, getValidatedRouterParams, hubBlob } from '#imports'
-import { apiGenericPathSchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

@@ -1,8 +1,4 @@
-import type { Image, ImagesToTags, Tag } from '~~/server/utils/drizzle'
-import { createError, defineEventHandler, getValidatedQuery, hubBlob, setResponseHeaders } from '#imports'
 import { images, imagesToTags, tags } from '~~/server/database/schema'
-import { and, eq, isNull, sql, useDrizzle } from '~~/server/utils/drizzle'
-import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }

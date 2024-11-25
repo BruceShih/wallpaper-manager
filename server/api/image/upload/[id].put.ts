@@ -1,7 +1,4 @@
-import { createError, defineEventHandler, getValidatedQuery, getValidatedRouterParams, hubBlob, readRawBody, setResponseStatus } from '#imports'
 import { images, imagesToTags } from '~~/server/database/schema'
-import { eq, tables, useDrizzle } from '~~/server/utils/drizzle'
-import { apiImageUploadPathSchema, apiImageUploadQuerySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

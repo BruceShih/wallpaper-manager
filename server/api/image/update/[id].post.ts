@@ -1,7 +1,4 @@
-import { createError, defineEventHandler, getValidatedRouterParams, readValidatedBody } from '#imports'
 import { images, imagesToTags } from '~~/server/database/schema'
-import { and, eq, inArray, useDrizzle } from '~~/server/utils/drizzle'
-import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

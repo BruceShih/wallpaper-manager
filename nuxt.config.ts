@@ -10,18 +10,17 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    '@formkit/auto-animate/nuxt',
     '@nuxt/fonts',
     '@nuxt/icon',
     '@vee-validate/nuxt',
     '@nuxt/image',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@pinia/nuxt'
   ],
 
   // https://devtools.nuxt.com
   devtools: { enabled: true },
 
-  // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
   runtimeConfig: {
     origin: process.env.ORIGIN,
     public: {
@@ -31,10 +30,6 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
-
-  imports: {
-    autoImport: false
-  },
 
   eslint: {
     config: {

@@ -4,10 +4,8 @@ import type {
   InferUserFromClient
 } from 'better-auth/client'
 import type { RouteLocationRaw } from 'vue-router'
-import { navigateTo, useRequestHeaders, useRequestURL, useRuntimeConfig, useState } from '#app'
 import { createAuthClient } from 'better-auth/client'
 import { defu } from 'defu'
-import { computed, ref } from 'vue'
 
 interface RuntimeAuthConfig {
   redirectUserTo: RouteLocationRaw | string

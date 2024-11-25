@@ -1,14 +1,12 @@
 <script setup lang="ts">
-// TODO: WIP component
 import type { Table } from '@tanstack/vue-table'
-import type { Image } from '~~/server/utils/drizzle'
-import { computed } from 'vue'
+import type { WallpaperAndTags } from '.'
 
-interface DataTableViewOptionsProps {
-  table: Table<Image>
+interface GalleryTableViewOptionsProps {
+  table: Table<WallpaperAndTags>
 }
 
-const props = defineProps<DataTableViewOptionsProps>()
+const props = defineProps<GalleryTableViewOptionsProps>()
 
 const columns = computed(() => props.table.getAllColumns()
   .filter(

@@ -1,7 +1,4 @@
-import { createError, defineEventHandler, getValidatedRouterParams } from '#imports'
 import { userToken } from '~~/server/database/schema'
-import { eq, useDrizzle } from '~~/server/utils/drizzle'
-import { apiTokenDeletePathSchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

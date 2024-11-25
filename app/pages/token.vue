@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import type { UserToken } from '~~/server/utils/drizzle'
-import { useFetch } from '#app'
-import { Icon } from '#components'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { ref } from 'vue'
 import { useToast } from '~/components/ui/toast/use-toast'
 
 const { toast } = useToast()
@@ -126,7 +121,7 @@ async function onSearch() {
         </template>
       </Button>
     </div>
-    <Table v-auto-animate>
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead class="w-7/12">

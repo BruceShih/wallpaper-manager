@@ -9,10 +9,10 @@ export const apiImageGetQuerySchema = z.object({
 })
 
 export const apiImageListQuerySchema = z.object({
-  size: z.coerce.number().default(20),
-  page: z.coerce.number().default(1),
-  sort: z.enum(['date', 'name']).default('date'),
-  order: z.enum(['asc', 'desc']).default('asc'),
+  size: z.coerce.number().default(20).optional(),
+  page: z.coerce.number().default(1).optional(),
+  sort: z.enum(['date', 'name']).default('date').optional(),
+  order: z.enum(['asc', 'desc']).default('asc').optional(),
   name: z.string().optional()
 })
 

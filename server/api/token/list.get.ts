@@ -1,6 +1,4 @@
-import { createError, defineEventHandler, serverAuth } from '#imports'
 import { userToken } from '~~/server/database/schema'
-import { eq, useDrizzle, type UserToken } from '~~/server/utils/drizzle'
 import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {

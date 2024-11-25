@@ -47,6 +47,7 @@ export default withNuxt(
     }
   }, {
     rules: {
+      'style/max-len': ['warn', { code: 110, ignoreStrings: true, ignoreTemplateLiterals: true }],
       'style/comma-dangle': ['error', 'never'],
       'style/multiline-ternary': ['error', 'always-multiline'],
       'style/no-tabs': ['error', {

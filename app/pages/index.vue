@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { navigateTo } from '#app'
-import { definePageMeta, useAuth } from '#build/imports'
-import { toTypedSchema } from '@vee-validate/zod'
-import { useForm } from 'vee-validate'
-import { ref } from 'vue'
 import { z } from 'zod'
 import { useToast } from '~/components/ui/toast/use-toast'
 
@@ -65,7 +60,7 @@ const onLogin = form.handleSubmit(async (values) => {
             v-slot="{ componentField }"
             name="email"
           >
-            <FormItem v-auto-animate>
+            <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
@@ -80,7 +75,7 @@ const onLogin = form.handleSubmit(async (values) => {
             v-slot="{ componentField }"
             name="password"
           >
-            <FormItem v-auto-animate>
+            <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input

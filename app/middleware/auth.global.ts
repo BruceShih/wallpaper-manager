@@ -1,6 +1,4 @@
-import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 import defu from 'defu'
-import { useAuth } from '~/composables/useAuth'
 
 type MiddlewareOptions = false | {
   /**

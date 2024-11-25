@@ -1,39 +1,21 @@
 <script setup lang="ts">
-// TODO: WIP component
 import type { Column } from '@tanstack/vue-table'
-import type { Image } from '~~/server/utils/drizzle'
+import type { WallpaperAndTags } from '.'
 import { cn } from '@/lib/utils'
-import { computed } from 'vue'
 
-interface DataTableFacetedFilterOption {
-  label: string
-  value: string
-}
-
-interface DataTableFacetedFilter {
-  column?: Column<Image, unknown>
+interface GalleryTableFacetedFilter {
+  column?: Column<WallpaperAndTags, unknown>
   title?: string
-  options: DataTableFacetedFilterOption[]
+  options: {
+    label: string
+    value: string
+  }[]
 }
 
-const props = defineProps<DataTableFacetedFilter>()
+const props = defineProps<GalleryTableFacetedFilter>()
 
 const facets = computed(() => props.column?.getFacetedUniqueValues())
 const selectedValues = computed(() => new Set(props.column?.getFilterValue() as string[]))
-
-function onComboItemSelected(option: DataTableFacetedFilterOption) {
-  const isSelected = selectedValues.value.has(option.value)
-  if (isSelected) {
-    selectedValues.value.delete(option.value)
-  }
-  else {
-    selectedValues.value.add(option.value)
-  }
-  const filterValues = Array.from(selectedValues.value)
-  props.column?.setFilterValue(
-    filterValues.length ? filterValues : undefined
-  )
-}
 </script>
 
 <template>
@@ -88,8 +70,11 @@ function onComboItemSelected(option: DataTableFacetedFilterOption) {
       align="start"
       class="w-[200px] p-0"
     >
-      <Command>
-        <!-- <CommandInput :placeholder="title" /> -->
+      <Command
+        :filter-function="(val: unknown[], term) =>
+          (val as Record<'label' | 'value', string>[]).filter(i => i.label.toLowerCase()?.includes(term))"
+      >
+        <CommandInput :placeholder="title" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup>
@@ -97,7 +82,20 @@ function onComboItemSelected(option: DataTableFacetedFilterOption) {
               v-for="option in options"
               :key="option.value"
               :value="option"
-              @select="onComboItemSelected(option)"
+              @select="(e) => {
+                console.log(e.detail.value)
+                const isSelected = selectedValues.has(option.value)
+                if (isSelected) {
+                  selectedValues.delete(option.value)
+                }
+                else {
+                  selectedValues.add(option.value)
+                }
+                const filterValues = Array.from(selectedValues)
+                column?.setFilterValue(
+                  filterValues.length ? filterValues : undefined,
+                )
+              }"
             >
               <div
                 :class="cn(
