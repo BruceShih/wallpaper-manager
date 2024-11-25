@@ -17,7 +17,7 @@ export const useGalleryStore = defineStore('galleryStore', {
 
       const response = await store.fetchTags()
 
-      if (response.error) {
+      if (response.error.value) {
         toast({
           title: 'Failed to fetch tags',
           variant: 'destructive'
