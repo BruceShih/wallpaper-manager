@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     const tagsToRemove = ownedTags.filter(tag => !tags.includes(tag))
 
     await useDrizzle().batch([
-      useDrizzle().update(images).set({ favorite }),
+      useDrizzle().update(images).set({ favorite }).where(eq(images.key, path.data.id)),
       ...tagsToAdd.length > 0
         ? [useDrizzle()
             .insert(imagesToTags)
