@@ -74,6 +74,9 @@ importers:
       nuxt:
         specifier: ^3.14.1592
         version: 3.14.1592(@parcel/watcher@2.5.0)(@types/node@22.10.0)(drizzle-orm@0.36.4(@cloudflare/workers-types@4.20241112.0)(kysely@0.27.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.15.0(jiti@2.4.0))(ioredis@5.4.1)(lightningcss@1.28.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.27.4)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.0)(lightningcss@1.28.1)(terser@5.36.0))(vue-tsc@2.1.10(typescript@5.7.2))
+      nuxt-logrocket:
+        specifier: ^2.0.14
+        version: 2.0.14(magicast@0.3.5)(rollup@4.27.4)
       pinia:
         specifier: ^2.2.6
         version: 2.2.6(typescript@5.7.2)(vue@3.5.13(typescript@5.7.2))
@@ -4184,6 +4187,9 @@ packages:
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
+  logrocket@4.0.4:
+    resolution: {integrity: sha512-BKberHlh9bo9YZFoDqy1aJoi8KrHXi1Z9DSS6+Nqspr+onqU0wVfLacTb3sZt+KnmSR7uELJGUjE+Tikw3e23Q==}
+
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
@@ -4604,6 +4610,9 @@ packages:
     resolution: {integrity: sha512-ZVu45nuDrdb7nzKW2kLGY/N1vvFYLLbUVX6gUYw4BApKGGu4+GktTR5o48dGVgMYX9A8chaugl7TL9ZYmwC9Mg==}
     engines: {node: ^16.10.0 || >=18.0.0}
     hasBin: true
+
+  nuxt-logrocket@2.0.14:
+    resolution: {integrity: sha512-iQE0cWTBqmed8luXbcFqwfWlKpFHsQ3lEkStfMefRNXmuQvvTkFPzyg2F8FmE4zlKHiONkRR34EQCabkFVcxqQ==}
 
   nuxt-site-config-kit@2.2.21:
     resolution: {integrity: sha512-xO41Zf6bXlA9Zvj+fX7ftD+ITee4LfrkzHj85Gt4FpgwonFxzGO5pMBtAqIxXKJwuyT1z2wVAixHI+ov66wV0w==}
@@ -10586,6 +10595,8 @@ snapshots:
 
   lodash@4.17.21: {}
 
+  logrocket@4.0.4: {}
+
   longest-streak@3.1.0: {}
 
   loose-envify@1.4.0:
@@ -11235,6 +11246,16 @@ snapshots:
       boolbase: 1.0.0
 
   nuxi@3.15.0: {}
+
+  nuxt-logrocket@2.0.14(magicast@0.3.5)(rollup@4.27.4):
+    dependencies:
+      '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.27.4)
+      defu: 6.1.4
+      logrocket: 4.0.4
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
 
   nuxt-site-config-kit@2.2.21(magicast@0.3.5)(rollup@4.27.4)(vue@3.5.13(typescript@5.7.2)):
     dependencies:
