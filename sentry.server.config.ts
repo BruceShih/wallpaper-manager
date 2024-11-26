@@ -1,8 +1,9 @@
+import process from 'node:process'
 import * as Sentry from '@sentry/nuxt'
 
-Sentry.init({
-  dsn: useRuntimeConfig().public.sentry.dsn,
-  // Tracing
-  // We recommend adjusting this value in production, or using a tracesSampler for finer control.
-  tracesSampleRate: 1.0 // Capture 100% of the transactions
-})
+// Only run `init` when process.env.SENTRY_DSN is available.
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN
+  })
+}

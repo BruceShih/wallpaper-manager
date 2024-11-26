@@ -21,6 +21,7 @@ export default defineNuxtConfig({
 
   // https://devtools.nuxt.com
   devtools: { enabled: true },
+  sourcemap: { client: true },
 
   runtimeConfig: {
     origin: process.env.ORIGIN,
