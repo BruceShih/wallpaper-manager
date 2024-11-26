@@ -65,15 +65,6 @@ async function onEditSave() {
   editModels.favorite = false
   editModels.tags = []
 }
-async function onDelete() {
-  const { error } = await api.deleteWallpaper(props.row.original.key)
-  if (error.value) {
-    toast({
-      title: 'Failed to delete wallpaper',
-      variant: 'destructive'
-    })
-  }
-}
 </script>
 
 <template>
@@ -103,11 +94,11 @@ async function onDelete() {
             Edit
           </DropdownMenuItem>
         </DialogTrigger>
-        <DropdownMenuSeparator />
+        <!-- <DropdownMenuSeparator />
         <DropdownMenuItem @select="onDelete">
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        </DropdownMenuItem> -->
       </DropdownMenuContent>
     </DropdownMenu>
     <!-- Edit dialog -->

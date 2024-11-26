@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from '.'
-import { TableFacetedFilter, tags } from '.'
+import { TableFacetedFilter, TableViewOptions, tags } from '.'
 
 interface GalleryTableToolbarProps {
   table: Table<WallpaperAndTags>
@@ -41,5 +41,6 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         />
       </Button>
     </div>
+    <TableViewOptions :table="table" />
   </div>
 </template>

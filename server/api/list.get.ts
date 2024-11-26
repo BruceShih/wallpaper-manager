@@ -16,21 +16,8 @@ export default defineEventHandler(async (event) => {
     })
     const imageList = await useDrizzle().query.images.findMany({
       where: query.data.name ? like(images.key, `%${query.data.name}%`) : undefined
-      // orderBy: () => {
-      //   switch (query.data.sort) {
-      //     case 'date':
-      //       return query.data.order === 'asc' ? asc(images.createDate) : desc(images.createDate)
-      //     case 'name':
-      //       return query.data.order === 'asc' ? asc(images.key) : desc(images.key)
-      //   }
-      // },
-      // limit: query.data.size,
-      // offset: (query.data.page - 1) * query.data.size
     })
     const imagesToTagsList = await useDrizzle().query.imagesToTags.findMany()
-    // const imagesToTagsList = await useDrizzle().query.imagesToTags.findMany({
-    //   where: inArray(imagesToTags.imageKey, imageList.map(row => row.key))
-    // })
 
     const list = imageList.map((row) => {
       const tags = imagesToTagsList

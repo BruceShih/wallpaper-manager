@@ -6,16 +6,36 @@ interface GalleryTableViewOptionsProps {
   table: Table<WallpaperAndTags>
 }
 
-const props = defineProps<GalleryTableViewOptionsProps>()
+const { table } = defineProps<GalleryTableViewOptionsProps>()
 
-const columns = computed(() => props.table.getAllColumns()
+const columns = computed(() => table.getAllColumns()
   .filter(
     column =>
       typeof column.accessorFn !== 'undefined' && column.getCanHide()
   ))
+
+async function onDelete() {
+  const selectedRows = table.getFilteredSelectedRowModel().rows
+  const wallpaperKeys = selectedRows.map(row => row.original.key)
+  await table.options.meta?.removeRows(wallpaperKeys)
+  table.resetRowSelection()
+}
 </script>
 
 <template>
+  <Button
+    v-if="table.getIsSomeRowsSelected()"
+    class="ml-auto mr-2 h-8 lg:flex"
+    size="sm"
+    variant="destructive"
+    @click="onDelete"
+  >
+    <Icon
+      class="size-4"
+      name="radix-icons:trash"
+    />
+    Delete Selected
+  </Button>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button

@@ -26,12 +26,17 @@ import {
   TableHeader,
   TableRow
 } from '../ui/table'
+import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableProps {
   columns: ColumnDef<WallpaperAndTags, unknown>[]
   data: WallpaperAndTags[]
 }
 const props = defineProps<GalleryTableProps>()
+
+const api = useGalleryAPIs()
+const store = useGalleryStore()
+const { toast } = useToast()
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
@@ -47,7 +52,22 @@ const table = useVueTable({
     get columnVisibility() { return columnVisibility.value },
     get rowSelection() { return rowSelection.value }
   },
-  enableRowSelection: false,
+  meta: {
+    removeRows: async (keys: string[]) => {
+      const { error } = await api.deleteWallpapers(keys)
+      if (error.value) {
+        toast({
+          title: 'Failed to delete wallpaper(s)',
+          variant: 'destructive'
+        })
+      }
+      else {
+        store.wallpapers = store.wallpapers.filter(
+          wallpaper => !keys.includes(wallpaper.key)
+        )
+      }
+    }
+  },
   onSortingChange: val => valueUpdater(val, sorting),
   onColumnFiltersChange: val => valueUpdater(val, columnFilters),
   onColumnVisibilityChange: val => valueUpdater(val, columnVisibility),

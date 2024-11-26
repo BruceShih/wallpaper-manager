@@ -16,6 +16,10 @@ export const apiImageListQuerySchema = z.object({
   name: z.string().optional()
 })
 
+export const apiImageDeleteBodySchema = z.object({
+  keys: z.array(z.string())
+})
+
 export const apiImageUpdateBodySchema = z.object({
   favorite: z.boolean(),
   tags: z.array(z.number()).optional()
