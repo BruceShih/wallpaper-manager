@@ -1,5 +1,5 @@
 import { userToken } from '~~/server/database/schema'
-import { consola } from 'consola'
+import { useLogger } from '@nuxt/kit'
 
 export default defineEventHandler(async (event) => {
   const session = await serverAuth().api.getSession({
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   })
 
   if (!session) {
-    consola.withTag(`In server route: ${event.path}`).error('Unauthorized')
+    useLogger(`In server route: ${event.path}`).error('Unauthorized')
     throw createError({ statusCode: 401 })
   }
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      useLogger(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

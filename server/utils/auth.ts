@@ -2,7 +2,7 @@ import process from 'node:process'
 import { D1Dialect } from '@atinux/kysely-d1'
 import { betterAuth, type BetterAuthOptions } from 'better-auth'
 import { admin, anonymous, bearer } from 'better-auth/plugins'
-import { consola } from 'consola'
+import { useLogger } from '@nuxt/kit'
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
@@ -55,7 +55,7 @@ function getBaseURL() {
       baseURL = getRequestURL(useEvent()).origin
     }
     catch (error) {
-      consola.withTag('In utils/auth.ts').error(error)
+      useLogger('In utils/auth.ts').error(error)
     }
   }
   return baseURL
