@@ -7,7 +7,8 @@ export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('error', (err, context) => {
     const sentry = new Toucan({
       dsn: sentryConfig.dsn,
-      context: context.event
+      context: context.event,
+      tracesSampleRate: 1.0
     })
 
     sentry.setTag('server', true)
