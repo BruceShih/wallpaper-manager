@@ -1,5 +1,5 @@
 import { images, imagesToTags, tags } from '~~/server/database/schema'
-import { useLogger } from '@nuxt/kit'
+import { consola } from 'consola'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
 interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
@@ -7,7 +7,7 @@ interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
-    useLogger(`In server route: ${event.path}`).error(query.error)
+    consola.withTag(`In server route: ${event.path}`).error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
     const randomRow = imageQuery[0]
 
     if (!randomRow) {
-      useLogger(`In server route: ${event.path}`).error('No image found')
+      consola.withTag(`In server route: ${event.path}`).error('No image found')
       throw createError({ statusCode: 404 })
     }
 
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

@@ -1,11 +1,11 @@
 import { images, imagesToTags } from '~~/server/database/schema'
 import { apiImageDeleteBodySchema } from '~~/server/utils/validator'
-import { useLogger } from '@nuxt/kit'
+import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, data => apiImageDeleteBodySchema.safeParse(data))
   if (!body.success) {
-    useLogger(`In server route: ${event.path}`).error(body.error)
+    consola.withTag(`In server route: ${event.path}`).error(body.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

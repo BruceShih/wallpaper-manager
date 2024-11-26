@@ -1,9 +1,9 @@
-import { useLogger } from '@nuxt/kit'
+import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
-    useLogger(`In server route: ${event.path}`).error(path.error)
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

@@ -1,11 +1,11 @@
-import { useLogger } from '@nuxt/kit'
+import { consola } from 'consola'
 import { userToken } from '../database/schema'
 
 export default defineEventHandler(async (event) => {
   const { origin } = useRuntimeConfig(event)
 
   if (!origin) {
-    useLogger('In server middleware').error(new Error('Missing runtime config'))
+    consola.withTag('In server middleware').error(new Error('Missing runtime config'))
     throw createError({ statusCode: 500 })
   }
 
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       const authHeader = event.headers.get('Authorization')
 
       if (!authHeader) {
-        useLogger('In server middleware').error(new Error('Missing authorization header'))
+        consola.withTag('In server middleware').error(new Error('Missing authorization header'))
         throw createError({ statusCode: 401 })
       }
 
@@ -36,13 +36,13 @@ export default defineEventHandler(async (event) => {
         const validToken = allTokens.find(t => t.token === token)
 
         if (!validToken) {
-          useLogger('In server middleware').error(new Error('No valid token found'))
+          consola.withTag('In server middleware').error(new Error('No valid token found'))
           throw createError({ statusCode: 401 })
         }
       }
       catch (error) {
         if (error instanceof Error) {
-          useLogger('In server middleware').error(new Error('Server error'))
+          consola.withTag('In server middleware').error(new Error('Server error'))
           throw createError(error)
         }
       }
