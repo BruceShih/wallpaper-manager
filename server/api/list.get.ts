@@ -1,10 +1,10 @@
 import { images, tags } from '~~/server/database/schema'
-import { consola } from 'consola'
+import { useLogger } from 'nuxt/kit'
 
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    useLogger(`In server route: ${event.path}`).error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      useLogger(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }
