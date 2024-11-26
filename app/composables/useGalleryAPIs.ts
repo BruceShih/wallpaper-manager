@@ -30,13 +30,12 @@ export function useGalleryAPIs() {
       }
 
       const token = useBearerToken()
-      const { data, error } = await useFetch('/api/list', {
+      return await useFetch('/api/list', {
         headers: {
           Authorization: `Bearer ${token}`
         },
         query
       })
-      return { data, error }
     },
     async fetchTags() {
       if (import.meta.dev) {
@@ -52,34 +51,31 @@ export function useGalleryAPIs() {
       }
 
       const token = useBearerToken()
-      const { data, error } = await useFetch('/api/tags/list', {
+      return await useFetch('/api/tags/list', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      return { data, error }
     },
     async updateWallpaper(id: string, body: { favorite: boolean, tags?: number[] }) {
       const token = useBearerToken()
-      const { error } = await useFetch(`/api/image/update/${id}`, {
+      return await useFetch(`/api/image/update/${id}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
         },
         body
       })
-      return { error }
     },
     async deleteWallpapers(ids: string[]) {
       const token = useBearerToken()
-      const { error } = await useFetch('/api/image/delete', {
+      return await useFetch('/api/image/delete', {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
         },
         body: { keys: ids }
       })
-      return { error }
     }
   }
   return methods

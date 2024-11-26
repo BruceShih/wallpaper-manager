@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await hubBlob().delete(body.data.keys)
+    await hubBlob().del(body.data.keys)
 
     await useDrizzle().batch([
       useDrizzle()
