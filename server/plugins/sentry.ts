@@ -1,15 +1,24 @@
 import { Toucan } from 'toucan-js'
 
 export default defineNitroPlugin((nitroApp) => {
-  const config = useRuntimeConfig()
-  const sentryConfig = config.public.sentry
+  const { public: { sentryDsn, sentryReleaseName, environment } } = useRuntimeConfig()
 
-  nitroApp.hooks.hook('error', (err, context) => {
+  nitroApp.hooks.hook('error', async (err, context) => {
     const sentry = new Toucan({
-      dsn: sentryConfig.dsn,
+      dsn: sentryDsn,
+      release: sentryReleaseName,
+      environment,
       context: context.event,
-      tracesSampleRate: 1.0
+      request: context.event ? toWebRequest(context.event) : undefined,
+      requestDataOptions: {
+        allowedSearchParams: true,
+        allowedHeaders: true
+      }
     })
+
+    if (context.event) {
+      sentry.setRequestBody(await readRawBody(context.event))
+    }
 
     sentry.setTag('server', true)
     sentry.captureException(err)

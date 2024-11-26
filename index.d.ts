@@ -3,10 +3,10 @@ declare module 'nuxt/schema' {
     origin: string | undefined
   }
   interface PublicRuntimeConfig {
+    environment: string
     imageOrigin: string | undefined
-    sentry: {
-      dsn: string | undefined
-    }
+    sentryDsn: string | undefined
+    sentryReleaseName: string
   }
 }
 
