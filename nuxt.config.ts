@@ -15,8 +15,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@vueuse/nuxt',
-    '@pinia/nuxt',
-    'nuxt-logrocket'
+    '@pinia/nuxt'
   ],
 
   // https://devtools.nuxt.com
@@ -31,33 +30,6 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
-
-  logRocket: {
-    id: '',
-    dev: true,
-    enablePinia: true,
-    config: {
-      release: null,
-      console: {
-        isEnabled: true
-      },
-      network: {
-        isEnabled: true,
-        networkRequestSanitizer: () => {},
-        networkResponseSanitizer: () => {}
-      },
-      dom: {
-        isEnabled: true,
-        inputSanitizer: false,
-        textSanitizer: false,
-        baseHref: null
-      },
-      shouldCaptureIP: true,
-      rootHostname: null,
-      shouldDebugLog: true,
-      mergeIframes: false
-    }
-  },
 
   eslint: {
     config: {
