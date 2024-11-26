@@ -1,16 +1,16 @@
 import { images, imagesToTags } from '~~/server/database/schema'
-import { useLogger } from 'nuxt/kit'
+import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
   if (!path.success) {
-    useLogger(`In server route: ${event.path}`).error(path.error)
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
     throw createError({ statusCode: 400 })
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
   if (!query.success) {
-    useLogger(`In server route: ${event.path}`).error(query.error)
+    consola.withTag(`In server route: ${event.path}`).error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     const file = await readRawBody(event)
     if (!file) {
-      useLogger(`In server route: ${event.path}`).error('No file attached')
+      consola.withTag(`In server route: ${event.path}`).error('No file attached')
       throw createError({ statusCode: 400 })
     }
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     await hubBlob().del(path.data.id)
 
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

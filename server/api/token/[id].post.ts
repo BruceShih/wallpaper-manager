@@ -1,10 +1,10 @@
 import { userToken } from '~~/server/database/schema'
-import { useLogger } from 'nuxt/kit'
+import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
   if (!path.success) {
-    useLogger(`In server route: ${event.path}`).error(path.error)
+    consola.withTag(`In server route: ${event.path}`).error(path.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const body = await readValidatedBody(event, data => apiTokenUpdateBodySchema.safeParse(data))
   if (!body.success) {
-    useLogger(`In server route: ${event.path}`).error(body.error)
+    consola.withTag(`In server route: ${event.path}`).error(body.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }

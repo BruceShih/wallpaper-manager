@@ -1,4 +1,4 @@
-import { useLogger } from 'nuxt/kit'
+import { consola } from 'consola'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      useLogger(`In server route: ${event.path}`).error(error)
+      consola.withTag(`In server route: ${event.path}`).error(error)
       throw createError(error)
     }
   }
