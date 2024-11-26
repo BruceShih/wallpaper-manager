@@ -4,6 +4,9 @@ declare module 'nuxt/schema' {
   }
   interface PublicRuntimeConfig {
     imageOrigin: string | undefined
+    sentry: {
+      dsn: string | undefined
+    }
   }
 }
 

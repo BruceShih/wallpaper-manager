@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@vueuse/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@sentry/nuxt/module'
   ],
 
   // https://devtools.nuxt.com
@@ -24,12 +25,23 @@ export default defineNuxtConfig({
   runtimeConfig: {
     origin: process.env.ORIGIN,
     public: {
-      imageOrigin: process.env.IMAGE_ORIGIN
+      imageOrigin: process.env.IMAGE_ORIGIN,
+      sentry: {
+        dsn: process.env.SENTRY_DSN
+      }
     }
   },
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
+
+  sentry: {
+    sourceMapsUploadOptions: {
+      org: 'bruce-shih',
+      project: 'wallpaper-manager',
+      authToken: process.env.SENTRY_AUTH_TOKEN
+    }
+  },
 
   eslint: {
     config: {
