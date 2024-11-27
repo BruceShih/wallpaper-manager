@@ -70,7 +70,7 @@ export function useGalleryAPIs() {
     async deleteWallpapers(ids: string[]) {
       const token = useBearerToken()
       return await useFetch('/api/image/delete', {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
         },
