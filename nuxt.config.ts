@@ -1,15 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import process from 'node:process'
 
-const environment
-  = process.env.NODE_ENV === 'development'
-    ? 'local'
-    : process.env.CF_PAGES_BRANCH === 'master'
-      ? 'production'
-      : process.env.CF_PAGES_BRANCH
-        ?? 'unknown'
-const sentryReleaseName = process.env.CF_PAGES_COMMIT_SHA ?? 'unknown commit'
-
 export default defineNuxtConfig({
   // https://nuxt.com/modules
   modules: [
@@ -24,8 +15,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@vueuse/nuxt',
-    '@pinia/nuxt',
-    '@sentry/nuxt/module'
+    '@pinia/nuxt'
   ],
 
   // https://devtools.nuxt.com
@@ -35,32 +25,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     origin: process.env.ORIGIN,
     public: {
-      environment,
-      imageOrigin: process.env.IMAGE_ORIGIN,
-      sentryDsn: process.env.SENTRY_DSN,
-      sentryReleaseName
+      imageOrigin: process.env.IMAGE_ORIGIN
     }
   },
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
-
-  sentry: {
-    sourceMapsUploadOptions: {
-      org: 'bruce-shih',
-      project: 'wallpaper-manager',
-      authToken: process.env.SENTRY_AUTH_TOKEN
-    },
-    unstable_sentryBundlerPluginOptions: {
-      release: {
-        name: sentryReleaseName,
-        deploy: {
-          env: environment,
-          url: process.env.CF_PAGES_URL
-        }
-      }
-    }
-  },
 
   eslint: {
     config: {
