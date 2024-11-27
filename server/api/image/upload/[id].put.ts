@@ -4,13 +4,13 @@ import { consola } from 'consola'
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiImageUploadPathSchema.safeParse(data))
   if (!path.success) {
-    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    consola.error(path.error)
     throw createError({ statusCode: 400 })
   }
 
   const query = await getValidatedQuery(event, data => apiImageUploadQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    consola.error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     const file = await readRawBody(event)
     if (!file) {
-      consola.withTag(`In server route: ${event.path}`).error('No file attached')
+      consola.error('No file attached')
       throw createError({ statusCode: 400 })
     }
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     await hubBlob().del(path.data.id)
 
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      consola.error(error)
       throw createError(error)
     }
   }

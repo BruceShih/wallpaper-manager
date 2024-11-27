@@ -4,7 +4,7 @@ import { consola } from 'consola'
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    consola.error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      consola.error(error)
       throw createError(error)
     }
   }

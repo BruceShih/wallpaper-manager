@@ -4,7 +4,7 @@ import { consola } from 'consola'
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiTokenDeletePathSchema.safeParse(data))
   if (!path.success) {
-    consola.withTag(`In server route: ${event.path}`).error(path.error)
+    consola.error(path.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      consola.error(error)
       throw createError(error)
     }
   }

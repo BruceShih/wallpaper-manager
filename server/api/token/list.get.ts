@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   })
 
   if (!session) {
-    consola.withTag(`In server route: ${event.path}`).error('Unauthorized')
+    consola.error('Unauthorized')
     throw createError({ statusCode: 401 })
   }
 
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      consola.error(error)
       throw createError(error)
     }
   }

@@ -55,7 +55,7 @@ function getBaseURL() {
       baseURL = getRequestURL(useEvent()).origin
     }
     catch (error) {
-      consola.withTag('In utils/auth.ts').error(error)
+      consola.error(error)
     }
   }
   return baseURL

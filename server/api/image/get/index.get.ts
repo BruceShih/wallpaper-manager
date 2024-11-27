@@ -7,7 +7,7 @@ interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
-    consola.withTag(`In server route: ${event.path}`).error(query.error)
+    consola.error(query.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
     const randomRow = imageQuery[0]
 
     if (!randomRow) {
-      consola.withTag(`In server route: ${event.path}`).error('No image found')
+      consola.error('No image found')
       throw createError({ statusCode: 404 })
     }
 
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error) {
     if (error instanceof Error) {
-      consola.withTag(`In server route: ${event.path}`).error(error)
+      consola.error(error)
       throw createError(error)
     }
   }
