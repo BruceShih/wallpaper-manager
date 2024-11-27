@@ -12,20 +12,14 @@ export default defineEventHandler(async (event) => {
   try {
     await hubBlob().del(body.data.keys)
 
-    await useDrizzle()
-      .delete(imagesToTags)
-      .where(inArray(imagesToTags.imageKey, body.data.keys))
-    await useDrizzle()
-      .delete(images)
-      .where(inArray(images.key, body.data.keys))
-    // await useDrizzle().batch([
-    //   useDrizzle()
-    //     .delete(imagesToTags)
-    //     .where(inArray(imagesToTags.imageKey, body.data.keys)),
-    //   useDrizzle()
-    //     .delete(images)
-    //     .where(inArray(images.key, body.data.keys))
-    // ])
+    await useDrizzle().batch([
+      useDrizzle()
+        .delete(imagesToTags)
+        .where(inArray(imagesToTags.imageKey, body.data.keys)),
+      useDrizzle()
+        .delete(images)
+        .where(inArray(images.key, body.data.keys))
+    ])
 
     return 'Image(s) deleted'
   }
