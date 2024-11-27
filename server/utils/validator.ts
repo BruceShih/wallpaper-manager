@@ -17,7 +17,7 @@ export const apiImageListQuerySchema = z.object({
 })
 
 export const apiImageDeleteBodySchema = z.object({
-  keys: z.array(z.string())
+  keys: z.array(z.string().min(1))
 })
 
 export const apiImageUpdateBodySchema = z.object({
