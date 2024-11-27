@@ -60,7 +60,7 @@ export function useGalleryAPIs() {
     async updateWallpaper(id: string, body: { favorite: boolean, tags?: number[] }) {
       const token = useBearerToken()
       return await useFetch(`/api/image/update/${id}`, {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`
         },
