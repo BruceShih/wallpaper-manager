@@ -1,14 +1,24 @@
 <script setup lang="ts">
+import { ListItemTagSelect } from '.'
+
+interface UploadListToolbarProps {
+  imageSelected: number
+  allTags: Tag[]
+}
+
+const { imageSelected, allTags } = defineProps<UploadListToolbarProps>()
 const emits = defineEmits<{
   change: [files: File[]]
   upload: [void]
+  tagsApply: [tags: string[]]
 }>()
 
 const fileInput = ref<HTMLInputElement>()
+const tags = ref<string[]>([])
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between space-x-4">
     <div class="grid w-[300px] max-w-sm items-center gap-1.5">
       <input
         id="file"
@@ -34,17 +44,38 @@ const fileInput = ref<HTMLInputElement>()
         Select images...
       </label>
     </div>
-    <Button
-      class="ml-auto mr-2 h-8 lg:flex"
-      size="sm"
-      variant="default"
-      @click="emits('upload')"
-    >
-      <Icon
-        class="size-4"
-        name="radix-icons:upload"
+    <div class="ml-auto flex w-[600px] items-center justify-end space-x-2">
+      <span class="w-[150px] text-sm">
+        {{ imageSelected }} selected
+      </span>
+      <ListItemTagSelect
+        v-model="tags"
+        :tags="allTags"
       />
-      Upload
-    </Button>
+      <Button
+        class="h-8 lg:flex"
+        size="sm"
+        variant="secondary"
+        @click="emits('tagsApply', tags)"
+      >
+        <Icon
+          class="size-4"
+          name="radix-icons:bookmark"
+        />
+        Apply tags
+      </Button>
+      <Button
+        class="h-8 lg:flex"
+        size="sm"
+        variant="default"
+        @click="emits('upload')"
+      >
+        <Icon
+          class="size-4"
+          name="radix-icons:upload"
+        />
+        Upload
+      </Button>
+    </div>
   </div>
 </template>

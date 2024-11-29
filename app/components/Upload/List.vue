@@ -10,16 +10,18 @@ const { tags } = defineProps<UploadListProps>()
 
 const api = useWallpaperAPIs()
 
-const selectedImages = reactive<UploadListItem[]>([])
+const images = reactive<UploadListItem[]>([])
+
+const totalImageSelected = computed(() => images.filter(image => image.selected).length)
 
 function onFileSelected(files: File[]) {
-  const newFiles = files.filter(file => !selectedImages.some(image => image.image?.name === file.name))
-  selectedImages.push(...newFiles.map(
-    file => ({ image: file, tags: [], stats: 'not-started' } satisfies UploadListItem)
+  const newFiles = files.filter(file => !images.some(image => image.image?.name === file.name))
+  images.push(...newFiles.map(
+    file => ({ image: file, tags: [], selected: false, stats: 'not-started' } satisfies UploadListItem)
   ))
 }
 function onUpload() {
-  const promises = selectedImages.map(image => (
+  const promises = images.map(image => (
     api.uploadWallpaper(image.image.name, image.tags, image.image)
       .then((response) => {
         if (response.status.value === 'success')
@@ -33,24 +35,36 @@ function onUpload() {
   ))
   Promise.allSettled(promises)
 }
+function onTagsApply(tags: string[]) {
+  // this is to prevent image.tags from being reactive
+  tags = [...tags]
+
+  images.forEach((image) => {
+    if (image.selected)
+      image.tags = tags
+  })
+}
 </script>
 
 <template>
   <ListToolbar
+    :all-tags="tags"
+    :image-selected="totalImageSelected"
     @change="onFileSelected"
+    @tags-apply="onTagsApply"
     @upload="onUpload"
   />
   <div class="flex gap-4 rounded-md border p-4">
     <Label
-      v-if="selectedImages.length === 0"
+      v-if="images.length === 0"
       class="flex h-32 w-full items-center justify-center"
     >
       No image selected
     </Label>
     <ListItems
-      v-model="selectedImages"
+      v-model="images"
       :all-tags="tags"
-      @remove="item => selectedImages.splice(selectedImages.indexOf(item), 1)"
+      @remove="item => images.splice(images.indexOf(item), 1)"
     />
   </div>
 </template>
