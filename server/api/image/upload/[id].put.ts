@@ -39,7 +39,13 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400 })
     }
 
-    await hubBlob().put(path.data.id, file, { contentType: 'image/jpeg' })
+    // await hubBlob().put(path.data.id, file, { contentType: 'image/jpeg' })
+    await hubBlob().handleUpload(event, {
+      formKey: 'file',
+      ensure: {
+        types: ['image/jpeg']
+      }
+    })
 
     await useDrizzle().batch([
       useDrizzle()

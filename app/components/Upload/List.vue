@@ -23,11 +23,8 @@ function onFileSelected(files: File[]) {
 function onUpload() {
   const promises = images.map(image => (
     api.uploadWallpaper(image.image.name, image.tags, image.image)
-      .then((response) => {
-        if (response.status.value === 'success')
-          image.stats = 'uploaded'
-        else
-          image.stats = 'failed'
+      .then(() => {
+        image.stats = 'uploaded'
       })
       .catch(() => {
         image.stats = 'failed'

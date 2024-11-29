@@ -23,9 +23,10 @@ const tags = ref<string[]>([])
       <input
         id="file"
         ref="fileInput"
-        accept="image/*"
+        accept="jpeg, jpg"
         class="hidden"
         multiple
+        name="file"
         placeholder="files"
         type="file"
         @input="emits('change', Array.from(fileInput?.files || []))"

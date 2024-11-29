@@ -68,16 +68,25 @@ export function useWallpaperAPIs() {
         body
       })
     },
-    async uploadWallpaper(id: string, tags: string[], body: Blob) {
+    async uploadWallpaper(id: string, tags: string[], body: File) {
       const token = useBearerToken()
       const queryString = tags.length > 0 ? `?tags=${tags.join('&tags=')}` : ''
-      return await useFetch(`/api/image/upload/${id}${queryString}`, {
+      const upload = useUpload(`/api/image/upload/${id}${queryString}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
-        },
-        body
+        }
       })
+      const formData = new FormData()
+      formData.append('file', body)
+      return await upload(body)
+      // return await useFetch(`/api/image/upload/${id}${queryString}`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   },
+      //   body
+      // })
     },
     async deleteWallpapers(ids: string[]) {
       const token = useBearerToken()
