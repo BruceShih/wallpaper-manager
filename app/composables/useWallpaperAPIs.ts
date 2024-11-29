@@ -80,13 +80,6 @@ export function useWallpaperAPIs() {
       const formData = new FormData()
       formData.append('file', body)
       return await upload(body)
-      // return await useFetch(`/api/image/upload/${id}${queryString}`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   },
-      //   body
-      // })
     },
     async deleteWallpapers(ids: string[]) {
       const token = useBearerToken()
