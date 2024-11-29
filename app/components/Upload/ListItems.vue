@@ -27,13 +27,13 @@ function getImagePreview(image: File | null) {
   >
     <CardHeader>
       <CardTitle class="flex items-center justify-between text-sm">
-        <span>
+        <div class="w-4/5 truncate">
           {{ item.image?.name }}
-        </span>
+        </div>
         <Button
-          class="-mr-2 h-8"
+          class="size-8"
           size="icon"
-          variant="ghost"
+          variant="outline"
           @click="emits('remove', item)"
         >
           <Icon
