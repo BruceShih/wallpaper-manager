@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
       return 'Image existed'
     }
 
-    const file = await readRawBody(event)
+    const file = await readRawBody(event, 'binary')
     if (!file) {
       consola.error('No file attached')
       throw createError({ statusCode: 400 })
