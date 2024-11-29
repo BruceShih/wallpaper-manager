@@ -22,21 +22,16 @@ function onUpload() {
   const promises = selectedImages.map(image => (
     api.uploadWallpaper(image.image.name, image.tags, image.image)
       .then((response) => {
-        if (response.error) {
-          image.stats = 'failed'
-        }
-        else {
+        if (response.status.value === 'success')
           image.stats = 'uploaded'
-        }
+        else
+          image.stats = 'failed'
       })
       .catch(() => {
         image.stats = 'failed'
       })
   ))
   Promise.allSettled(promises)
-  // .then(() => {
-  //   selectedImages.splice(0, selectedImages.length)
-  // })
 }
 </script>
 
