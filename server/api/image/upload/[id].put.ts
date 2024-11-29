@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
       )
 
     const row = imageQuery[0]
+
     if (row) {
       setResponseStatus(event, 202, 'Image existed')
       return 'Image existed'
@@ -39,7 +40,7 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400 })
     }
 
-    await hubBlob().put(path.data.id, file, { contentType: 'image/jpeg' })
+    await hubBlob().put(path.data.id, file)
 
     await useDrizzle().batch([
       useDrizzle()
