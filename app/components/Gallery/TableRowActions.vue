@@ -2,7 +2,7 @@
 import type { Row } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from '.'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
-import { useGalleryAPIs } from '~/composables/useGalleryAPIs'
+import { useWallpaperAPIs } from '~/composables/useWallpaperAPIs'
 import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableRowActionsProps {
@@ -11,8 +11,8 @@ interface GalleryTableRowActionsProps {
 
 const props = defineProps<GalleryTableRowActionsProps>()
 
-const store = useGalleryStore()
-const api = useGalleryAPIs()
+const store = useWallpaperStore()
+const api = useWallpaperAPIs()
 const { toast } = useToast()
 
 const open = ref(false)
@@ -58,6 +58,10 @@ async function onEditSave() {
     })
   }
   else {
+    toast({
+      title: 'Wallpaper updated',
+      variant: 'default'
+    })
     open.value = false
   }
 

@@ -34,8 +34,8 @@ interface GalleryTableProps {
 }
 const props = defineProps<GalleryTableProps>()
 
-const api = useGalleryAPIs()
-const store = useGalleryStore()
+const api = useWallpaperAPIs()
+const store = useWallpaperStore()
 const { toast } = useToast()
 
 const sorting = ref<SortingState>([])
@@ -65,6 +65,10 @@ const table = useVueTable({
         store.wallpapers = store.wallpapers.filter(
           wallpaper => !keys.includes(wallpaper.key)
         )
+        toast({
+          title: 'Wallpaper(s) deleted',
+          variant: 'default'
+        })
       }
     }
   },

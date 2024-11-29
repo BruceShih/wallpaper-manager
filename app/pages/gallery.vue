@@ -2,7 +2,13 @@
 import { Table as GalleryTable } from '~/components/Gallery'
 import { columns } from '~/components/Gallery/columns'
 
-const store = useGalleryStore()
+if (import.meta.dev) {
+  definePageMeta({
+    auth: false
+  })
+}
+
+const store = useWallpaperStore()
 
 onMounted(async () => {
   await store.fetchWallpapers()

@@ -5,7 +5,7 @@ import { useToast } from '~/components/ui/toast/use-toast'
 const { toast } = useToast()
 
 const loading = ref(false)
-const sessionToken = ref(import.meta.client ? localStorage.getItem('bearer_token') || '' : '')
+const sessionToken = useBearerToken()
 const userTokens = ref<UserToken[]>([])
 
 async function fetchTokens() {
@@ -14,7 +14,7 @@ async function fetchTokens() {
 
   const { data } = await useFetch('/api/token/list', {
     headers: {
-      Authorization: `Bearer ${sessionToken.value}`
+      Authorization: `Bearer ${sessionToken}`
     }
   })
 
@@ -25,7 +25,7 @@ async function createToken() {
   const { data, error } = await useFetch<UserToken[]>('/api/token', {
     method: 'PUT',
     headers: {
-      Authorization: `Bearer ${sessionToken.value}`
+      Authorization: `Bearer ${sessionToken}`
     }
   })
 
@@ -50,7 +50,7 @@ async function updateToken(id: number, enable: boolean) {
   const { error } = await useFetch(`/api/token/${id}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${sessionToken.value}`
+      Authorization: `Bearer ${sessionToken}`
     },
     body: JSON.stringify({ enable })
   })
@@ -71,7 +71,7 @@ async function deleteToken(id: number) {
   const { error } = await useFetch(`/api/token/${id}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${sessionToken.value}`
+      Authorization: `Bearer ${sessionToken}`
     }
   })
 

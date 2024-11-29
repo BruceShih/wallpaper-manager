@@ -1,7 +1,7 @@
 import { randBoolean, randFileName, randPastDate } from '@ngneat/falso'
 import type { WallpaperAndTags } from '~/components/Gallery'
 
-export function useGalleryAPIs() {
+export function useWallpaperAPIs() {
   const methods = {
     async fetchWallpapers(query?: {
       page: number
@@ -26,7 +26,7 @@ export function useGalleryAPIs() {
             }))
           })))
         )
-        return { data: ref(data) }
+        return { data: ref(data), error: null }
       }
 
       const token = useBearerToken()
@@ -40,14 +40,14 @@ export function useGalleryAPIs() {
     async fetchTags() {
       if (import.meta.dev) {
         const data = await new Promise<Tag[]>(
-          resolve => resolve(Array.from({ length: Math.floor(Math.random() * 2) }, (_, _j) => ({
+          resolve => resolve(([{
             id: 1,
             enabled: true,
             tag: 'nsfw',
             sensitive: true
-          })))
+          }]))
         )
-        return { data: ref(data) }
+        return { data: ref(data), error: null }
       }
 
       const token = useBearerToken()
@@ -61,6 +61,17 @@ export function useGalleryAPIs() {
       const token = useBearerToken()
       return await useFetch(`/api/image/update/${id}`, {
         method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body
+      })
+    },
+    async uploadWallpaper(id: string, tags: string[], body: Blob) {
+      const token = useBearerToken()
+      const queryString = tags.length > 0 ? `?tags=${tags.join('&tags=')}` : ''
+      return await useFetch(`/api/image/upload/${id}${queryString}`, {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
         },

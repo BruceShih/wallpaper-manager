@@ -1,15 +1,15 @@
 import type { Tag } from '~~/server/utils/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery'
 import { useToast } from '~/components/ui/toast/use-toast'
-import { useGalleryAPIs } from '~/composables/useGalleryAPIs'
+import { useWallpaperAPIs } from '~/composables/useWallpaperAPIs'
 
-interface GalleryStoreState {
+interface WallpaperStoreState {
   wallpapers: WallpaperAndTags[]
   tags: Tag[]
 }
 
-export const useGalleryStore = defineStore('galleryStore', {
-  state: (): GalleryStoreState => ({
+export const useWallpaperStore = defineStore('galleryStore', {
+  state: (): WallpaperStoreState => ({
     wallpapers: [],
     tags: []
   }),
@@ -21,7 +21,7 @@ export const useGalleryStore = defineStore('galleryStore', {
       sort: 'date' | 'name'
       order: 'asc' | 'desc'
     }) {
-      const store = useGalleryAPIs()
+      const store = useWallpaperAPIs()
       const { toast } = useToast()
 
       const response = await store.fetchWallpapers(query)
@@ -35,7 +35,7 @@ export const useGalleryStore = defineStore('galleryStore', {
       this.wallpapers = response.data.value || []
     },
     async fetchTags() {
-      const store = useGalleryAPIs()
+      const store = useWallpaperAPIs()
       const { toast } = useToast()
 
       const response = await store.fetchTags()
