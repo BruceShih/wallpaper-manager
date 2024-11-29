@@ -36,12 +36,11 @@ function onUpload() {
   Promise.allSettled(promises)
 }
 function onTagsApply(tags: string[]) {
-  // this is to prevent image.tags from being reactive
-  tags = [...tags]
-
   images.forEach((image) => {
-    if (image.selected)
-      image.tags = tags
+    if (image.selected) {
+      // this is to prevent image.tags from being reactive
+      image.tags = [...tags]
+    }
   })
 }
 </script>
