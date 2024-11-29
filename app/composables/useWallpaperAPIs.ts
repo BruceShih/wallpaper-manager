@@ -78,7 +78,7 @@ export function useWallpaperAPIs() {
         }
       })
       const formData = new FormData()
-      formData.append('file', body)
+      formData.append('file', new Blob([body], { type: body.type }), body.name)
       return await upload(body)
     },
     async deleteWallpapers(ids: string[]) {
