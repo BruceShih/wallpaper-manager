@@ -1,5 +1,8 @@
-import { images, tags } from '~~/server/database/schema'
 import { consola } from 'consola'
+import { eq, like } from 'drizzle-orm'
+import { images, tags } from '~~/server/database/schema'
+import { useDrizzle } from '../utils/drizzle'
+import { apiImageListQuerySchema } from '../utils/validator'
 
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))

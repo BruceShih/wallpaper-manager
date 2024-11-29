@@ -1,5 +1,9 @@
-import { images, imagesToTags, tags } from '~~/server/database/schema'
+import type { Image, ImagesToTags, Tag } from '~~/server/utils/drizzle'
 import { consola } from 'consola'
+import { and, eq, isNull, sql } from 'drizzle-orm'
+import { images, imagesToTags, tags } from '~~/server/database/schema'
+import { useDrizzle } from '~~/server/utils/drizzle'
+import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 
 interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
 interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }

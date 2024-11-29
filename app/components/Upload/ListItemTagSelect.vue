@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UploadListItem } from '.'
+import type { Tag } from '~~/server/utils/drizzle'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
 
 interface UploadListItemTagSelectProps {

@@ -1,6 +1,8 @@
-import { images, imagesToTags } from '~~/server/database/schema'
-import { apiImageDeleteBodySchema } from '~~/server/utils/validator'
 import { consola } from 'consola'
+import { inArray } from 'drizzle-orm'
+import { images, imagesToTags } from '~~/server/database/schema'
+import { useDrizzle } from '~~/server/utils/drizzle'
+import { apiImageDeleteBodySchema } from '~~/server/utils/validator'
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, data => apiImageDeleteBodySchema.safeParse(data))

@@ -1,4 +1,5 @@
 import { consola } from 'consola'
+import { apiGenericPathSchema } from '~~/server/utils/validator'
 
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))

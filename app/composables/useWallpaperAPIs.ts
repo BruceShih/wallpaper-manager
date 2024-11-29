@@ -1,5 +1,6 @@
-import { randBoolean, randFileName, randPastDate } from '@ngneat/falso'
+import type { Tag } from '~~/server/utils/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery'
+import { randBoolean, randFileName, randPastDate } from '@ngneat/falso'
 
 export function useWallpaperAPIs() {
   const methods = {

@@ -1,5 +1,7 @@
-import { userToken } from '~~/server/database/schema'
 import { consola } from 'consola'
+import { userToken } from '~~/server/database/schema'
+import { serverAuth } from '~~/server/utils/auth'
+import { useDrizzle } from '~~/server/utils/drizzle'
 
 export default defineEventHandler(async (event) => {
   const session = await serverAuth().api.getSession({

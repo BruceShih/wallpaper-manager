@@ -1,3 +1,5 @@
+import type { RowData } from '@tanstack/vue-table'
+
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
     origin: string | undefined

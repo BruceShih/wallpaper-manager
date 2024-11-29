@@ -1,5 +1,8 @@
-import { images } from '~~/server/database/schema'
 import { consola } from 'consola'
+import { eq } from 'drizzle-orm'
+import { images } from '~~/server/database/schema'
+import { useDrizzle } from '~~/server/utils/drizzle'
+import { apiGenericPathSchema } from '~~/server/utils/validator'
 
 export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))

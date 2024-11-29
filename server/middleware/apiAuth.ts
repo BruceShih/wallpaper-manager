@@ -1,5 +1,7 @@
 import { consola } from 'consola'
+import { eq } from 'drizzle-orm'
 import { userToken } from '../database/schema'
+import { useDrizzle } from '../utils/drizzle'
 
 export default defineEventHandler(async (event) => {
   const { origin } = useRuntimeConfig(event)
