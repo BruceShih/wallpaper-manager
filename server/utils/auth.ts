@@ -10,7 +10,8 @@ export function serverAuth() {
     const options: BetterAuthOptions = {
       database: {
         dialect: new D1Dialect({
-          // @ts-expect-error after upgrade to "@nuxthub/core": "^0.8.7", 'dump()' function is removed
+          // @ts-expect-error after "@nuxthub/core": "^0.8.7", 'dump()' is deprecated by cloudflare
+          // and removed from the type definition, but in "@cloudflare/workers-types" it is still there
           database: hubDatabase()
         }),
         type: 'sqlite'
