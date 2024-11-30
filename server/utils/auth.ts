@@ -9,12 +9,8 @@ export function serverAuth() {
   if (!_auth) {
     const options: BetterAuthOptions = {
       database: {
-        /**
-         * NOTE: after upgrade to "@nuxthub/core": "^0.8.7", 'dump()' function is removed due to deprecation
-         * by cloudflare
-         * the type of @atinux/kysely-d1 needs to be updated
-         */
         dialect: new D1Dialect({
+          // @ts-expect-error after upgrade to "@nuxthub/core": "^0.8.7", 'dump()' function is removed
           database: hubDatabase()
         }),
         type: 'sqlite'
