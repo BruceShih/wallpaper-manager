@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Tag } from '~~/server/utils/drizzle'
 import { ListItemTagSelect } from '.'
 
 interface UploadListToolbarProps {
@@ -23,7 +24,7 @@ const tags = ref<string[]>([])
       <input
         id="file"
         ref="fileInput"
-        accept="jpeg, jpg"
+        accept="image/*"
         class="hidden"
         multiple
         name="file"
