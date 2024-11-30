@@ -4,7 +4,7 @@ import { images } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
 import { apiGenericPathSchema } from '~~/server/utils/validator'
 
-export default defineCachedEventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
     consola.error(path.error)
@@ -29,6 +29,7 @@ export default defineCachedEventHandler(async (event) => {
       'Image-Id': path.data.id,
       'Favorite': favorite.valueOf().toString(),
       'ETag': crypto.randomUUID(),
+      'Cache-Control': 'public, max-age=604800',
       'Content-Security-Policy': 'default-src \'none\';'
     })
 
@@ -40,4 +41,4 @@ export default defineCachedEventHandler(async (event) => {
       throw createError(error)
     }
   }
-}, { maxAge: 60 * 60 /* 1 hour */ })
+})
