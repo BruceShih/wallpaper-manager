@@ -11,21 +11,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400 })
   }
 
-  const requestUrl = getRequestURL(event)
-  const cache = await caches.open('wallpaper')
-  const cachedResponse = await cache.match(requestUrl)
-  if (cachedResponse) {
-    consola.info('Cache hit: ', requestUrl)
-    return cachedResponse
-  }
-
   try {
     const imageQuery = await useDrizzle().query.images.findFirst({
       where: eq(images.key, path.data.id)
     })
 
     const row = imageQuery
-
     if (!row) {
       consola.error('No image found')
       throw createError({ statusCode: 404 })
@@ -45,6 +36,14 @@ export default defineEventHandler(async (event) => {
       'Favorite': favorite.valueOf().toString(),
       'Content-Security-Policy': 'default-src \'none\';'
     })
+
+    const requestUrl = getRequestURL(event)
+    const cache = await caches.open('wallpaper')
+    const cachedResponse = await cache.match(requestUrl)
+    if (cachedResponse) {
+      consola.info('Cache hit: ', requestUrl)
+      sendWebResponse(event, cachedResponse)
+    }
 
     const blobResponse = await hubBlob().get(path.data.id)
     const response = new Response(blobResponse)
