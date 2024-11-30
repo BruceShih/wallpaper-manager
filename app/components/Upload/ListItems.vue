@@ -23,7 +23,6 @@ function getImagePreview(image: File | null) {
   <Card
     v-for="(item, index) in modelValue"
     :key="index"
-    class="w-[240px]"
     :class="{ 'border-2 border-blue-500': item.selected }"
     @click.prevent="item.selected = !item.selected"
   >

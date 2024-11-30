@@ -50,7 +50,7 @@ function onTagsApply(tags: string[]) {
     @tags-apply="onTagsApply"
     @upload="onUpload"
   />
-  <div class="flex gap-4 rounded-md border p-4">
+  <div class="grid grid-cols-5 gap-4 rounded-md border p-4">
     <Label
       v-if="images.length === 0"
       class="flex h-32 w-full items-center justify-center"
