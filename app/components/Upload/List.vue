@@ -17,19 +17,44 @@ const totalImageSelected = computed(() => images.filter(image => image.selected)
 function onFileSelected(files: File[]) {
   const newFiles = files.filter(file => !images.some(image => image.image?.name === file.name))
   images.push(...newFiles.map(
-    file => ({ image: file, tags: [], selected: false, stats: 'not-started' } satisfies UploadListItem)
+    file => ({ image: file, tags: [], selected: false, status: 'not-started' } satisfies UploadListItem)
   ))
 }
 function onUpload() {
-  const promises = images.map(image => (
-    api.uploadWallpaper(image.image.name, image.tags, image.image)
-      .then(() => {
-        image.stats = 'uploaded'
-      })
-      .catch(() => {
-        image.stats = 'failed'
-      })
-  ))
+  const promises: Promise<unknown>[] = []
+
+  const isSomeSelected = images.some(image => image.selected)
+  if (isSomeSelected) {
+    images.forEach((image) => {
+      if (image.selected) {
+        image.status = 'uploading'
+        promises.push(
+          api.uploadWallpaper({ id: image.image.name, tags: image.tags, body: image.image })
+            .then(() => {
+              image.status = 'uploaded'
+            })
+            .catch(() => {
+              image.status = 'failed'
+            })
+        )
+      }
+    })
+  }
+  else {
+    images.forEach((image) => {
+      image.status = 'uploading'
+      promises.push(
+        api.uploadWallpaper({ id: image.image.name, tags: image.tags, body: image.image })
+          .then(() => {
+            image.status = 'uploaded'
+          })
+          .catch(() => {
+            image.status = 'failed'
+          })
+      )
+    })
+  }
+
   Promise.allSettled(promises)
 }
 function onTagsApply(tags: string[]) {

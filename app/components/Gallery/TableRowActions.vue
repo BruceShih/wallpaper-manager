@@ -50,7 +50,7 @@ async function onEditSave() {
     favorite: editModels.favorite,
     tags: store.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
   }
-  const { error } = await api.updateWallpaper(props.row.original.key, body)
+  const { error } = await api.updateWallpaper({ id: props.row.original.key, body })
   if (error.value) {
     toast({
       title: 'Failed to update wallpaper',

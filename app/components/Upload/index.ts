@@ -2,7 +2,7 @@ export interface UploadListItem {
   image: File
   tags: string[]
   selected: boolean
-  stats: 'not-started' | 'uploading' | 'uploaded' | 'failed'
+  status: 'not-started' | 'uploading' | 'uploaded' | 'failed'
 }
 
 export { default as List } from './List.vue'

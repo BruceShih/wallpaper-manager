@@ -55,17 +55,17 @@ function getImagePreview(image: File | null) {
           hover:opacity-0"
       >
         <Icon
-          v-if="item.stats === 'failed'"
+          v-if="item.status === 'failed'"
           class="size-8 text-red-500"
           name="radix-icons:cross-circled"
         />
         <Icon
-          v-if="item.stats === 'not-started'"
+          v-if="item.status === 'not-started'"
           class="size-8"
           name="radix-icons:question-mark-circled"
         />
         <Icon
-          v-if="item.stats === 'uploaded'"
+          v-if="item.status === 'uploaded'"
           class="size-8 text-green-400"
           name="radix-icons:check-circled"
         />

@@ -2,15 +2,28 @@ import type { Tag } from '~~/server/utils/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery'
 import { randBoolean, randFileName, randPastDate } from '@ngneat/falso'
 
+export interface FetchWallpaperApiArgsType {
+  page: number
+  size: number
+  name: string
+  sort: 'date' | 'name'
+  order: 'asc' | 'desc'
+}
+
+export interface UpdateWallpaperApiArgsType {
+  id: string
+  body: { favorite: boolean, tags?: number[] }
+}
+
+export interface UploadWallpaperApiArgsType {
+  id: string
+  tags: string[]
+  body: File
+}
+
 export function useWallpaperAPIs() {
   const methods = {
-    async fetchWallpapers(query?: {
-      page: number
-      size: number
-      name: string
-      sort: 'date' | 'name'
-      order: 'asc' | 'desc'
-    }) {
+    async fetchWallpapers(query?: FetchWallpaperApiArgsType) {
       if (import.meta.dev) {
         const data = await new Promise<WallpaperAndTags[]>(
           resolve => resolve(Array.from({ length: 500 }, (_, _i) => ({
@@ -58,22 +71,22 @@ export function useWallpaperAPIs() {
         }
       })
     },
-    async updateWallpaper(id: string, body: { favorite: boolean, tags?: number[] }) {
+    async updateWallpaper(args: UpdateWallpaperApiArgsType) {
       const token = useBearerToken()
-      return await useFetch(`/api/image/update/${id}`, {
+      return await useFetch(`/api/image/update/${args.id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`
         },
-        body
+        body: args.body
       })
     },
-    async uploadWallpaper(id: string, tags: string[], body: File) {
+    async uploadWallpaper(args: UploadWallpaperApiArgsType) {
       const token = useBearerToken()
-      const queryString = tags.length > 0 ? `?tags=${tags.join('&tags=')}` : ''
+      const queryString = args.tags.length > 0 ? `?tags=${args.tags.join('&tags=')}` : ''
       const formData = new FormData()
-      formData.append('file', body, body.name)
-      return useFetch(`/api/image/upload/${id}${queryString}`, {
+      formData.append('file', args.body, args.body.name)
+      return useFetch(`/api/image/upload/${args.id}${queryString}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
