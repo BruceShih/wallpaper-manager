@@ -69,6 +69,11 @@ function getImagePreview(image: File | null) {
           class="size-8 text-green-400"
           name="radix-icons:check-circled"
         />
+        <Icon
+          v-if="item.status === 'uploading'"
+          class="size-8 animate-spin"
+          name="radix-icons:reload"
+        />
       </div>
     </CardContent>
     <CardFooter class="flex items-center justify-between space-x-2 px-6 pb-6">
