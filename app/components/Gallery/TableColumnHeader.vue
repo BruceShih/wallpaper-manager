@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from '.'
+import type { WallpaperAndTags } from './types'
 import { cn } from '~/lib/utils'
 
 interface GalleryTableColumnHeaderProps {

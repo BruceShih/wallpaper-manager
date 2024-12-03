@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from '.'
+import type { WallpaperAndTags } from './types'
 
 interface GalleryTableViewOptionsProps {
   table: Table<WallpaperAndTags>

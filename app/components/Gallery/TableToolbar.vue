@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from '.'
-import { TableFacetedFilter, TableViewOptions, tags } from '.'
+import { GalleryTableFacetedFilter, GalleryTableViewOptions } from '#build/components'
+import { tags, type WallpaperAndTags } from './types'
 
 interface GalleryTableToolbarProps {
   table: Table<WallpaperAndTags>
@@ -21,7 +21,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         placeholder="Filter wallpapers..."
         @input="table.getColumn('key')?.setFilterValue($event.target.value)"
       />
-      <TableFacetedFilter
+      <GalleryTableFacetedFilter
         v-if="table.getColumn('tags')"
         :column="table.getColumn('tags')"
         :options="tags"
@@ -41,6 +41,6 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         />
       </Button>
     </div>
-    <TableViewOptions :table="table" />
+    <GalleryTableViewOptions :table="table" />
   </div>
 </template>

@@ -5,6 +5,8 @@ import type {
   SortingState,
   VisibilityState
 } from '@tanstack/vue-table'
+import type { WallpaperAndTags } from './types'
+import { GalleryTablePagination, GalleryTableToolbar } from '#build/components'
 import {
   FlexRender,
   getCoreRowModel,
@@ -17,7 +19,6 @@ import {
 } from '@tanstack/vue-table'
 import { ref } from 'vue'
 import { valueUpdater } from '~/lib/utils'
-import { TablePagination, TableToolbar, type WallpaperAndTags } from '.'
 import {
   Table,
   TableBody,
@@ -87,7 +88,7 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4">
-    <TableToolbar :table="table" />
+    <GalleryTableToolbar :table="table" />
     <div class="rounded-md border">
       <Table>
         <TableHeader>
@@ -138,6 +139,6 @@ const table = useVueTable({
       </Table>
     </div>
 
-    <TablePagination :table="table" />
+    <GalleryTablePagination :table="table" />
   </div>
 </template>

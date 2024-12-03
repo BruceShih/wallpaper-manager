@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from '.'
+import type { WallpaperAndTags } from './types'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
 import { useWallpaperAPIs } from '~/composables/useWallpaperAPIs'
 import { useToast } from '../ui/toast/use-toast'

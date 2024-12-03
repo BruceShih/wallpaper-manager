@@ -1,7 +1,8 @@
 import type { ColumnDef } from '@tanstack/vue-table'
+import type { WallpaperAndTags } from './types'
+import { GalleryTableColumnHeader, GalleryTableRowActions, GalleryTableRowLink } from '#build/components'
 import { Icon } from '#components'
 import { h } from 'vue'
-import { TableColumnHeader, TableRowActions, TableRowLink, type WallpaperAndTags } from '.'
 import { Badge } from '../ui/badge'
 import { Checkbox } from '../ui/checkbox'
 
@@ -25,14 +26,14 @@ export const columns: ColumnDef<WallpaperAndTags>[] = [
   },
   {
     accessorKey: 'key',
-    header: ({ column }) => h(TableColumnHeader, { column, title: 'Key' }),
-    cell: ({ row }) => h(TableRowLink, { row, class: 'w-[400px]' }),
+    header: ({ column }) => h(GalleryTableColumnHeader, { column, title: 'Key' }),
+    cell: ({ row }) => h(GalleryTableRowLink, { row, class: 'w-[400px]' }),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'tags',
-    header: ({ column }) => h(TableColumnHeader, { column, title: 'Tags' }),
+    header: ({ column }) => h(GalleryTableColumnHeader, { column, title: 'Tags' }),
     cell: ({ row }) => {
       return h('div', { class: 'w-[250px] flex space-x-2' }, [
         row.original.tags.map(tag => h(Badge, { variant: tag.sensitive
@@ -46,7 +47,7 @@ export const columns: ColumnDef<WallpaperAndTags>[] = [
   },
   {
     accessorKey: 'favorite',
-    header: ({ column }) => h(TableColumnHeader, { column, title: 'Favorite' }),
+    header: ({ column }) => h(GalleryTableColumnHeader, { column, title: 'Favorite' }),
     cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.favorite
       ? h(Icon, { name: 'radix-icons:heart-filled', class: 'text-destructive size-4' })
       : h(Icon, { name: 'radix-icons:heart', class: 'text-destructive size-4' })),
@@ -58,7 +59,7 @@ export const columns: ColumnDef<WallpaperAndTags>[] = [
   },
   {
     accessorKey: 'alive',
-    header: ({ column }) => h(TableColumnHeader, { column, title: 'Alive' }),
+    header: ({ column }) => h(GalleryTableColumnHeader, { column, title: 'Alive' }),
     cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.alive
       ? 'True'
       : 'False'),
@@ -70,7 +71,7 @@ export const columns: ColumnDef<WallpaperAndTags>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => h(TableRowActions, { row }),
+    cell: ({ row }) => h(GalleryTableRowActions, { row }),
     enableSorting: false,
     enableHiding: false
   }

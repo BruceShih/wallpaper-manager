@@ -1,5 +1,5 @@
 import type { Tag } from '~~/server/utils/drizzle'
-import type { WallpaperAndTags } from '~/components/Gallery'
+import type { WallpaperAndTags } from '~/components/Gallery/types'
 import { randBoolean, randFileName, randPastDate } from '@ngneat/falso'
 
 export interface FetchWallpaperApiArgsType {
