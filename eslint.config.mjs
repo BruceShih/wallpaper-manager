@@ -1,5 +1,6 @@
 // @ts-check
 import antfu from '@antfu/eslint-config'
+import oxlint from 'eslint-plugin-oxlint'
 import tailwind from 'eslint-plugin-tailwindcss'
 import withNuxt from './.nuxt/eslint.config.mjs'
 
@@ -57,6 +58,8 @@ export default withNuxt(
       'ts/no-explicit-any': ['error']
     }
   })
+    .prepend(oxlint.configs['flat/recommended'])
     .prepend(...tailwind.configs['flat/recommended'])
+    // .prepend(...oxlint.buildFromOxlintConfigFile('./oxlint.json'))
 
 )
