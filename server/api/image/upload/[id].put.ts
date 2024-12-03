@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400 })
   }
 
-  const tags = query.data.tags ? [...[query.data?.tags]].flat() : []
+  const tags = query.data.tags ? [query.data.tags].flat() : []
 
   try {
     const imageQuery = await useDrizzle()
