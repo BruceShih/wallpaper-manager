@@ -75,13 +75,18 @@ function onTagsApply(tags: string[]) {
     @tags-apply="onTagsApply"
     @upload="onUpload"
   />
-  <div class="grid grid-cols-5 gap-4 rounded-md border p-4">
-    <Label
-      v-if="images.length === 0"
-      class="flex h-32 w-full items-center justify-center"
-    >
+  <div
+    v-if="images.length === 0"
+    class="flex items-center justify-center rounded-md border"
+  >
+    <Label class="flex h-32 w-full items-center justify-center">
       No image selected
     </Label>
+  </div>
+  <div
+    v-else
+    class="grid grid-cols-5 gap-4 rounded-md border p-4"
+  >
     <UploadListItems
       v-model="images"
       :all-tags="tags"
