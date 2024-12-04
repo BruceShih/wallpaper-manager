@@ -8,7 +8,7 @@ interface UploadListProps {
 
 const { tags } = defineProps<UploadListProps>()
 
-const api = useWallpaperService()
+const store = useWallpaperStore()
 
 const images = reactive<UploadListItem[]>([])
 
@@ -29,13 +29,15 @@ function onUpload() {
       if (image.selected) {
         image.status = 'uploading'
         promises.push(
-          api.wallpaper.upload({ id: image.image.name, tags: image.tags, body: image.image })
-            .then(() => {
+          store.uploadWallpaper(
+            { id: image.image.name, tags: image.tags, body: image.image },
+            () => {
               image.status = 'uploaded'
-            })
-            .catch(() => {
+            },
+            () => {
               image.status = 'failed'
-            })
+            }
+          )
         )
       }
     })
@@ -44,13 +46,15 @@ function onUpload() {
     images.forEach((image) => {
       image.status = 'uploading'
       promises.push(
-        api.wallpaper.upload({ id: image.image.name, tags: image.tags, body: image.image })
-          .then(() => {
+        store.uploadWallpaper(
+          { id: image.image.name, tags: image.tags, body: image.image },
+          () => {
             image.status = 'uploaded'
-          })
-          .catch(() => {
+          },
+          () => {
             image.status = 'failed'
-          })
+          }
+        )
       )
     })
   }

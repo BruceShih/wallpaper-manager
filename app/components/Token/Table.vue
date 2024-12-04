@@ -26,17 +26,12 @@ import {
   TableHeader,
   TableRow
 } from '../ui/table'
-import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableProps {
   columns: ColumnDef<UserToken, unknown>[]
   data: UserToken[]
 }
 const props = defineProps<GalleryTableProps>()
-
-const api = useWallpaperService()
-const store = useWallpaperStore()
-const { toast } = useToast()
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
@@ -51,25 +46,6 @@ const table = useVueTable({
     get columnFilters() { return columnFilters.value },
     get columnVisibility() { return columnVisibility.value },
     get rowSelection() { return rowSelection.value }
-  },
-  meta: {
-    removeRows: async (ids: number[]) => {
-      const { error } = await api.token.delete(ids)
-
-      if (error.value) {
-        toast({
-          title: 'Failed to delete token',
-          variant: 'destructive'
-        })
-      }
-      else {
-        store.tokens = store.tokens.filter(token => !ids.includes(token.id))
-
-        toast({
-          title: 'Token deleted'
-        })
-      }
-    }
   },
   onSortingChange: val => valueUpdater(val, sorting),
   onColumnFiltersChange: val => valueUpdater(val, columnFilters),

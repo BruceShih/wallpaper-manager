@@ -8,6 +8,8 @@ interface GalleryTableViewOptionsProps {
 
 const { table } = defineProps<GalleryTableViewOptionsProps>()
 
+const store = useWallpaperStore()
+
 // const columns = computed(() => table.getAllColumns()
 //   .filter(
 //     column =>
@@ -17,7 +19,7 @@ const { table } = defineProps<GalleryTableViewOptionsProps>()
 async function onDelete() {
   const selectedRows = table.getFilteredSelectedRowModel().rows
   const wallpaperKeys = selectedRows.map(row => row.original.key)
-  await table.options.meta?.removeRows(wallpaperKeys)
+  await store.deleteWallpapers(wallpaperKeys)
   table.resetRowSelection()
 }
 </script>

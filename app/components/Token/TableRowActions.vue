@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/utils/drizzle'
-import { useToast } from '~/components/ui/toast/use-toast'
 
 interface TokenTableRowActionsProps {
   row: Row<UserToken>
@@ -9,23 +8,10 @@ interface TokenTableRowActionsProps {
 
 defineProps<TokenTableRowActionsProps>()
 
-const { toast } = useToast()
-const api = useWallpaperService()
+const store = useTokenStore()
 
 async function onUpdate(id: number, enable: boolean) {
-  const { error } = await api.token.update(id, enable)
-
-  if (error.value) {
-    toast({
-      title: 'Failed to update token',
-      variant: 'destructive'
-    })
-  }
-  else {
-    toast({
-      title: 'Token updated'
-    })
-  }
+  await store.updateToken(id, enable)
 }
 </script>
 

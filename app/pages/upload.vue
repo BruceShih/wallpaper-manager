@@ -5,7 +5,7 @@ if (import.meta.dev) {
   })
 }
 
-const store = useWallpaperStore()
+const store = useTagStore()
 
 onMounted(async () => {
   if (store.tags.length === 0)

@@ -7,7 +7,7 @@ if (import.meta.dev) {
   })
 }
 
-const store = useWallpaperStore()
+const store = useTokenStore()
 
 onMounted(async () => {
   await store.fetchTokens()

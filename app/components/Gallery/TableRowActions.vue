@@ -2,8 +2,6 @@
 import type { Row } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from './types'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
-import { useWallpaperService } from '~/composables/useWallpaperService'
-import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableRowActionsProps {
   row: Row<WallpaperAndTags>
@@ -11,11 +9,9 @@ interface GalleryTableRowActionsProps {
 
 const props = defineProps<GalleryTableRowActionsProps>()
 
-const store = useWallpaperStore()
-const api = useWallpaperService()
-const { toast } = useToast()
+const wallpaperStore = useWallpaperStore()
+const tagStore = useTagStore()
 
-const open = ref(false)
 const commitEdit = ref(false)
 const tagComboboxOpen = ref(false)
 const tagSearchTerm = ref('')
@@ -27,7 +23,7 @@ const editModels = reactive<{
   tags: []
 })
 
-const allTags = computed(() => store.tags.map(t => ({ label: t.tag, value: t.id.toString() })))
+const allTags = computed(() => tagStore.tags.map(t => ({ label: t.tag, value: t.id.toString() })))
 const filteredTags = computed(() => allTags.value.filter(i => !editModels.tags.includes(i.label)))
 
 function onEditDialogOpen(val: boolean) {
@@ -48,22 +44,9 @@ async function onEditSave() {
 
   const body = {
     favorite: editModels.favorite,
-    tags: store.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
+    tags: tagStore.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
   }
-  const { error } = await api.wallpaper.update({ id: props.row.original.key, body })
-  if (error.value) {
-    toast({
-      title: 'Failed to update wallpaper',
-      variant: 'destructive'
-    })
-  }
-  else {
-    toast({
-      title: 'Wallpaper updated',
-      variant: 'default'
-    })
-    open.value = false
-  }
+  await wallpaperStore.updateWallpaper({ id: props.row.original.key, body })
 
   commitEdit.value = false
   editModels.favorite = false
@@ -73,7 +56,6 @@ async function onEditSave() {
 
 <template>
   <Dialog
-    v-model:open="open"
     @update:open="onEditDialogOpen"
   >
     <DropdownMenu>

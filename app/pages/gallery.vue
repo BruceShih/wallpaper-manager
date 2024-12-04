@@ -7,11 +7,12 @@ if (import.meta.dev) {
   })
 }
 
-const store = useWallpaperStore()
+const wallpaperStore = useWallpaperStore()
+const tagStore = useTagStore()
 
 onMounted(async () => {
-  await store.fetchWallpapers()
-  await store.fetchTags()
+  await wallpaperStore.fetchWallpapers()
+  await tagStore.fetchTags()
 })
 </script>
 
@@ -19,7 +20,7 @@ onMounted(async () => {
   <div class="space-y-4">
     <GalleryTable
       :columns="columns"
-      :data="store.wallpapers"
+      :data="wallpaperStore.wallpapers"
     />
   </div>
 </template>

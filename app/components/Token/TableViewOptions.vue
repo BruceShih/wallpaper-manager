@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/utils/drizzle'
-import { useToast } from '~/components/ui/toast/use-toast'
-
-const { table } = defineProps<TokenTableViewOptionsProps>()
-
-const store = useWallpaperStore()
 
 interface TokenTableViewOptionsProps {
   table: Table<UserToken>
 }
 
-const { toast } = useToast()
-const api = useWallpaperService()
+const { table } = defineProps<TokenTableViewOptionsProps>()
+
+const store = useTokenStore()
 
 // const columns = computed(() => table.getAllColumns()
 //   .filter(
@@ -21,29 +17,12 @@ const api = useWallpaperService()
 //   ))
 
 async function onCreate() {
-  const { data, error } = await api.token.create()
-
-  if (error.value) {
-    toast({
-      title: 'Failed to create token',
-      variant: 'destructive'
-    })
-  }
-  else {
-    if (data.value) {
-      for (const token of data.value)
-        store.tokens.push(token)
-    }
-
-    toast({
-      title: 'Token created'
-    })
-  }
+  await store.createToken()
 }
 async function onDelete() {
   const selectedRows = table.getFilteredSelectedRowModel().rows
   const tokenIds = selectedRows.map(row => row.original.id)
-  await table.options.meta?.removeRows(tokenIds)
+  await store.deleteTokens(tokenIds)
   table.resetRowSelection()
 }
 </script>

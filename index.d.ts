@@ -1,5 +1,3 @@
-import type { RowData } from '@tanstack/vue-table'
-
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
     origin: string | undefined
@@ -9,12 +7,6 @@ declare module 'nuxt/schema' {
     imageOrigin: string | undefined
     sentryDsn: string | undefined
     sentryReleaseName: string
-  }
-}
-
-declare module '@tanstack/vue-table' {
-  interface TableMeta<TData extends RowData> {
-    removeRows: (keys: TData extends { id: infer U } ? U[] : string[]) => Promise<void>
   }
 }
 

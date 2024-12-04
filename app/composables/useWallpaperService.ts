@@ -23,24 +23,64 @@ export interface UploadWallpaperApiArgsType {
 
 export function useWallpaperService() {
   const tag = {
-    async getMany() {
+    async get(id: number) {
       if (import.meta.dev) {
-        const data = await new Promise<Tag[]>(
-          resolve => resolve(([{
+        const data = await new Promise<Tag>(
+          resolve => resolve(({
             id: 1,
             enabled: true,
             tag: 'nsfw',
             sensitive: true
-          }]))
+          }))
         )
         return { data: ref(data), error: null }
       }
 
       const token = useBearerToken()
-      return await useFetch('/api/tags/list', {
+      return await useFetch(`/api/tag/get/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
+      })
+    },
+    async getMany() {
+      if (import.meta.dev) {
+        const data = await new Promise<Tag[]>(
+          resolve => resolve(Array.from({ length: 10 }, (_, i) => ({
+            id: i,
+            enabled: true,
+            tag: 'nsfw',
+            sensitive: true
+          })))
+        )
+        return { data: ref(data), error: null }
+      }
+
+      const token = useBearerToken()
+      return await useFetch('/api/tag/list', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    },
+    async create(body: { name: string, sensitive: boolean }) {
+      const token = useBearerToken()
+      return await useFetch('/api/tag/create', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body
+      })
+    },
+    async delete(ids: number[]) {
+      const token = useBearerToken()
+      return await useFetch('/api/tag/delete', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: { ids }
       })
     }
   }
@@ -73,27 +113,33 @@ export function useWallpaperService() {
         query
       })
     },
-    async update(args: UpdateWallpaperApiArgsType) {
+    async update(data: UpdateWallpaperApiArgsType) {
       const token = useBearerToken()
-      return await useFetch(`/api/image/update/${args.id}`, {
+      return await useFetch(`/api/image/update/${data.id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`
         },
-        body: args.body
+        body: data.body
       })
     },
-    async upload(args: UploadWallpaperApiArgsType) {
+    async upload(data: UploadWallpaperApiArgsType, onSuccess: () => void, onError: () => void) {
       const token = useBearerToken()
-      const queryString = args.tags.length > 0 ? `?tags=${args.tags.join('&tags=')}` : ''
+      const queryString = data.tags.length > 0 ? `?tags=${data.tags.join('&tags=')}` : ''
       const formData = new FormData()
-      formData.append('file', args.body, args.body.name)
-      return useFetch(`/api/image/upload/${args.id}${queryString}`, {
+      formData.append('file', data.body, data.body.name)
+      return await useFetch(`/api/image/upload/${data.id}${queryString}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
         },
-        body: formData
+        body: formData,
+        onResponse: () => {
+          onSuccess()
+        },
+        onResponseError: () => {
+          onError()
+        }
       })
     },
     async delete(ids: string[]) {

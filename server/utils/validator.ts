@@ -44,3 +44,16 @@ export const apiTokenPostPathSchema = z.object({
 export const apiTokenUpdateBodySchema = z.object({
   enabled: z.boolean()
 })
+
+export const apiTagCreateBodySchema = z.object({
+  name: z.string().min(1),
+  sensitive: z.boolean().default(false)
+})
+
+export const apiTagDeleteBodySchema = z.object({
+  ids: z.array(z.number())
+})
+
+export const apiTagGetPathSchema = z.object({
+  id: z.coerce.number()
+})
