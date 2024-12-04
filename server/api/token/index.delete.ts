@@ -1,22 +1,22 @@
 import { consola } from 'consola'
-import { eq } from 'drizzle-orm'
+import { inArray } from 'drizzle-orm'
 import { userToken } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiTokenDeletePathSchema } from '~~/server/utils/validator'
+import { apiTokenDeleteBodySchema } from '~~/server/utils/validator'
 
 export default defineEventHandler(async (event) => {
-  const path = await getValidatedRouterParams(event, data => apiTokenDeletePathSchema.safeParse(data))
-  if (!path.success) {
-    consola.error(path.error)
+  const body = await readValidatedBody(event, data => apiTokenDeleteBodySchema.safeParse(data))
+  if (!body.success) {
+    consola.error(body.error)
     throw createError({ statusCode: 400 })
   }
 
-  const tokenId = path.data.id
+  const tokenIds = body.data.ids
 
   try {
     await useDrizzle()
       .delete(userToken)
-      .where(eq(userToken.id, tokenId))
+      .where(inArray(userToken.id, tokenIds))
 
     return 'Token deleted'
   }

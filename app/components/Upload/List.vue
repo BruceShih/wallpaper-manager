@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Tag } from '~~/server/utils/drizzle'
-import { ListItems, ListToolbar, type UploadListItem } from '.'
+import type { UploadListItem } from './types'
 
 interface UploadListProps {
   tags: Tag[]
@@ -8,7 +8,7 @@ interface UploadListProps {
 
 const { tags } = defineProps<UploadListProps>()
 
-const api = useWallpaperAPIs()
+const api = useWallpaperService()
 
 const images = reactive<UploadListItem[]>([])
 
@@ -29,7 +29,7 @@ function onUpload() {
       if (image.selected) {
         image.status = 'uploading'
         promises.push(
-          api.uploadWallpaper({ id: image.image.name, tags: image.tags, body: image.image })
+          api.wallpaper.upload({ id: image.image.name, tags: image.tags, body: image.image })
             .then(() => {
               image.status = 'uploaded'
             })
@@ -44,7 +44,7 @@ function onUpload() {
     images.forEach((image) => {
       image.status = 'uploading'
       promises.push(
-        api.uploadWallpaper({ id: image.image.name, tags: image.tags, body: image.image })
+        api.wallpaper.upload({ id: image.image.name, tags: image.tags, body: image.image })
           .then(() => {
             image.status = 'uploaded'
           })
@@ -68,7 +68,7 @@ function onTagsApply(tags: string[]) {
 </script>
 
 <template>
-  <ListToolbar
+  <UploadListToolbar
     :all-tags="tags"
     :image-selected="totalImageSelected"
     @change="onFileSelected"
@@ -82,7 +82,7 @@ function onTagsApply(tags: string[]) {
     >
       No image selected
     </Label>
-    <ListItems
+    <UploadListItems
       v-model="images"
       :all-tags="tags"
       @remove="item => images.splice(images.indexOf(item), 1)"

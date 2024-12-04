@@ -5,7 +5,7 @@ import type {
   SortingState,
   VisibilityState
 } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from './types'
+import type { UserToken } from '~~/server/utils/drizzle'
 import {
   FlexRender,
   getCoreRowModel,
@@ -29,8 +29,8 @@ import {
 import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableProps {
-  columns: ColumnDef<WallpaperAndTags, unknown>[]
-  data: WallpaperAndTags[]
+  columns: ColumnDef<UserToken, unknown>[]
+  data: UserToken[]
 }
 const props = defineProps<GalleryTableProps>()
 
@@ -53,21 +53,20 @@ const table = useVueTable({
     get rowSelection() { return rowSelection.value }
   },
   meta: {
-    removeRows: async (keys: string[]) => {
-      const { error } = await api.wallpaper.delete(keys)
+    removeRows: async (ids: number[]) => {
+      const { error } = await api.token.delete(ids)
+
       if (error.value) {
         toast({
-          title: 'Failed to delete wallpaper(s)',
+          title: 'Failed to delete token',
           variant: 'destructive'
         })
       }
       else {
-        store.wallpapers = store.wallpapers.filter(
-          wallpaper => !keys.includes(wallpaper.key)
-        )
+        store.tokens = store.tokens.filter(token => !ids.includes(token.id))
+
         toast({
-          title: 'Wallpaper(s) deleted',
-          variant: 'default'
+          title: 'Token deleted'
         })
       }
     }
@@ -87,7 +86,7 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4">
-    <GalleryTableToolbar :table="table" />
+    <TokenTableToolbar :table="table" />
     <div class="rounded-md border">
       <Table>
         <TableHeader>

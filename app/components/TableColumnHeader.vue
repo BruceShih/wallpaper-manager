@@ -1,14 +1,13 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import type { Column } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from './types'
 import { cn } from '~/lib/utils'
 
-interface GalleryTableColumnHeaderProps {
-  column: Column<WallpaperAndTags, unknown>
+interface TableColumnHeaderProps {
+  column: Column<T, unknown>
   title: string
 }
 
-defineProps<GalleryTableColumnHeaderProps>()
+defineProps<TableColumnHeaderProps>()
 </script>
 
 <script lang="ts">

@@ -12,6 +12,12 @@ defineProps<GalleryTableRowLinkProps>()
 const config = useRuntimeConfig()
 </script>
 
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <template>
   <a
     :class="cn(row.original.alive

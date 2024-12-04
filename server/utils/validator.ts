@@ -33,8 +33,8 @@ export const apiImageUploadQuerySchema = z.object({
   tags: z.array(z.coerce.number()).or(z.coerce.number()).optional()
 })
 
-export const apiTokenDeletePathSchema = z.object({
-  id: z.coerce.number()
+export const apiTokenDeleteBodySchema = z.object({
+  ids: z.array(z.number())
 })
 
 export const apiTokenPostPathSchema = z.object({

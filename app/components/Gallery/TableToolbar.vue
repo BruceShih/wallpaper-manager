@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { GalleryTableFacetedFilter, GalleryTableViewOptions } from '#build/components'
 import { tags, type WallpaperAndTags } from './types'
 
 interface GalleryTableToolbarProps {

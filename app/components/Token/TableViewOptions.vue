@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from './types'
+import type { UserToken } from '~~/server/utils/drizzle'
+import { useToast } from '~/components/ui/toast/use-toast'
 
-interface GalleryTableViewOptionsProps {
-  table: Table<WallpaperAndTags>
+const { table } = defineProps<TokenTableViewOptionsProps>()
+
+const store = useWallpaperStore()
+
+interface TokenTableViewOptionsProps {
+  table: Table<UserToken>
 }
 
-const { table } = defineProps<GalleryTableViewOptionsProps>()
+const { toast } = useToast()
+const api = useWallpaperService()
 
 // const columns = computed(() => table.getAllColumns()
 //   .filter(
@@ -14,10 +20,30 @@ const { table } = defineProps<GalleryTableViewOptionsProps>()
 //       typeof column.accessorFn !== 'undefined' && column.getCanHide()
 //   ))
 
+async function onCreate() {
+  const { data, error } = await api.token.create()
+
+  if (error.value) {
+    toast({
+      title: 'Failed to create token',
+      variant: 'destructive'
+    })
+  }
+  else {
+    if (data.value) {
+      for (const token of data.value)
+        store.tokens.push(token)
+    }
+
+    toast({
+      title: 'Token created'
+    })
+  }
+}
 async function onDelete() {
   const selectedRows = table.getFilteredSelectedRowModel().rows
-  const wallpaperKeys = selectedRows.map(row => row.original.key)
-  await table.options.meta?.removeRows(wallpaperKeys)
+  const tokenIds = selectedRows.map(row => row.original.id)
+  await table.options.meta?.removeRows(tokenIds)
   table.resetRowSelection()
 }
 </script>
@@ -35,6 +61,18 @@ async function onDelete() {
       name="radix-icons:trash"
     />
     Delete Selected
+  </Button>
+  <Button
+    class="ml-auto mr-2 h-8 lg:flex"
+    size="sm"
+    variant="default"
+    @click="onCreate"
+  >
+    <Icon
+      class="size-4"
+      name="radix-icons:plus"
+    />
+    Create Token
   </Button>
   <!-- <DropdownMenu>
     <DropdownMenuTrigger as-child>

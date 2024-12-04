@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Tag } from '~~/server/utils/drizzle'
-import { ListItemTagSelect } from '.'
 
 interface UploadListToolbarProps {
   imageSelected: number
@@ -50,7 +49,7 @@ const tags = ref<string[]>([])
       <span class="w-[150px] text-sm">
         {{ imageSelected }} selected
       </span>
-      <ListItemTagSelect
+      <UploadListItemTagSelect
         v-model="tags"
         :tags="allTags"
       />

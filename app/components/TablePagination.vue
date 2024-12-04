@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import type { Table } from '@tanstack/vue-table'
-import type { WallpaperAndTags } from './types'
 
-interface GalleryTablePaginationProps {
-  table: Table<WallpaperAndTags>
+interface TablePaginationProps {
+  table: Table<T>
 }
 
-const props = defineProps<GalleryTablePaginationProps>()
+const props = defineProps<TablePaginationProps>()
 
 function onSelectUpdate(val: string) {
   const pageSize = Number(val)

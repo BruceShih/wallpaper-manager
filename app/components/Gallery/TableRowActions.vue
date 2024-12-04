@@ -2,7 +2,7 @@
 import type { Row } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from './types'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
-import { useWallpaperAPIs } from '~/composables/useWallpaperAPIs'
+import { useWallpaperService } from '~/composables/useWallpaperService'
 import { useToast } from '../ui/toast/use-toast'
 
 interface GalleryTableRowActionsProps {
@@ -12,7 +12,7 @@ interface GalleryTableRowActionsProps {
 const props = defineProps<GalleryTableRowActionsProps>()
 
 const store = useWallpaperStore()
-const api = useWallpaperAPIs()
+const api = useWallpaperService()
 const { toast } = useToast()
 
 const open = ref(false)
@@ -50,7 +50,7 @@ async function onEditSave() {
     favorite: editModels.favorite,
     tags: store.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
   }
-  const { error } = await api.updateWallpaper({ id: props.row.original.key, body })
+  const { error } = await api.wallpaper.update({ id: props.row.original.key, body })
   if (error.value) {
     toast({
       title: 'Failed to update wallpaper',

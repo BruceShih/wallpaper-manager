@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Tag } from '~~/server/utils/drizzle'
-import { ListItemTagSelect, type UploadListItem } from '.'
+import type { UploadListItem } from './types'
 
 interface UploadListItemProps {
   allTags: Tag[]
@@ -77,7 +77,7 @@ function getImagePreview(image: File | null) {
       </div>
     </CardContent>
     <CardFooter class="flex items-center justify-between space-x-2 px-6 pb-6">
-      <ListItemTagSelect
+      <UploadListItemTagSelect
         v-model="item.tags"
         :tags="allTags"
       />

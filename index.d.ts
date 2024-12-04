@@ -14,7 +14,7 @@ declare module 'nuxt/schema' {
 
 declare module '@tanstack/vue-table' {
   interface TableMeta<TData extends RowData> {
-    removeRows: (keys: string[]) => Promise<void>
+    removeRows: (keys: TData extends { id: infer U } ? U[] : string[]) => Promise<void>
   }
 }
 

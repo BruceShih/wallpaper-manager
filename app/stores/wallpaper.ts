@@ -1,17 +1,19 @@
-import type { Tag } from '~~/server/utils/drizzle'
+import type { Tag, UserToken } from '~~/server/utils/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
 import { useToast } from '~/components/ui/toast/use-toast'
-import { useWallpaperAPIs } from '~/composables/useWallpaperAPIs'
+import { useWallpaperService } from '~/composables/useWallpaperService'
 
 interface WallpaperStoreState {
   wallpapers: WallpaperAndTags[]
   tags: Tag[]
+  tokens: UserToken[]
 }
 
 export const useWallpaperStore = defineStore('galleryStore', {
   state: (): WallpaperStoreState => ({
     wallpapers: [],
-    tags: []
+    tags: [],
+    tokens: []
   }),
   actions: {
     async fetchWallpapers(query?: {
@@ -21,10 +23,10 @@ export const useWallpaperStore = defineStore('galleryStore', {
       sort: 'date' | 'name'
       order: 'asc' | 'desc'
     }) {
-      const store = useWallpaperAPIs()
+      const api = useWallpaperService()
       const { toast } = useToast()
 
-      const response = await store.fetchWallpapers(query)
+      const response = await api.wallpaper.getMany(query)
 
       if (response.error?.value) {
         toast({
@@ -35,10 +37,10 @@ export const useWallpaperStore = defineStore('galleryStore', {
       this.wallpapers = response.data.value || []
     },
     async fetchTags() {
-      const store = useWallpaperAPIs()
+      const api = useWallpaperService()
       const { toast } = useToast()
 
-      const response = await store.fetchTags()
+      const response = await api.tag.getMany()
 
       if (response.error?.value) {
         toast({
@@ -47,6 +49,20 @@ export const useWallpaperStore = defineStore('galleryStore', {
         })
       }
       this.tags = response.data.value || []
+    },
+    async fetchTokens() {
+      const api = useWallpaperService()
+      const { toast } = useToast()
+
+      const response = await api.token.getMany()
+
+      if (response.error?.value) {
+        toast({
+          title: 'Failed to fetch tokens',
+          variant: 'destructive'
+        })
+      }
+      this.tokens = response.data.value || []
     }
   }
 })

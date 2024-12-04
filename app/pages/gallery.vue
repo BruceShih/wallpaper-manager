@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { GalleryTable } from '#build/components'
 import { columns } from '~/components/Gallery/columns'
 
 if (import.meta.dev) {
