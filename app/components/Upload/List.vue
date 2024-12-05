@@ -59,7 +59,9 @@ function onUpload() {
     })
   }
 
-  Promise.allSettled(promises)
+  Promise.allSettled(promises).catch((error) => {
+    console.error(error)
+  })
 }
 function onTagsApply(tags: string[]) {
   images.forEach((image) => {
