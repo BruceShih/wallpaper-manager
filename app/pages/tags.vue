@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { z } from 'zod'
-import { tags } from '~~/server/database/schema'
 
 if (import.meta.dev) {
   definePageMeta({
