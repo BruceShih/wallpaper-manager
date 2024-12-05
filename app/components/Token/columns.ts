@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/utils/drizzle'
-import { TableColumnHeader, TokenTableRowActions, TokenTableRowCopyable } from '#components'
+import { CustomTableColumnHeader, TokenTableRowActions, TokenTableRowCopyable } from '#components'
 import { h } from 'vue'
 import { Checkbox } from '../ui/checkbox'
 
@@ -24,21 +24,21 @@ export const columns: ColumnDef<UserToken>[] = [
   },
   {
     accessorKey: 'token',
-    header: ({ column }) => h(TableColumnHeader<UserToken>, { column, title: 'Token' }),
+    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Token' }),
     cell: ({ row }) => h(TokenTableRowCopyable, { row }),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'createDate',
-    header: ({ column }) => h(TableColumnHeader<UserToken>, { column, title: 'Create Date' }),
+    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Create Date' }),
     cell: ({ row }) => h('div', { class: 'w-[250px] flex items-center' }, row.original.createDate),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'enabled',
-    header: ({ column }) => h(TableColumnHeader<UserToken>, { column, title: 'Enabled' }),
+    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Enabled' }),
     cell: ({ row }) => h('div', { class: 'w-[50px] flex items-center' }, row.original.enabled
       ? 'True'
       : 'False'),

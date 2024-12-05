@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  Table as TanstackTable,
   VisibilityState
 } from '@tanstack/vue-table'
-import type { UserToken } from '~~/server/utils/drizzle'
 import {
   FlexRender,
   getCoreRowModel,
@@ -25,13 +25,16 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../ui/table'
+} from './ui/table'
 
 interface GalleryTableProps {
-  columns: ColumnDef<UserToken, unknown>[]
-  data: UserToken[]
+  columns: ColumnDef<T, unknown>[]
+  data: T[]
 }
 const props = defineProps<GalleryTableProps>()
+defineSlots<{
+  toolbar: (props: { table: TanstackTable<T> }) => unknown
+}>()
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
@@ -62,7 +65,10 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4">
-    <TokenTableToolbar :table="table" />
+    <slot
+      name="toolbar"
+      :table="table"
+    />
     <div class="rounded-md border">
       <Table>
         <TableHeader>
@@ -113,6 +119,6 @@ const table = useVueTable({
       </Table>
     </div>
 
-    <TablePagination :table="table" />
+    <CustomTablePagination :table="table" />
   </div>
 </template>

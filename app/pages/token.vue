@@ -16,9 +16,13 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-4">
-    <TokenTable
+    <CustomTable
       :columns="columns"
       :data="store.tokens"
-    />
+    >
+      <template #toolbar="{ table }">
+        <TokenTableToolbar :table="table" />
+      </template>
+    </CustomTable>
   </div>
 </template>

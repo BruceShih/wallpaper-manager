@@ -10,14 +10,12 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await useDrizzle().batch([
-      await useDrizzle()
-        .insert(tables.tags)
-        .values({ tag: body.data.name, sensitive: body.data.sensitive })
-    ])
+    const tag = await useDrizzle()
+      .insert(tables.tags)
+      .values({ tag: body.data.name, sensitive: body.data.sensitive })
+      .returning()
 
-    setResponseStatus(event, 201, 'Tag created')
-    return 'Tag created'
+    return tag
   }
   catch (error) {
     if (error instanceof Error) {

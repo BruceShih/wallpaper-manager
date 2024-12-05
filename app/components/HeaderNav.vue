@@ -3,8 +3,9 @@ import { cn } from '@/lib/utils'
 
 const links = [
   { href: '/gallery', text: 'Gallery' },
-  { href: '/token', text: 'Token' },
-  { href: '/upload', text: 'Upload' }
+  { href: '/tags', text: 'Tags' },
+  { href: '/upload', text: 'Upload' },
+  { href: '/token', text: 'Token' }
 ]
 </script>
 

@@ -50,8 +50,8 @@ export const apiTagCreateBodySchema = z.object({
   sensitive: z.boolean().default(false)
 })
 
-export const apiTagDeleteBodySchema = z.object({
-  ids: z.array(z.number())
+export const apiTagDeletePathSchema = z.object({
+  id: z.coerce.number()
 })
 
 export const apiTagGetPathSchema = z.object({

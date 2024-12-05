@@ -18,9 +18,13 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-4">
-    <GalleryTable
+    <CustomTable
       :columns="columns"
       :data="wallpaperStore.wallpapers"
-    />
+    >
+      <template #toolbar="{ table }">
+        <GalleryTableToolbar :table="table" />
+      </template>
+    </CustomTable>
   </div>
 </template>

@@ -1,6 +1,6 @@
 import type { Tag, UserToken } from '~~/server/utils/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
-import { randBoolean, randFileName, randPastDate, randUuid } from '@ngneat/falso'
+import { rand, randBoolean, randFileName, randPastDate, randProductCategory, randUuid } from '@ngneat/falso'
 
 export interface FetchWallpaperApiArgsType {
   page: number
@@ -46,11 +46,11 @@ export function useWallpaperService() {
     async getMany() {
       if (import.meta.dev) {
         const data = await new Promise<Tag[]>(
-          resolve => resolve(Array.from({ length: 10 }, (_, i) => ({
+          resolve => resolve(Array.from({ length: 50 }, (_, i) => ({
             id: i,
-            enabled: true,
-            tag: 'nsfw',
-            sensitive: true
+            enabled: randBoolean(),
+            tag: randProductCategory(),
+            sensitive: randBoolean()
           })))
         )
         return { data: ref(data), error: null }
@@ -73,14 +73,13 @@ export function useWallpaperService() {
         body
       })
     },
-    async delete(ids: number[]) {
+    async delete(id: number) {
       const token = useBearerToken()
-      return await useFetch('/api/tag/delete', {
-        method: 'POST',
+      return await useFetch(`/api/tag/delete/${id}`, {
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
-        },
-        body: { ids }
+        }
       })
     }
   }

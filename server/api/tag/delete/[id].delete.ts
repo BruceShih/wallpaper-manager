@@ -1,13 +1,13 @@
 import { consola } from 'consola'
-import { inArray } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { tags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiTagDeleteBodySchema } from '~~/server/utils/validator'
+import { apiTagDeletePathSchema } from '~~/server/utils/validator'
 
 export default defineEventHandler(async (event) => {
-  const body = await readValidatedBody(event, data => apiTagDeleteBodySchema.safeParse(data))
-  if (!body.success) {
-    consola.error(body.error)
+  const path = await getValidatedRouterParams(event, data => apiTagDeletePathSchema.safeParse(data))
+  if (!path.success) {
+    consola.error(path.error)
     throw createError({ statusCode: 400 })
   }
 
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     await useDrizzle().batch([
       useDrizzle()
         .delete(tags)
-        .where(inArray(tags.id, body.data.ids))
+        .where(eq(tags.id, path.data.id))
     ])
 
     return 'Tag(s) deleted'
