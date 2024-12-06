@@ -28,8 +28,48 @@ export default defineEventHandler(async (event) => {
   const sensitive = query.data.sensitive === 'true'
 
   try {
+    if (sensitive) {
+      imageQuery = await useDrizzle()
+        .select()
+        .from(imagesToTags)
+        .leftJoin(tags, eq(imagesToTags.tagId, tags.id))
+        .leftJoin(images, eq(imagesToTags.imageKey, images.key))
+        .where(and(
+          eq(images.alive, true),
+          eq(tags.enabled, true),
+          eq(tags.sensitive, sensitive)
+        ))
+        .orderBy(sql`RANDOM()`)
+        .limit(1)
+
+      id = imageQuery[0]?.images?.key || ''
+      favorite = imageQuery[0]?.images?.favorite || false
+    }
+    else {
+      imageQuery = await useDrizzle()
+        .select()
+        .from(images)
+        .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
+        .where(and(
+          isNull(imagesToTags.imageKey),
+          eq(images.alive, true)
+        ))
+        .orderBy(sql`RANDOM()`)
+        .limit(1)
+
+      id = imageQuery[0]?.images.key || ''
+      favorite = imageQuery[0]?.images.favorite || false
+    }
+
+    const randomRow = imageQuery[0]
+
+    if (!randomRow) {
+      consola.error('No image found')
+      throw createError({ statusCode: 404 })
+    }
+
     const requestUrl = getRequestURL(event)
-    const requestUrlWithoutQuery = new URL(`${requestUrl.origin}${requestUrl.pathname}`)
+    const requestUrlWithoutQuery = new URL(`${requestUrl.origin}${requestUrl.pathname}/${randomRow.images?.key}`)
     const cache = await caches.open('wallpaper')
     const cachedResponse = await cache.match(requestUrlWithoutQuery)
     if (cachedResponse) {
@@ -37,46 +77,6 @@ export default defineEventHandler(async (event) => {
       sendWebResponse(event, cachedResponse)
     }
     else {
-      if (sensitive) {
-        imageQuery = await useDrizzle()
-          .select()
-          .from(imagesToTags)
-          .leftJoin(tags, eq(imagesToTags.tagId, tags.id))
-          .leftJoin(images, eq(imagesToTags.imageKey, images.key))
-          .where(and(
-            eq(images.alive, true),
-            eq(tags.enabled, true),
-            eq(tags.sensitive, sensitive)
-          ))
-          .orderBy(sql`RANDOM()`)
-          .limit(1)
-
-        id = imageQuery[0]?.images?.key || ''
-        favorite = imageQuery[0]?.images?.favorite || false
-      }
-      else {
-        imageQuery = await useDrizzle()
-          .select()
-          .from(images)
-          .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
-          .where(and(
-            isNull(imagesToTags.imageKey),
-            eq(images.alive, true)
-          ))
-          .orderBy(sql`RANDOM()`)
-          .limit(1)
-
-        id = imageQuery[0]?.images.key || ''
-        favorite = imageQuery[0]?.images.favorite || false
-      }
-
-      const randomRow = imageQuery[0]
-
-      if (!randomRow) {
-        consola.error('No image found')
-        throw createError({ statusCode: 404 })
-      }
-
       handleCacheHeaders(event, {
         modifiedTime: randomRow.images?.createDate,
         maxAge: 604800,
