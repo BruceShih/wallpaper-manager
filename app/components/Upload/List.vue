@@ -33,6 +33,9 @@ function onUpload() {
             { id: image.image.name, tags: image.tags, body: image.image },
             () => {
               image.status = 'uploaded'
+              useTimeoutFn(() => {
+                images.splice(images.indexOf(image), 1)
+              }, 5000).start()
             },
             () => {
               image.status = 'failed'
@@ -50,6 +53,9 @@ function onUpload() {
           { id: image.image.name, tags: image.tags, body: image.image },
           () => {
             image.status = 'uploaded'
+            useTimeoutFn(() => {
+              images.splice(images.indexOf(image), 1)
+            }, 5000).start()
           },
           () => {
             image.status = 'failed'
