@@ -5,8 +5,15 @@ import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/utils/drizzle'
 import { apiImageGetQuerySchema } from '~~/server/utils/validator'
 
-interface SensitiveImages { imagesToTags: ImagesToTags, tags: Tag | null, images: Image | null }
-interface InsensitiveImages { images: Image, imagesToTags: ImagesToTags | null }
+interface SensitiveImages {
+  imagesToTags: ImagesToTags
+  tags: Tag | null
+  images: Image | null
+}
+interface InsensitiveImages {
+  images: Image
+  imagesToTags: ImagesToTags | null
+}
 
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
@@ -18,56 +25,78 @@ export default defineEventHandler(async (event) => {
   let imageQuery: InsensitiveImages[] | SensitiveImages[]
   let id: string = ''
   let favorite: boolean = false
+  const sensitive = query.data.sensitive === 'true'
 
   try {
-    const sensitive = query.data.sensitive === 'true'
-
-    if (sensitive) {
-      imageQuery = await useDrizzle()
-        .select()
-        .from(imagesToTags)
-        .leftJoin(tags, eq(imagesToTags.tagId, tags.id))
-        .leftJoin(images, eq(imagesToTags.imageKey, images.key))
-        .where(and(
-          eq(images.alive, true),
-          eq(tags.enabled, true),
-          eq(tags.sensitive, sensitive)
-        ))
-        .orderBy(sql`RANDOM()`)
-        .limit(1)
-
-      id = imageQuery[0]?.images?.key || ''
-      favorite = imageQuery[0]?.images?.favorite || false
+    const requestUrl = getRequestURL(event)
+    const requestUrlWithoutQuery = new URL(`${requestUrl.origin}${requestUrl.pathname}`)
+    const cache = await caches.open('wallpaper')
+    const cachedResponse = await cache.match(requestUrlWithoutQuery)
+    if (cachedResponse) {
+      consola.info('Cache hit: ', requestUrl)
+      sendWebResponse(event, cachedResponse)
     }
     else {
-      imageQuery = await useDrizzle()
-        .select()
-        .from(images)
-        .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
-        .where(and(
-          isNull(imagesToTags.imageKey),
-          eq(images.alive, true)
-        ))
-        .orderBy(sql`RANDOM()`)
-        .limit(1)
+      if (sensitive) {
+        imageQuery = await useDrizzle()
+          .select()
+          .from(imagesToTags)
+          .leftJoin(tags, eq(imagesToTags.tagId, tags.id))
+          .leftJoin(images, eq(imagesToTags.imageKey, images.key))
+          .where(and(
+            eq(images.alive, true),
+            eq(tags.enabled, true),
+            eq(tags.sensitive, sensitive)
+          ))
+          .orderBy(sql`RANDOM()`)
+          .limit(1)
 
-      id = imageQuery[0]?.images.key || ''
-      favorite = imageQuery[0]?.images.favorite || false
+        id = imageQuery[0]?.images?.key || ''
+        favorite = imageQuery[0]?.images?.favorite || false
+      }
+      else {
+        imageQuery = await useDrizzle()
+          .select()
+          .from(images)
+          .leftJoin(imagesToTags, eq(images.key, imagesToTags.imageKey))
+          .where(and(
+            isNull(imagesToTags.imageKey),
+            eq(images.alive, true)
+          ))
+          .orderBy(sql`RANDOM()`)
+          .limit(1)
+
+        id = imageQuery[0]?.images.key || ''
+        favorite = imageQuery[0]?.images.favorite || false
+      }
+
+      const randomRow = imageQuery[0]
+
+      if (!randomRow) {
+        consola.error('No image found')
+        throw createError({ statusCode: 404 })
+      }
+
+      handleCacheHeaders(event, {
+        modifiedTime: randomRow.images?.createDate,
+        maxAge: 604800,
+        etag: crypto.randomUUID(),
+        cacheControls: ['public']
+      })
+
+      setResponseHeaders(event, {
+        'Image-Id': id,
+        'Favorite': favorite.valueOf().toString(),
+        'Content-Security-Policy': 'default-src \'none\';'
+      })
+
+      const blobResponse = await hubBlob().get(id)
+      const response = new Response(blobResponse)
+
+      event.waitUntil(cache.put(requestUrlWithoutQuery, response.clone()))
+
+      sendWebResponse(event, response)
     }
-
-    const randomRow = imageQuery[0]
-
-    if (!randomRow) {
-      consola.error('No image found')
-      throw createError({ statusCode: 404 })
-    }
-
-    setResponseHeaders(event, {
-      'Image-Id': id,
-      'Favorite': favorite.valueOf().toString()
-    })
-
-    return hubBlob().serve(event, id)
   }
   catch (error) {
     if (error instanceof Error) {

@@ -12,31 +12,6 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const imageQuery = await useDrizzle().query.images.findFirst({
-      where: eq(images.key, path.data.id)
-    })
-
-    const row = imageQuery
-    if (!row) {
-      consola.error('No image found')
-      throw createError({ statusCode: 404 })
-    }
-
-    const favorite = row.favorite
-
-    handleCacheHeaders(event, {
-      modifiedTime: row.createDate,
-      maxAge: 604800,
-      etag: crypto.randomUUID(),
-      cacheControls: ['public']
-    })
-
-    setResponseHeaders(event, {
-      'Image-Id': path.data.id,
-      'Favorite': favorite.valueOf().toString(),
-      'Content-Security-Policy': 'default-src \'none\';'
-    })
-
     const requestUrl = getRequestURL(event)
     const cache = await caches.open('wallpaper')
     const cachedResponse = await cache.match(requestUrl)
@@ -44,13 +19,39 @@ export default defineEventHandler(async (event) => {
       consola.info('Cache hit: ', requestUrl)
       sendWebResponse(event, cachedResponse)
     }
+    else {
+      const imageQuery = await useDrizzle().query.images.findFirst({
+        where: eq(images.key, path.data.id)
+      })
 
-    const blobResponse = await hubBlob().get(path.data.id)
-    const response = new Response(blobResponse)
+      const row = imageQuery
+      if (!row) {
+        consola.error('No image found')
+        throw createError({ statusCode: 404 })
+      }
 
-    event.waitUntil(cache.put(requestUrl, response.clone()))
+      const favorite = row.favorite
 
-    sendWebResponse(event, response)
+      handleCacheHeaders(event, {
+        modifiedTime: row.createDate,
+        maxAge: 604800,
+        etag: crypto.randomUUID(),
+        cacheControls: ['public']
+      })
+
+      setResponseHeaders(event, {
+        'Image-Id': path.data.id,
+        'Favorite': favorite.valueOf().toString(),
+        'Content-Security-Policy': 'default-src \'none\';'
+      })
+
+      const blobResponse = await hubBlob().get(path.data.id)
+      const response = new Response(blobResponse)
+
+      event.waitUntil(cache.put(requestUrl, response.clone()))
+
+      sendWebResponse(event, response)
+    }
   }
   catch (error) {
     if (error instanceof Error) {
