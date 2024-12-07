@@ -97,7 +97,8 @@ function onTagsApply(tags: string[]) {
   </div>
   <div
     v-else
-    class="grid grid-cols-5 gap-4 rounded-md border p-4"
+    class="grid grid-cols-2 gap-4 rounded-md border p-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6
+      2xl:grid-cols-8"
   >
     <UploadListItems
       v-model="images"
