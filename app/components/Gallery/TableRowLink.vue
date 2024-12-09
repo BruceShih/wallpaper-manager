@@ -7,9 +7,20 @@ interface GalleryTableRowLinkProps {
   row: Row<WallpaperAndTags>
 }
 
-defineProps<GalleryTableRowLinkProps>()
+const { row } = defineProps<GalleryTableRowLinkProps>()
 
 const config = useRuntimeConfig()
+const src = ref(`${config.public.imageOrigin}/${row.original.key}`)
+const img = useImage()
+const _srcset = computed(() => {
+  return img.getSizes(`${config.public.imageOrigin}/${row.original.key}`, {
+    sizes: '20rem',
+    modifiers: {
+      format: 'webp',
+      quality: 70
+    }
+  })
+})
 const nonce = useNonce()
 </script>
 
@@ -33,14 +44,15 @@ export default {
         <Icon name="radix-icons:external-link" />
       </a>
     </HoverCardTrigger>
-    <HoverCardContent class="w-80">
-      <NuxtImg
-        loading="lazy"
-        :nonce="nonce"
-        provider="cloudflare"
-        quality="80"
-        sizes="20rem"
-        :src="`/${row.original.key}`"
+    <HoverCardContent
+      class="w-80"
+      side="right"
+    >
+      <v-img
+        :lazy-src="img(src, { width: 10, quality: 70, nonce })"
+        :sizes="_srcset.sizes"
+        :src="img(src, { quality: 70, nonce })"
+        :srcset="_srcset.srcset"
       />
     </HoverCardContent>
   </HoverCard>
