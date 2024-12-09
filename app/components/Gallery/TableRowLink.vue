@@ -21,7 +21,6 @@ const _srcset = computed(() => {
     }
   })
 })
-const nonce = useNonce()
 </script>
 
 <script lang="ts">
@@ -49,9 +48,9 @@ export default {
       side="right"
     >
       <v-img
-        :lazy-src="img(src, { width: 10, quality: 70, nonce })"
+        :lazy-src="img(src, { width: 10, quality: 70 })"
         :sizes="_srcset.sizes"
-        :src="img(src, { quality: 70, nonce })"
+        :src="img(src, { quality: 70 })"
         :srcset="_srcset.srcset"
       />
     </HoverCardContent>
