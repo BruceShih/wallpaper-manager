@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/image',
     '@vueuse/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    'nuxt-security'
   ],
 
   // https://devtools.nuxt.com

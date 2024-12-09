@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
 
       if (!authHeader) {
         consola.error(new Error('Missing authorization header'))
-        throw createError({ statusCode: 401 })
+        throw createError({ statusCode: 403 })
       }
 
       const token = authHeader.replace('Bearer ', '')
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
         if (!validToken) {
           consola.error(new Error('No valid token found'))
-          throw createError({ statusCode: 401 })
+          throw createError({ statusCode: 403 })
         }
       }
       catch (error) {
