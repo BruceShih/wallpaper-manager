@@ -40,7 +40,7 @@ export default {
         provider="cloudflare"
         quality="80"
         sizes="20rem"
-        :src="row.original.key"
+        :src="`/${row.original.key}`"
       />
     </HoverCardContent>
   </HoverCard>
