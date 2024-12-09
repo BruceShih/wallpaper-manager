@@ -14,7 +14,7 @@ const src = ref(`${config.public.imageOrigin}/${row.original.key}`)
 const img = useImage()
 const _srcset = computed(() => {
   return img.getSizes(`${config.public.imageOrigin}/${row.original.key}`, {
-    sizes: '20rem',
+    sizes: '256px',
     modifiers: {
       format: 'webp',
       quality: 70
@@ -44,11 +44,11 @@ export default {
       </a>
     </HoverCardTrigger>
     <HoverCardContent
-      class="w-80"
+      class="w-64"
       side="right"
     >
       <v-img
-        :lazy-src="img(src, { width: 10, quality: 70 })"
+        :lazy-src="img(src, { quality: 70 })"
         :sizes="_srcset.sizes"
         :src="img(src, { quality: 70 })"
         :srcset="_srcset.srcset"
