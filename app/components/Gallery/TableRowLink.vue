@@ -41,7 +41,7 @@ export default {
         <NuxtImg
           loading="lazy"
           :modifiers="{ format: 'webp', quality: 70 }"
-          placeholder
+          :placeholder="[256, 569, 75, 5]"
           provider="cloudflare"
           sizes="sm:128px xl:256px"
           :src="`/${row.original.key}`"
