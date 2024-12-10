@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { tags, type WallpaperAndTags } from './types'
+import type { WallpaperAndTags } from './types'
 
 interface GalleryTableToolbarProps {
   table: Table<WallpaperAndTags>
@@ -8,6 +8,12 @@ interface GalleryTableToolbarProps {
 
 const props = defineProps<GalleryTableToolbarProps>()
 
+const store = useTagStore()
+
+const tags = computed(() => store.tags.map(tag => ({
+  label: tag.tag.toString(),
+  value: tag.id.toString()
+})))
 const isFiltered = computed(() => props.table.getState().columnFilters.length > 0)
 </script>
 

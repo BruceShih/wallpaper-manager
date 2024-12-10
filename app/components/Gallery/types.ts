@@ -6,10 +6,6 @@ type Mapped<T> = {
   [Property in keyof T]: T[Property];
 }
 
-export const tags = [
-  { value: '1', label: 'nsfw' }
-]
-
 type Wallpaper = Mapped<Image> & { tags: Tag[] }
 
 export const wallpaperAndTagsSchema: z.ZodType<Wallpaper> = z.object({
