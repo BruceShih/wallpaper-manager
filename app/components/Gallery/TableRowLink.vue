@@ -20,7 +20,7 @@ export default {
 
 <template>
   <div :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
-    <span :class="{ 'text-muted': row.original.alive }">
+    <span :class="{ 'text-muted': !row.original.alive }">
       {{ row.original.key }}
     </span>
     <HoverCard>
