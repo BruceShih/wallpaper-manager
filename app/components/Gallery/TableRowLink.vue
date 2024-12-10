@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from './types'
+import { HoverCardArrow } from 'radix-vue'
 import { cn } from '~/lib/utils'
 
 interface GalleryTableRowLinkProps {
