@@ -10,17 +10,6 @@ interface GalleryTableRowLinkProps {
 const { row } = defineProps<GalleryTableRowLinkProps>()
 
 const config = useRuntimeConfig()
-const src = ref(`${config.public.imageOrigin}/${row.original.key}`)
-const img = useImage()
-const _srcset = computed(() => {
-  return img.getSizes(`${config.public.imageOrigin}/${row.original.key}`, {
-    sizes: '256px',
-    modifiers: {
-      format: 'webp',
-      quality: 70
-    }
-  })
-})
 </script>
 
 <script lang="ts">
@@ -30,29 +19,31 @@ export default {
 </script>
 
 <template>
-  <HoverCard>
-    <HoverCardTrigger as-child>
-      <a
-        :class="cn(row.original.alive
-          ? 'flex items-center space-x-2'
-          : 'text-muted flex items-center space-x-2', $attrs.class ?? '')"
-        :href="`${config.public.imageOrigin}/${row.original.key}`"
-        target="_blank"
+  <div :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
+    <span :class="{ 'text-muted': row.original.alive }">
+      {{ row.original.key }}
+    </span>
+    <HoverCard>
+      <HoverCardTrigger as-child>
+        <a
+          class="flex items-center"
+          :href="`${config.public.imageOrigin}/${row.original.key}`"
+          target="_blank"
+        >
+          <Icon name="radix-icons:external-link" />
+        </a>
+      </HoverCardTrigger>
+      <HoverCardContent
+        class="sm:w-32 xl:w-64"
+        side="right"
       >
-        <span>{{ row.original.key }}</span>
-        <Icon name="radix-icons:external-link" />
-      </a>
-    </HoverCardTrigger>
-    <HoverCardContent
-      class="w-64"
-      side="right"
-    >
-      <v-img
-        :lazy-src="img(src, { quality: 70 })"
-        :sizes="_srcset.sizes"
-        :src="img(src, { quality: 70 })"
-        :srcset="_srcset.srcset"
-      />
-    </HoverCardContent>
-  </HoverCard>
+        <NuxtImg
+          loading="lazy"
+          :modifiers="{ format: 'webp', quality: 70 }"
+          sizes="sm:128px xl:256px"
+          :src="`/${row.original.key}`"
+        />
+      </HoverCardContent>
+    </HoverCard>
+  </div>
 </template>
