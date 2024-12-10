@@ -1,6 +1,12 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from './types'
-import { CustomTableColumnHeader, GalleryTableRowActions, GalleryTableRowLink, Icon } from '#components'
+import {
+  CustomTableColumnHeader,
+  CustomTableRowBoolean,
+  GalleryTableRowActions,
+  GalleryTableRowLink,
+  Icon
+} from '#components'
 import { h } from 'vue'
 import { Badge } from '../ui/badge'
 import { Checkbox } from '../ui/checkbox'
@@ -59,9 +65,7 @@ export const columns: ColumnDef<WallpaperAndTags>[] = [
   {
     accessorKey: 'alive',
     header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Alive' }),
-    cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.alive
-      ? 'True'
-      : 'False'),
+    cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.alive, class: 'w-[100px]' }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

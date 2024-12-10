@@ -1,6 +1,11 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/utils/drizzle'
-import { CustomTableColumnHeader, TokenTableRowActions, TokenTableRowCopyable } from '#components'
+import {
+  CustomTableColumnHeader,
+  CustomTableRowBoolean,
+  TokenTableRowActions,
+  TokenTableRowCopyable
+} from '#components'
 import { h } from 'vue'
 import { Checkbox } from '../ui/checkbox'
 
@@ -39,9 +44,7 @@ export const columns: ColumnDef<UserToken>[] = [
   {
     accessorKey: 'enabled',
     header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Enabled' }),
-    cell: ({ row }) => h('div', { class: 'w-[50px] flex items-center' }, row.original.enabled
-      ? 'True'
-      : 'False'),
+    cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.enabled, class: 'w-[50px]' }),
     enableSorting: true,
     enableHiding: false
   },
