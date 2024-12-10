@@ -37,9 +37,11 @@ export default {
         class="sm:w-32 xl:w-64"
         side="right"
       >
+        <HoverCardArrow />
         <NuxtImg
           loading="lazy"
           :modifiers="{ format: 'webp', quality: 70 }"
+          placeholder
           provider="cloudflare"
           sizes="sm:128px xl:256px"
           :src="`/${row.original.key}`"
