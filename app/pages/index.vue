@@ -9,6 +9,10 @@ definePageMeta({
   }
 })
 
+useHead({
+  title: 'Wallpaper Manager'
+})
+
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),

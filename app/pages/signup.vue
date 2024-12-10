@@ -7,6 +7,10 @@ definePageMeta({
   validate: async () => false
 })
 
+useHead({
+  title: 'Sign-up'
+})
+
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),

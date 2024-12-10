@@ -7,6 +7,10 @@ if (import.meta.dev) {
   })
 }
 
+useHead({
+  title: 'Gallery - Wallpaper Manager'
+})
+
 const wallpaperStore = useWallpaperStore()
 const tagStore = useTagStore()
 

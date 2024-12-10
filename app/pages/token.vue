@@ -7,6 +7,10 @@ if (import.meta.dev) {
   })
 }
 
+useHead({
+  title: 'Token - Wallpaper Manager'
+})
+
 const store = useTokenStore()
 
 onMounted(async () => {

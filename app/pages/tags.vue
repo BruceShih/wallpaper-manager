@@ -7,6 +7,10 @@ if (import.meta.dev) {
   })
 }
 
+useHead({
+  title: 'Tags - Wallpaper Manager'
+})
+
 const store = useTagStore()
 const formSchema = toTypedSchema(z.object({
   name: z.string(),
