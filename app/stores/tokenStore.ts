@@ -1,4 +1,4 @@
-import type { UserToken } from '~~/server/utils/drizzle'
+import type { UserToken } from '~~/server/types/drizzle'
 import { useToast } from '~/components/ui/toast/use-toast'
 import { useWallpaperService } from '~/composables/useWallpaperService'
 

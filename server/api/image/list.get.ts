@@ -1,10 +1,10 @@
+import type { ApiImageListRequest, ApiImageListResponse } from '~~/server/types/api/image'
 import { consola } from 'consola'
 import { eq, like } from 'drizzle-orm'
 import { images, tags } from '~~/server/database/schema'
-import { useDrizzle } from '../utils/drizzle'
-import { apiImageListQuerySchema } from '../utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiImageListRequest, ApiImageListResponse>(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageListQuerySchema.safeParse(data))
   if (!query.success) {
     consola.error(query.error)

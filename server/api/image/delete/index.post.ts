@@ -1,10 +1,10 @@
+import type { ApiImageDeleteRequest, ApiImageDeleteResponse } from '~~/server/types/api/image'
 import { consola } from 'consola'
 import { inArray } from 'drizzle-orm'
 import { images, imagesToTags } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiImageDeleteBodySchema } from '~~/server/utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiImageDeleteRequest, ApiImageDeleteResponse>(async (event) => {
   const body = await readValidatedBody(event, data => apiImageDeleteBodySchema.safeParse(data))
   if (!body.success) {
     consola.error(body.error)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import type { UserToken } from '~~/server/utils/drizzle'
+import type { UserToken } from '~~/server/types/drizzle'
 
 interface TokenTableViewOptionsProps {
   table: Table<UserToken>

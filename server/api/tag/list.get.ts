@@ -1,7 +1,8 @@
+import type { ApiTagListResponse } from '~~/server/types/api/tag'
 import { consola } from 'consola'
-import { useDrizzle } from '~~/server/utils/drizzle'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (_event) => {
+export default defineEventHandler<unknown, ApiTagListResponse>(async (_event) => {
   try {
     const list = await useDrizzle().query.tags.findMany()
     return list

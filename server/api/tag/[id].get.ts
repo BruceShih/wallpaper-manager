@@ -1,10 +1,10 @@
+import type { ApiTagGetRequest, ApiTagGetResponse } from '~~/server/types/api/tag'
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 import { tags } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiTagGetPathSchema } from '~~/server/utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiTagGetRequest, ApiTagGetResponse>(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiTagGetPathSchema.safeParse(data))
   if (!path.success) {
     consola.error(path.error)

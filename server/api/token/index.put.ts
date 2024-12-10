@@ -1,9 +1,9 @@
+import type { ApiTokenCreateResponse } from '~~/server/types/api/token'
 import { consola } from 'consola'
 import { userToken } from '~~/server/database/schema'
-import { serverAuth } from '~~/server/utils/auth'
-import { useDrizzle } from '~~/server/utils/drizzle'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<unknown, ApiTokenCreateResponse>(async (event) => {
   const session = await serverAuth().api.getSession({
     headers: event.headers
   })

@@ -1,10 +1,10 @@
+import type { ApiImageUpdateRequest, ApiImageUpdateResponse } from '~~/server/types/api/image'
 import { consola } from 'consola'
 import { and, eq, inArray } from 'drizzle-orm'
 import { images, imagesToTags } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiGenericPathSchema, apiImageUpdateBodySchema } from '~~/server/utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiImageUpdateRequest, ApiImageUpdateResponse>(async (event) => {
   const path = await getValidatedRouterParams(event, data => apiGenericPathSchema.safeParse(data))
   if (!path.success) {
     consola.error(path.error)

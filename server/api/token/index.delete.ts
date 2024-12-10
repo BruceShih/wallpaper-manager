@@ -1,10 +1,9 @@
+import type { ApiTokenDeleteRequest, ApiTokenDeleteResponse } from '~~/server/types/api/token'
 import { consola } from 'consola'
-import { inArray } from 'drizzle-orm'
 import { userToken } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiTokenDeleteBodySchema } from '~~/server/utils/validator'
+import { inArray, useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiTokenDeleteRequest, ApiTokenDeleteResponse>(async (event) => {
   const body = await readValidatedBody(event, data => apiTokenDeleteBodySchema.safeParse(data))
   if (!body.success) {
     consola.error(body.error)

@@ -1,7 +1,7 @@
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 import { userToken } from '../database/schema'
-import { useDrizzle } from '../utils/drizzle'
+import { useDrizzle } from '../types/drizzle'
 
 export default defineEventHandler(async (event) => {
   if (import.meta.dev)

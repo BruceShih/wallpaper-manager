@@ -1,4 +1,4 @@
-import type { Image, Tag } from '~~/server/utils/drizzle'
+import type { Image, Tag } from '~~/server/types/drizzle'
 
 import { z } from 'zod'
 

@@ -1,10 +1,10 @@
+import type { ApiTokenUpdateRequest, ApiTokenUpdateResponse } from '~~/server/types/api/token'
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 import { userToken } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiTokenPostPathSchema, apiTokenUpdateBodySchema } from '~~/server/utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiTokenUpdateRequest, ApiTokenUpdateResponse>(async (event) => {
   const path = await getValidatedRouterParams(event, body => apiTokenPostPathSchema.safeParse(body))
   if (!path.success) {
     consola.error(path.error)

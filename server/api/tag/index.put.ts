@@ -1,8 +1,8 @@
+import type { ApiTagCreateRequest, ApiTagCreateResponse } from '~~/server/types/api/tag'
 import { consola } from 'consola'
-import { tables, useDrizzle } from '~~/server/utils/drizzle'
-import { apiTagCreateBodySchema } from '~~/server/utils/validator'
+import { tables, useDrizzle } from '~~/server/types/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiTagCreateRequest, ApiTagCreateResponse>(async (event) => {
   const body = await readValidatedBody(event, data => apiTagCreateBodySchema.safeParse(data))
   if (!body.success) {
     consola.error(body.error)

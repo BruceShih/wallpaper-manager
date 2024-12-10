@@ -1,9 +1,9 @@
-import type { Image, ImagesToTags, Tag } from '~~/server/utils/drizzle'
+import type { ApiImageGetRandomRequest } from '~~/server/types/api/image'
+import type { Image, ImagesToTags, Tag } from '~~/server/types/drizzle'
 import { consola } from 'consola'
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import { images, imagesToTags, tags } from '~~/server/database/schema'
-import { useDrizzle } from '~~/server/utils/drizzle'
-import { apiImageGetQuerySchema } from '~~/server/utils/validator'
+import { useDrizzle } from '~~/server/types/drizzle'
 
 interface SensitiveImages {
   imagesToTags: ImagesToTags
@@ -15,7 +15,7 @@ interface InsensitiveImages {
   imagesToTags: ImagesToTags | null
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler<ApiImageGetRandomRequest>(async (event) => {
   const query = await getValidatedQuery(event, data => apiImageGetQuerySchema.safeParse(data))
   if (!query.success) {
     consola.error(query.error)

@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { UserToken } from '~~/server/utils/drizzle'
+import type { UserToken } from '~~/server/types/drizzle'
 import {
   CustomTableColumnHeader,
   CustomTableRowBoolean,

@@ -1,4 +1,7 @@
-import type { Tag, UserToken } from '~~/server/utils/drizzle'
+import type { ApiImageDeleteResponse, ApiImageListResponse, ApiImageUpdateResponse, ApiImageUploadResponse } from '~~/server/types/api/image'
+import type { ApiTagCreateResponse, ApiTagDeleteResponse, ApiTagGetResponse, ApiTagListResponse } from '~~/server/types/api/tag'
+import type { ApiTokenCreateResponse, ApiTokenDeleteResponse, ApiTokenListResponse, ApiTokenUpdateResponse } from '~~/server/types/api/token'
+import type { Tag, UserToken } from '~~/server/types/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
 import { randBoolean, randFileName, randPastDate, randProductCategory, randUuid } from '@ngneat/falso'
 
@@ -37,7 +40,7 @@ export function useWallpaperService() {
       }
 
       const token = useBearerToken()
-      return await useFetch(`/api/tag/get/${id}`, {
+      return await useFetch<ApiTagGetResponse>(`/api/tag/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -57,7 +60,7 @@ export function useWallpaperService() {
       }
 
       const token = useBearerToken()
-      return await useFetch('/api/tag/list', {
+      return await useFetch<ApiTagListResponse>('/api/tag/list', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -65,7 +68,7 @@ export function useWallpaperService() {
     },
     async create(body: { name: string, sensitive: boolean }) {
       const token = useBearerToken()
-      return await useFetch('/api/tag/create', {
+      return await useFetch<ApiTagCreateResponse>('/api/tag', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
@@ -75,7 +78,7 @@ export function useWallpaperService() {
     },
     async delete(id: number) {
       const token = useBearerToken()
-      return await useFetch(`/api/tag/delete/${id}`, {
+      return await useFetch<ApiTagDeleteResponse>(`/api/tag/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
@@ -105,7 +108,7 @@ export function useWallpaperService() {
       }
 
       const token = useBearerToken()
-      return await useFetch('/api/list', {
+      return await useFetch<ApiImageListResponse>('/api/image/list', {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -114,7 +117,7 @@ export function useWallpaperService() {
     },
     async update(data: UpdateWallpaperApiArgsType) {
       const token = useBearerToken()
-      return await useFetch(`/api/image/update/${data.id}`, {
+      return await useFetch<ApiImageUpdateResponse>(`/api/image/${data.id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`
@@ -127,7 +130,7 @@ export function useWallpaperService() {
       const queryString = data.tags.length > 0 ? `?tags=${data.tags.join('&tags=')}` : ''
       const formData = new FormData()
       formData.append('file', data.body, data.body.name)
-      return await useFetch(`/api/image/upload/${data.id}${queryString}`, {
+      return await useFetch<ApiImageUploadResponse>(`/api/image/${data.id}${queryString}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
@@ -143,7 +146,7 @@ export function useWallpaperService() {
     },
     async delete(ids: string[]) {
       const token = useBearerToken()
-      return await useFetch('/api/image/delete', {
+      return await useFetch<ApiImageDeleteResponse>('/api/image/delete', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
@@ -169,7 +172,7 @@ export function useWallpaperService() {
       }
 
       const token = useBearerToken()
-      return await useFetch('/api/token/list', {
+      return await useFetch<ApiTokenListResponse>('/api/token/list', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -177,7 +180,7 @@ export function useWallpaperService() {
     },
     async create() {
       const token = useBearerToken()
-      return await useFetch<UserToken[]>('/api/token', {
+      return await useFetch<ApiTokenCreateResponse>('/api/token', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
@@ -186,7 +189,7 @@ export function useWallpaperService() {
     },
     async update(id: number, enable: boolean) {
       const token = useBearerToken()
-      return await useFetch(`/api/token/${id}`, {
+      return await useFetch<ApiTokenUpdateResponse>(`/api/token/${id}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
@@ -196,7 +199,7 @@ export function useWallpaperService() {
     },
     async delete(ids: number[]) {
       const token = useBearerToken()
-      return await useFetch('/api/token', {
+      return await useFetch<ApiTokenDeleteResponse>('/api/token', {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`

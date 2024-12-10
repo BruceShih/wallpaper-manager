@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Tag } from '~~/server/utils/drizzle'
+import type { Tag } from '~~/server/types/drizzle'
 
 interface UploadListToolbarProps {
   imageSelected: number

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
-import type { UserToken } from '~~/server/utils/drizzle'
+import type { UserToken } from '~~/server/types/drizzle'
 import { cn } from '~/lib/utils'
 
 interface GalleryTableRowLinkProps {

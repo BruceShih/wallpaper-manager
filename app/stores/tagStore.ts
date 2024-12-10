@@ -1,4 +1,4 @@
-import type { Tag } from '~~/server/utils/drizzle'
+import type { Tag } from '~~/server/types/drizzle'
 import { useToast } from '~/components/ui/toast/use-toast'
 import { useWallpaperService } from '~/composables/useWallpaperService'
 
@@ -22,7 +22,7 @@ export const useTagStore = defineStore('tagStore', {
           variant: 'destructive'
         })
       }
-      this.tags = response.data.value || []
+      this.tags = response.data.value
     },
     async deleteTag(id: number) {
       const api = useWallpaperService()
