@@ -6,7 +6,7 @@ if (import.meta.dev) {
 }
 
 useHead({
-  title: 'Token - Wallpaper Manager'
+  title: 'Upload - Wallpaper Manager'
 })
 
 const store = useTagStore()

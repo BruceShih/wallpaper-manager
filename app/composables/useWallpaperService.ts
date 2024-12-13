@@ -126,8 +126,12 @@ export function useWallpaperService() {
       })
     },
     async upload(data: UploadWallpaperApiArgsType, onSuccess: () => void, onError: () => void) {
+      const store = useTagStore()
       const token = useBearerToken()
-      const queryString = data.tags.length > 0 ? `?tags=${data.tags.join('&tags=')}` : ''
+      const tags = data.tags
+        .map(tag => store.tags.find(t => t.tag === tag)?.id)
+        .filter(Boolean)
+      const queryString = tags.length > 0 ? `?tags=${tags.join('&tags=')}` : ''
       const formData = new FormData()
       formData.append('file', data.body, data.body.name)
       return await useFetch<ApiImageUploadResponse>(`/api/image/${data.id}${queryString}`, {
