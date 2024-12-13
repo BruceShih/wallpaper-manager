@@ -10,16 +10,18 @@ const { imageSelected, allTags } = defineProps<UploadListToolbarProps>()
 const emits = defineEmits<{
   change: [files: File[]]
   upload: [void]
+  selectAll: [boolean]
   tagsApply: [tags: string[]]
 }>()
 
 const fileInput = ref<HTMLInputElement>()
 const tags = ref<string[]>([])
+const selectedAll = ref(false)
 </script>
 
 <template>
-  <div class="flex items-center justify-between space-x-4">
-    <div class="grid w-[300px] max-w-sm items-center gap-1.5">
+  <div class="flex items-center justify-between">
+    <div class="flex w-1/2 items-center justify-start gap-x-2">
       <input
         id="file"
         ref="fileInput"
@@ -32,7 +34,7 @@ const tags = ref<string[]>([])
         @input="emits('change', Array.from(fileInput?.files || []))"
       >
       <label
-        class="flex h-8 w-full items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm
+        class="flex h-8 w-2/3 items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm
           shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium
           placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1
           focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -44,17 +46,38 @@ const tags = ref<string[]>([])
         />
         Select images...
       </label>
+      <div class="flex w-1/3 items-center space-x-2">
+        <Checkbox
+          id="select-all"
+          v-model:checked="selectedAll"
+          @update:checked="emits('selectAll', selectedAll)"
+        />
+        <label
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          for="select-all"
+        >
+          <template v-if="selectedAll">
+            Unselect all
+          </template>
+          <template v-else>
+            Select all
+          </template>
+        </label>
+        <span
+          v-if="imageSelected > 0"
+          class="text-sm"
+        >
+          ({{ imageSelected }} selected)
+        </span>
+      </div>
     </div>
-    <div class="ml-auto flex w-[600px] items-center justify-end space-x-2">
-      <span class="w-[150px] text-sm">
-        {{ imageSelected }} selected
-      </span>
+    <div class="flex w-1/2 items-center justify-end space-x-2">
       <UploadListItemTagSelect
         v-model="tags"
         :tags="allTags"
       />
       <Button
-        class="h-8 lg:flex"
+        class="flex h-8 items-center"
         size="sm"
         variant="secondary"
         @click="emits('tagsApply', tags)"
@@ -66,7 +89,7 @@ const tags = ref<string[]>([])
         Apply tags
       </Button>
       <Button
-        class="h-8 lg:flex"
+        class="flex h-8 items-center"
         size="sm"
         variant="default"
         @click="emits('upload')"

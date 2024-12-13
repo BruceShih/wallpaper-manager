@@ -50,7 +50,6 @@ const filteredTags = computed(() => tags.value.filter(i => !modelValue.value.inc
           />
         </ComboboxInput>
       </ComboboxAnchor>
-
       <ComboboxPortal>
         <ComboboxContent>
           <CommandList

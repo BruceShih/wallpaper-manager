@@ -69,6 +69,11 @@ function onUpload() {
     console.error(error)
   })
 }
+function onSelectAll(isAllSelected: boolean) {
+  images.forEach((image) => {
+    image.selected = isAllSelected
+  })
+}
 function onTagsApply(tags: string[]) {
   images.forEach((image) => {
     if (image.selected) {
@@ -84,6 +89,7 @@ function onTagsApply(tags: string[]) {
     :all-tags="tags"
     :image-selected="totalImageSelected"
     @change="onFileSelected"
+    @select-all="onSelectAll"
     @tags-apply="onTagsApply"
     @upload="onUpload"
   />
