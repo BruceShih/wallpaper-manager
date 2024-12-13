@@ -35,7 +35,7 @@ function onUpload() {
               image.status = 'uploaded'
               useTimeoutFn(() => {
                 images.splice(images.indexOf(image), 1)
-              }, 5000).start()
+              }, 10000).start()
             },
             () => {
               image.status = 'failed'
@@ -55,7 +55,7 @@ function onUpload() {
             image.status = 'uploaded'
             useTimeoutFn(() => {
               images.splice(images.indexOf(image), 1)
-            }, 5000).start()
+            }, 10000).start()
           },
           () => {
             image.status = 'failed'
