@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@atinux/kysely-d1": "^0.3.1",
+    "@cf-wasm/photon": "^0.1.28",
     "@iconify-json/radix-icons": "^1.2.1",
     "@nuxt/fonts": "^0.10.3",
     "@nuxt/icon": "^1.10.1",
@@ -31,6 +32,7 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.7.0",
     "@radix-icons/vue": "^1.0.0",
+    "@silvia-odwyer/photon-node": "^0.3.3",
     "@tanstack/vue-table": "^8.20.5",
     "@vee-validate/nuxt": "^4.14.7",
     "@vee-validate/zod": "^4.14.7",
