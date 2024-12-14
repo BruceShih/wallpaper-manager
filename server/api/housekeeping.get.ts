@@ -1,12 +1,13 @@
-import type { ApiHouseKeepRequest, ApiHouseKeepResponse } from '../types/api/housekeep'
-import * as photon from '@cf-wasm/photon'
+import type { ApiHousekeepingRequest, ApiHousekeepingResponse } from '../types/api/housekeeping'
+import JPEG_DEC_WASM from '@jsquash/jpeg/codec/dec/mozjpeg_dec'
+import decode, { init as initJpegDecode } from '@jsquash/jpeg/decode'
 import { consola } from 'consola'
 import { images, imagesToTags } from '../database/schema'
 import { inArray, tables, useDrizzle } from '../types/drizzle'
-import { apiHouseKeepQuerySchema } from '../utils/validator'
+import { apiHousekeepingQuerySchema } from '../utils/validator'
 
-export default defineEventHandler<ApiHouseKeepRequest, ApiHouseKeepResponse>(async (event) => {
-  const query = await getValidatedQuery(event, data => apiHouseKeepQuerySchema.safeParse(data))
+export default defineEventHandler<ApiHousekeepingRequest, ApiHousekeepingResponse>(async (event) => {
+  const query = await getValidatedQuery(event, data => apiHousekeepingQuerySchema.safeParse(data))
   if (!query.success) {
     consola.error(query.error)
     throw createError({ statusCode: 400 })
@@ -21,8 +22,8 @@ export default defineEventHandler<ApiHouseKeepRequest, ApiHouseKeepResponse>(asy
     if (imageR2) {
       try {
         const imageBinary = await imageR2.arrayBuffer()
-        const imageUint8 = new Uint8Array(imageBinary)
-        const photonImage = photon.PhotonImage.new_from_byteslice(imageUint8)
+        await initJpegDecode(JPEG_DEC_WASM)
+        await decode(imageBinary)
         // TODO: normal image, check whether it's blurry or low quality
       }
       catch {

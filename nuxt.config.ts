@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import process from 'node:process'
+import wasm from 'vite-plugin-wasm'
 
 export default defineNuxtConfig({
   // https://nuxt.com/modules
@@ -20,6 +21,15 @@ export default defineNuxtConfig({
 
   // https://devtools.nuxt.com
   devtools: { enabled: true },
+  build: {
+    transpile: ['@jsquash/jpeg']
+  },
+  vite: {
+    plugins: [wasm()],
+    optimizeDeps: {
+      exclude: ['@jsquash/jpeg']
+    }
+  },
   sourcemap: { client: true },
 
   runtimeConfig: {

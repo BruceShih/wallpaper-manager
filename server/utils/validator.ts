@@ -58,6 +58,6 @@ export const apiTagGetPathSchema = z.object({
   id: z.coerce.number()
 })
 
-export const apiHouseKeepQuerySchema = z.object({
+export const apiHousekeepingQuerySchema = z.object({
   dry: z.coerce.boolean().default(false)
 })
