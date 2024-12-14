@@ -1,4 +1,4 @@
-import { consola } from 'consola'
+import consola from 'consola'
 import { eq } from 'drizzle-orm'
 import { userToken } from '../database/schema'
 import { useDrizzle } from '../types/drizzle'

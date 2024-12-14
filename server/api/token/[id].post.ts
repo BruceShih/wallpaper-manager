@@ -1,5 +1,5 @@
 import type { ApiTokenUpdateRequest, ApiTokenUpdateResponse } from '~~/server/types/api/token'
-import { consola } from 'consola'
+import consola from 'consola'
 import { eq } from 'drizzle-orm'
 import { userToken } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/types/drizzle'

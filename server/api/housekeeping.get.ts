@@ -1,7 +1,7 @@
 import type { ApiHousekeepingRequest, ApiHousekeepingResponse } from '../types/api/housekeeping'
 import JPEG_DEC_WASM from '@jsquash/jpeg/codec/dec/mozjpeg_dec'
 import decode, { init as initJpegDecode } from '@jsquash/jpeg/decode'
-import { consola } from 'consola'
+import consola from 'consola'
 import { images, imagesToTags } from '../database/schema'
 import { inArray, tables, useDrizzle } from '../types/drizzle'
 import { apiHousekeepingQuerySchema } from '../utils/validator'
@@ -14,6 +14,7 @@ export default defineEventHandler<ApiHousekeepingRequest, ApiHousekeepingRespons
   }
 
   const dryRun = query.data.dry
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const lowQualityImageList: string[] = []
   const brokenImageList: string[] = []
   const imageList = await useDrizzle().query.images.findMany()

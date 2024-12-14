@@ -1,5 +1,5 @@
 import type { ApiImageDeleteRequest, ApiImageDeleteResponse } from '~~/server/types/api/image'
-import { consola } from 'consola'
+import consola from 'consola'
 import { inArray } from 'drizzle-orm'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/types/drizzle'

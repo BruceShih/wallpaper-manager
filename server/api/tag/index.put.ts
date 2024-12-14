@@ -1,5 +1,5 @@
 import type { ApiTagCreateRequest, ApiTagCreateResponse } from '~~/server/types/api/tag'
-import { consola } from 'consola'
+import consola from 'consola'
 import { tables, useDrizzle } from '~~/server/types/drizzle'
 
 export default defineEventHandler<ApiTagCreateRequest, ApiTagCreateResponse>(async (event) => {

@@ -1,5 +1,5 @@
 import type { ApiTagDeleteRequest, ApiTagDeleteResponse } from '~~/server/types/api/tag'
-import { consola } from 'consola'
+import consola from 'consola'
 import { eq } from 'drizzle-orm'
 import { tags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/types/drizzle'

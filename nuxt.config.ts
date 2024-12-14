@@ -17,10 +17,13 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@vueuse/nuxt',
     '@pinia/nuxt'
+    // 'nuxt-eslint-auto-explicit-import'
   ],
-
   // https://devtools.nuxt.com
   devtools: { enabled: true },
+  // imports: {
+  //   autoImport: false
+  // },
   build: {
     transpile: ['@jsquash/jpeg']
   },
@@ -31,7 +34,6 @@ export default defineNuxtConfig({
     }
   },
   sourcemap: { client: true },
-
   runtimeConfig: {
     origin: process.env.ORIGIN,
     public: {
@@ -41,28 +43,23 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   future: { compatibilityVersion: 4 },
   compatibilityDate: '2024-07-30',
-
   nitro: {
     experimental: {
       openAPI: true
     }
   },
-
   typescript: {
     typeCheck: true
   },
-
   eslint: {
     config: {
       standalone: false
     }
   },
-
   // temporary fix: https://github.com/unovue/shadcn-vue/issues/864
   colorMode: {
     classSuffix: ''
   },
-
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -74,13 +71,11 @@ export default defineNuxtConfig({
      */
     componentDir: './app/components/ui'
   },
-
   image: {
     cloudflare: {
       baseURL: process.env.IMAGE_ORIGIN
     }
   },
-
   // https://hub.nuxt.com/docs/getting-started/installation#options
   hub: {
     blob: true,
@@ -88,6 +83,5 @@ export default defineNuxtConfig({
     database: true,
     kv: true
   },
-
   site: { indexable: false }
 })

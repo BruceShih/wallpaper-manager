@@ -1,5 +1,5 @@
 import type { ApiTokenDeleteRequest, ApiTokenDeleteResponse } from '~~/server/types/api/token'
-import { consola } from 'consola'
+import consola from 'consola'
 import { userToken } from '~~/server/database/schema'
 import { inArray, useDrizzle } from '~~/server/types/drizzle'
 

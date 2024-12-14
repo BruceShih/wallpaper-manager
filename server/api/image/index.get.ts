@@ -1,6 +1,6 @@
 import type { ApiImageGetRandomRequest } from '~~/server/types/api/image'
 import type { Image, ImagesToTags, Tag } from '~~/server/types/drizzle'
-import { consola } from 'consola'
+import consola from 'consola'
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import { images, imagesToTags, tags } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/types/drizzle'

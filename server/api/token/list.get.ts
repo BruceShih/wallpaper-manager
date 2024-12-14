@@ -1,6 +1,6 @@
 import type { ApiTokenListResponse } from '~~/server/types/api/token'
 import type { UserToken } from '~~/server/types/drizzle'
-import { consola } from 'consola'
+import consola from 'consola'
 import { eq } from 'drizzle-orm'
 import { userToken } from '~~/server/database/schema'
 import { useDrizzle } from '~~/server/types/drizzle'

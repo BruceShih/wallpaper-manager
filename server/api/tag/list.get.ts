@@ -1,5 +1,5 @@
 import type { ApiTagListResponse } from '~~/server/types/api/tag'
-import { consola } from 'consola'
+import consola from 'consola'
 import { useDrizzle } from '~~/server/types/drizzle'
 
 export default defineEventHandler<unknown, ApiTagListResponse>(async (_event) => {

@@ -1,5 +1,5 @@
 import type { ApiImageUploadRequest, ApiImageUploadResponse } from '~~/server/types/api/image'
-import { consola } from 'consola'
+import consola from 'consola'
 import { eq } from 'drizzle-orm'
 import { images, imagesToTags } from '~~/server/database/schema'
 import { tables, useDrizzle } from '~~/server/types/drizzle'
