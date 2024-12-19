@@ -7,92 +7,11 @@ interface UploadListProps {
 }
 
 const { tags } = defineProps<UploadListProps>()
-
-const store = useWallpaperStore()
-
-const images = reactive<UploadListItem[]>([])
-
-const totalImageSelected = computed(() => images.filter(image => image.selected).length)
-
-function onFileSelected(files: File[]) {
-  const newFiles = files.filter(file => !images.some(image => image.image?.name === file.name))
-  images.push(...newFiles.map(
-    file => ({ image: file, tags: [], selected: false, status: 'not-started' } satisfies UploadListItem)
-  ))
-}
-function onUpload() {
-  const promises: Promise<unknown>[] = []
-
-  const isSomeSelected = images.some(image => image.selected)
-  if (isSomeSelected) {
-    images.forEach((image) => {
-      if (image.selected) {
-        image.status = 'uploading'
-        promises.push(
-          store.uploadWallpaper(
-            { id: image.image.name, tags: image.tags, body: image.image },
-            () => {
-              image.status = 'uploaded'
-              useTimeoutFn(() => {
-                images.splice(images.indexOf(image), 1)
-              }, 10000).start()
-            },
-            () => {
-              image.status = 'failed'
-            }
-          )
-        )
-      }
-    })
-  }
-  else {
-    images.forEach((image) => {
-      image.status = 'uploading'
-      promises.push(
-        store.uploadWallpaper(
-          { id: image.image.name, tags: image.tags, body: image.image },
-          () => {
-            image.status = 'uploaded'
-            useTimeoutFn(() => {
-              images.splice(images.indexOf(image), 1)
-            }, 10000).start()
-          },
-          () => {
-            image.status = 'failed'
-          }
-        )
-      )
-    })
-  }
-
-  Promise.allSettled(promises).catch((error) => {
-    console.error(error)
-  })
-}
-function onSelectAll(isAllSelected: boolean) {
-  images.forEach((image) => {
-    image.selected = isAllSelected
-  })
-}
-function onTagsApply(tags: string[]) {
-  images.forEach((image) => {
-    if (image.selected) {
-      // this is to prevent image.tags from being reactive
-      image.tags = [...tags]
-    }
-  })
-}
+const modelValue = defineModel<UploadListItem[]>('images', { required: true })
 </script>
 
 <template>
-  <UploadListToolbar
-    :all-tags="tags"
-    :image-selected="totalImageSelected"
-    @change="onFileSelected"
-    @select-all="onSelectAll"
-    @tags-apply="onTagsApply"
-    @upload="onUpload"
-  />
+  <slot name="toolbar" />
   <div
     v-if="images.length === 0"
     class="flex items-center justify-center rounded-md border"
@@ -107,9 +26,9 @@ function onTagsApply(tags: string[]) {
       2xl:grid-cols-8"
   >
     <UploadListItems
-      v-model="images"
+      v-model="modelValue"
       :all-tags="tags"
-      @remove="item => images.splice(images.indexOf(item), 1)"
+      @remove="item => modelValue.splice(modelValue.indexOf(item), 1)"
     />
   </div>
 </template>

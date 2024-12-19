@@ -2,99 +2,106 @@
 import type { Tag } from '~~/server/types/drizzle'
 
 interface UploadListToolbarProps {
+  numberOfImagesToUpload: number
   imageSelected: number
+  uploading: boolean
   allTags: Tag[]
 }
 
-const { imageSelected, allTags } = defineProps<UploadListToolbarProps>()
+const {
+  numberOfImagesToUpload,
+  imageSelected,
+  uploading,
+  allTags
+} = defineProps<UploadListToolbarProps>()
 const emits = defineEmits<{
   change: [files: File[]]
   upload: [void]
-  selectAll: [boolean]
   tagsApply: [tags: string[]]
 }>()
-
-const fileInput = ref<HTMLInputElement>()
+const selectAll = defineModel<boolean>('selectAll', { required: true })
 const tags = ref<string[]>([])
-const selectedAll = ref(false)
+
+function onChange(files: File[]) {
+  emits('change', files)
+}
+function onUpload() {
+  emits('upload')
+  tags.value = []
+}
 </script>
 
 <template>
   <div class="flex items-center justify-between">
     <div class="flex w-1/2 items-center justify-start gap-x-2">
-      <input
-        id="file"
-        ref="fileInput"
-        accept="image/*"
-        class="hidden"
-        multiple
-        name="file"
-        placeholder="files"
-        type="file"
-        @input="emits('change', Array.from(fileInput?.files || []))"
-      >
-      <label
-        class="flex h-8 w-2/3 items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm
-          shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium
-          placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1
-          focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-        for="file"
-      >
-        <Icon
-          class="mr-2 size-4"
-          name="radix-icons:magnifying-glass"
-        />
-        Select images...
-      </label>
-      <div class="flex w-1/3 items-center space-x-2">
-        <Checkbox
-          id="select-all"
-          v-model:checked="selectedAll"
-          @update:checked="emits('selectAll', selectedAll)"
-        />
-        <label
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          for="select-all"
+      <UploadListImageInput
+        @change="onChange($event)"
+      />
+    </div>
+    <div class="flex w-1/2 items-center justify-end space-x-4">
+      <div class="flex items-center space-x-2">
+        <Toggle
+          v-model:pressed="selectAll"
+          aria-label="Select all"
+          class="space-x-2"
+          :disabled="numberOfImagesToUpload === 0"
         >
-          <template v-if="selectedAll">
-            Unselect all
+          <template v-if="selectAll">
+            <label class="text-sm">Unselect all</label>
+            <Icon
+              class="size-4"
+              name="radix-icons:checkbox"
+            />
           </template>
           <template v-else>
-            Select all
+            <label class="text-sm">Select all</label>
+            <Icon
+              class="size-4"
+              name="radix-icons:stop"
+            />
           </template>
-        </label>
+        </Toggle>
         <span
           v-if="imageSelected > 0"
-          class="text-sm"
+          class="text-sm text-secondary"
         >
           ({{ imageSelected }} selected)
         </span>
+        <UploadListItemTagSelect
+          v-model="tags"
+          :tags="allTags"
+        />
+        <Button
+          class="flex h-8 items-center"
+          size="sm"
+          variant="secondary"
+          @click="emits('tagsApply', tags)"
+        >
+          <Icon
+            class="size-4"
+            name="radix-icons:bookmark"
+          />
+          Apply tags
+        </Button>
       </div>
-    </div>
-    <div class="flex w-1/2 items-center justify-end space-x-2">
-      <UploadListItemTagSelect
-        v-model="tags"
-        :tags="allTags"
+      <Separator
+        class="h-8"
+        orientation="vertical"
       />
       <Button
         class="flex h-8 items-center"
-        size="sm"
-        variant="secondary"
-        @click="emits('tagsApply', tags)"
-      >
-        <Icon
-          class="size-4"
-          name="radix-icons:bookmark"
-        />
-        Apply tags
-      </Button>
-      <Button
-        class="flex h-8 items-center"
+        :disabled="numberOfImagesToUpload === 0 || uploading"
         size="sm"
         variant="default"
-        @click="emits('upload')"
+        @click="onUpload"
       >
         <Icon
+          v-if="uploading"
+          class="size-4 animate-spin"
+          name="radix-icons:reload"
+        />
+        <Icon
+          v-else
           class="size-4"
           name="radix-icons:upload"
         />

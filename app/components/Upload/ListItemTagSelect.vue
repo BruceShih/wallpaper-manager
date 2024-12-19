@@ -18,7 +18,7 @@ const filteredTags = computed(() => tags.value.filter(i => !modelValue.value.inc
 
 <template>
   <TagsInput
-    class="relative w-full gap-0 px-0"
+    class="relative w-[250px] gap-0 px-0"
     :model-value="modelValue"
   >
     <div class="flex flex-wrap items-center gap-2 px-3">
