@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { ColumnDef } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/types/drizzle'
 import {
   CustomTableColumnHeader,
   CustomTableRowBoolean,
   TokenTableRowActions,
   TokenTableRowCopyable
-} from '#build/components'
-import { createColumnHelper } from '@tanstack/vue-table'
+} from '#components'
 import { Checkbox } from '~/components/ui/checkbox'
 
 if (import.meta.dev) {
@@ -19,9 +19,8 @@ useHead({
   title: 'Token - Wallpaper Manager'
 })
 
-const columnHelper = createColumnHelper<UserToken>()
 const columns = [
-  columnHelper.display({
+  {
     id: 'select',
     header: ({ table }) => h(Checkbox, {
       'checked': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
@@ -37,33 +36,36 @@ const columns = [
     }),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('token', {
+  },
+  {
+    accessorKey: 'token',
     header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Token' }),
     cell: ({ row }) => h(TokenTableRowCopyable, { row }),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('createDate', {
+  },
+  {
+    accessorKey: 'createDate',
     header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Create Date' }),
     cell: ({ row }) => h('div', { class: 'w-[250px] flex items-center' }, row.original.createDate),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('enabled', {
+  },
+  {
+    accessorKey: 'enabled',
     header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Enabled' }),
     cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.enabled, class: 'w-[50px]' }),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.display({
+  },
+  {
     id: 'actions',
     cell: ({ row }) => h(TokenTableRowActions, { row, onUpdate }),
     size: 50,
     enableSorting: false,
     enableHiding: false
-  })
-]
+  }
+] satisfies ColumnDef<UserToken>[]
 
 const store = useTokenStore()
 

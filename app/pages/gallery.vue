@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ColumnDef, Table } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
 import {
   CustomTableColumnHeader,
@@ -6,8 +7,7 @@ import {
   GalleryTableRowActions,
   GalleryTableRowLink,
   Icon
-} from '#build/components'
-import { createColumnHelper, type Table } from '@tanstack/vue-table'
+} from '#components'
 import { Badge } from '~/components/ui/badge'
 import { Checkbox } from '~/components/ui/checkbox'
 
@@ -21,9 +21,8 @@ useHead({
   title: 'Gallery - Wallpaper Manager'
 })
 
-const columnHelper = createColumnHelper<WallpaperAndTags>()
 const columns = [
-  columnHelper.display({
+  {
     id: 'select',
     header: ({ table }) => h(Checkbox, {
       'checked': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
@@ -39,14 +38,16 @@ const columns = [
     }),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('key', {
+  },
+  {
+    accessorKey: 'key',
     header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Key' }),
     cell: ({ row }) => h(GalleryTableRowLink, { row, class: 'w-[400px]' }),
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('tags', {
+  },
+  {
+    accessorKey: 'tags',
     header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Tags' }),
     cell: ({ row }) => {
       return h('div', { class: 'w-[250px] flex space-x-2' }, [
@@ -58,8 +59,9 @@ const columns = [
     },
     enableSorting: false,
     enableHiding: false
-  }),
-  columnHelper.accessor('favorite', {
+  },
+  {
+    accessorKey: 'favorite',
     header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Favorite' }),
     cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.favorite
       ? h(Icon, { name: 'radix-icons:heart-filled', class: 'text-destructive size-4' })
@@ -69,8 +71,9 @@ const columns = [
     },
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.accessor('alive', {
+  },
+  {
+    accessorKey: 'alive',
     header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Alive' }),
     cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.alive, class: 'w-[100px]' }),
     filterFn: (row, id, value) => {
@@ -78,14 +81,14 @@ const columns = [
     },
     enableSorting: true,
     enableHiding: false
-  }),
-  columnHelper.display({
+  },
+  {
     id: 'actions',
     cell: ({ row }) => h(GalleryTableRowActions, { row, onEdit }),
     enableSorting: false,
     enableHiding: false
-  })
-]
+  }
+] satisfies ColumnDef<WallpaperAndTags>[]
 
 const wallpaperStore = useWallpaperStore()
 const tagStore = useTagStore()
