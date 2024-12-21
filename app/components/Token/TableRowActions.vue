@@ -7,11 +7,12 @@ interface TokenTableRowActionsProps {
 }
 
 defineProps<TokenTableRowActionsProps>()
+const emits = defineEmits<{
+  update: [data: { id: number, enable: boolean }]
+}>()
 
-const store = useTokenStore()
-
-async function onUpdate(id: number, enable: boolean) {
-  await store.updateToken(id, enable)
+function onUpdate(id: number, enable: boolean) {
+  emits('update', { id, enable })
 }
 </script>
 

@@ -8,8 +8,14 @@ interface GalleryTableRowActionsProps {
 }
 
 const props = defineProps<GalleryTableRowActionsProps>()
+const emits = defineEmits<{
+  edit: [data: {
+    key: string
+    favorite: boolean
+    tags: number[]
+  }]
+}>()
 
-const wallpaperStore = useWallpaperStore()
 const tagStore = useTagStore()
 
 const commitEdit = ref(false)
@@ -36,17 +42,17 @@ function onEditDialogOpen(val: boolean) {
     editModels.tags = []
   }
 }
-async function onEditSave() {
+function onEditSave() {
   if (!commitEdit.value)
     return
 
   commitEdit.value = true
 
-  const body = {
+  emits('edit', {
+    key: props.row.original.key,
     favorite: editModels.favorite,
     tags: tagStore.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
-  }
-  await wallpaperStore.updateWallpaper({ id: props.row.original.key, body })
+  })
 
   commitEdit.value = false
   editModels.favorite = false
