@@ -2,12 +2,12 @@
 import type { Column } from '@tanstack/vue-table'
 import { cn } from '~/lib/utils'
 
-interface TableColumnHeaderProps {
+interface DataTableColumnHeaderProps {
   column: Column<T, unknown>
   title: string
 }
 
-defineProps<TableColumnHeaderProps>()
+defineProps<DataTableColumnHeaderProps>()
 </script>
 
 <script lang="ts">

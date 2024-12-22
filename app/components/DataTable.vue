@@ -27,11 +27,11 @@ import {
   TableRow
 } from './ui/table'
 
-interface GalleryTableProps {
+interface DataTableProps {
   columns: ColumnDef<T, unknown>[]
   data: T[]
 }
-const props = defineProps<GalleryTableProps>()
+const props = defineProps<DataTableProps>()
 defineSlots<{
   toolbar: (props: { table: TanstackTable<T> }) => unknown
 }>()
@@ -119,6 +119,6 @@ const table = useVueTable({
       </Table>
     </div>
 
-    <CustomTablePagination :table="table" />
+    <DataTablePagination :table="table" />
   </div>
 </template>

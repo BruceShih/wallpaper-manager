@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { cn } from '~/lib/utils'
 
-interface TableRowBooleanProps {
+interface DataTableRowBooleanProps {
   isTrue: boolean
 }
 
-defineProps<TableRowBooleanProps>()
+defineProps<DataTableRowBooleanProps>()
 </script>
 
 <script lang="ts">

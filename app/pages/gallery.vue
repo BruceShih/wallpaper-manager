@@ -2,8 +2,8 @@
 import type { ColumnDef, Table } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
 import {
-  CustomTableColumnHeader,
-  CustomTableRowBoolean,
+  DataTableColumnHeader,
+  DataTableRowBoolean,
   GalleryTableRowActions,
   GalleryTableRowLink,
   Icon
@@ -41,14 +41,14 @@ const columns = [
   },
   {
     accessorKey: 'key',
-    header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Key' }),
+    header: ({ column }) => h(DataTableColumnHeader<WallpaperAndTags>, { column, title: 'Key' }),
     cell: ({ row }) => h(GalleryTableRowLink, { row, class: 'w-[400px]' }),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'tags',
-    header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Tags' }),
+    header: ({ column }) => h(DataTableColumnHeader<WallpaperAndTags>, { column, title: 'Tags' }),
     cell: ({ row }) => {
       return h('div', { class: 'w-[250px] flex space-x-2' }, [
         row.original.tags.map(tag => h(Badge, { variant: tag.sensitive
@@ -62,7 +62,7 @@ const columns = [
   },
   {
     accessorKey: 'favorite',
-    header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Favorite' }),
+    header: ({ column }) => h(DataTableColumnHeader<WallpaperAndTags>, { column, title: 'Favorite' }),
     cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.favorite
       ? h(Icon, { name: 'radix-icons:heart-filled', class: 'text-destructive size-4' })
       : h(Icon, { name: 'radix-icons:heart', class: 'text-destructive size-4' })),
@@ -74,8 +74,8 @@ const columns = [
   },
   {
     accessorKey: 'alive',
-    header: ({ column }) => h(CustomTableColumnHeader<WallpaperAndTags>, { column, title: 'Alive' }),
-    cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.alive, class: 'w-[100px]' }),
+    header: ({ column }) => h(DataTableColumnHeader<WallpaperAndTags>, { column, title: 'Alive' }),
+    cell: ({ row }) => h(DataTableRowBoolean, { isTrue: row.original.alive, class: 'w-[100px]' }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
@@ -117,7 +117,7 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-4">
-    <CustomTable
+    <DataTable
       :columns="columns"
       :data="wallpaperStore.wallpapers"
     >
@@ -134,6 +134,6 @@ onMounted(async () => {
           </template>
         </GalleryTableToolbar>
       </template>
-    </CustomTable>
+    </DataTable>
   </div>
 </template>

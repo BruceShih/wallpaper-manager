@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T">
 import type { Table } from '@tanstack/vue-table'
 
-interface TablePaginationProps {
+interface DataTablePaginationProps {
   table: Table<T>
 }
 
-const props = defineProps<TablePaginationProps>()
+const props = defineProps<DataTablePaginationProps>()
 
 function onSelectUpdate(val: string) {
   const pageSize = Number(val)

@@ -2,8 +2,8 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { UserToken } from '~~/server/types/drizzle'
 import {
-  CustomTableColumnHeader,
-  CustomTableRowBoolean,
+  DataTableColumnHeader,
+  DataTableRowBoolean,
   TokenTableRowActions,
   TokenTableRowCopyable
 } from '#components'
@@ -39,22 +39,22 @@ const columns = [
   },
   {
     accessorKey: 'token',
-    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Token' }),
+    header: ({ column }) => h(DataTableColumnHeader<UserToken>, { column, title: 'Token' }),
     cell: ({ row }) => h(TokenTableRowCopyable, { row }),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'createDate',
-    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Create Date' }),
+    header: ({ column }) => h(DataTableColumnHeader<UserToken>, { column, title: 'Create Date' }),
     cell: ({ row }) => h('div', { class: 'w-[250px] flex items-center' }, row.original.createDate),
     enableSorting: true,
     enableHiding: false
   },
   {
     accessorKey: 'enabled',
-    header: ({ column }) => h(CustomTableColumnHeader<UserToken>, { column, title: 'Enabled' }),
-    cell: ({ row }) => h(CustomTableRowBoolean, { isTrue: row.original.enabled, class: 'w-[50px]' }),
+    header: ({ column }) => h(DataTableColumnHeader<UserToken>, { column, title: 'Enabled' }),
+    cell: ({ row }) => h(DataTableRowBoolean, { isTrue: row.original.enabled, class: 'w-[50px]' }),
     enableSorting: true,
     enableHiding: false
   },
@@ -80,13 +80,13 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-4">
-    <CustomTable
+    <DataTable
       :columns="columns"
       :data="store.tokens"
     >
       <template #toolbar="{ table }">
         <TokenTableToolbar :table="table" />
       </template>
-    </CustomTable>
+    </DataTable>
   </div>
 </template>
