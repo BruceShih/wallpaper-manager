@@ -64,8 +64,8 @@ const columns = [
     accessorKey: 'favorite',
     header: ({ column }) => h(DataTableColumnHeader<WallpaperAndTags>, { column, title: 'Favorite' }),
     cell: ({ row }) => h('div', { class: 'w-[100px] flex items-center' }, row.original.favorite
-      ? h(Icon, { name: 'radix-icons:heart-filled', class: 'text-destructive size-4' })
-      : h(Icon, { name: 'radix-icons:heart', class: 'text-destructive size-4' })),
+      ? h(Icon, { name: 'lucide:heart', class: 'text-destructive size-4' })
+      : ''),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

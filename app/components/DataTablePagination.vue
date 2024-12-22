@@ -59,7 +59,7 @@ function onSelectUpdate(val: string) {
           <span class="sr-only">Go to first page</span>
           <Icon
             class="size-4"
-            name="radix-icons:double-arrow-left"
+            name="lucide:chevrons-left"
           />
         </Button>
         <Button
@@ -71,7 +71,7 @@ function onSelectUpdate(val: string) {
           <span class="sr-only">Go to previous page</span>
           <Icon
             class="size-4"
-            name="radix-icons:chevron-left"
+            name="lucide:chevron-left"
           />
         </Button>
         <Button
@@ -83,7 +83,7 @@ function onSelectUpdate(val: string) {
           <span class="sr-only">Go to next page</span>
           <Icon
             class="size-4"
-            name="radix-icons:chevron-right"
+            name="lucide:chevron-right"
           />
         </Button>
         <Button
@@ -95,7 +95,7 @@ function onSelectUpdate(val: string) {
           <span class="sr-only">Go to last page</span>
           <Icon
             class="size-4"
-            name="radix-icons:double-arrow-right"
+            name="lucide:chevrons-right"
           />
         </Button>
       </div>

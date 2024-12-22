@@ -72,7 +72,7 @@ function onEditSave() {
         >
           <Icon
             class="size-4"
-            name="radix-icons:dots-horizontal"
+            name="lucide:more-horizontal"
           />
           <span class="sr-only">Open menu</span>
         </Button>
@@ -201,7 +201,7 @@ function onEditSave() {
             <Icon
               v-if="commitEdit"
               class="mr-2 size-4 animate-spin"
-              name="radix-icons:reload"
+              name="lucide:rotate-cw"
             />
             Save changes
           </Button>

@@ -28,7 +28,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
       >
         <Icon
           class="mr-2 size-4"
-          name="radix-icons:plus-circled"
+          name="lucide:circle-plus"
         />
         {{ title }}
         <template v-if="selectedValues.size > 0">
@@ -107,7 +107,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               >
                 <Icon
                   :class="cn('h-4 w-4')"
-                  name="radix-icons:check"
+                  name="lucide:check"
                 />
               </div>
               <span>{{ option.label }}</span>

@@ -67,7 +67,7 @@ onMounted(async () => {
                 <span>{{ tag.tag }}</span>
                 <Icon
                   class="ml-1"
-                  name="radix-icons:cross-2"
+                  name="lucide:x"
                 />
               </Badge>
             </div>
@@ -151,7 +151,7 @@ onMounted(async () => {
             <Icon
               v-if="createLoading"
               class="animate-spin"
-              name="radix-icons:reload"
+              name="lucide:rotate-cw"
             />
             <template v-if="createLoading">
               Creating...

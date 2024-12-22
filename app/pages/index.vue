@@ -97,7 +97,7 @@ const onLogin = form.handleSubmit(async (values) => {
             <Icon
               v-if="loading"
               class="animate-spin"
-              name="radix-icons:reload"
+              name="lucide:rotate-cw"
             />
             <template v-if="loading">
               Logging in...
@@ -118,7 +118,7 @@ const onLogin = form.handleSubmit(async (values) => {
             variant="secondary"
             @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
           >
-            <Icon name="radix-icons:github-logo" />
+            <Icon name="lucide:github" />
             Sign In with Github
           </Button>
         </DevOnly>

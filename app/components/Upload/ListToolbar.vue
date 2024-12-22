@@ -50,14 +50,14 @@ function onUpload() {
             <label class="text-sm">Unselect all</label>
             <Icon
               class="size-4"
-              name="radix-icons:checkbox"
+              name="lucide:square-check"
             />
           </template>
           <template v-else>
             <label class="text-sm">Select all</label>
             <Icon
               class="size-4"
-              name="radix-icons:stop"
+              name="lucide:square"
             />
           </template>
         </Toggle>
@@ -79,7 +79,7 @@ function onUpload() {
         >
           <Icon
             class="size-4"
-            name="radix-icons:bookmark"
+            name="lucide:bookmark"
           />
           Apply tags
         </Button>
@@ -98,12 +98,12 @@ function onUpload() {
         <Icon
           v-if="uploading"
           class="size-4 animate-spin"
-          name="radix-icons:reload"
+          name="lucide:rotate-cw"
         />
         <Icon
           v-else
           class="size-4"
-          name="radix-icons:upload"
+          name="lucide:upload"
         />
         Upload
       </Button>

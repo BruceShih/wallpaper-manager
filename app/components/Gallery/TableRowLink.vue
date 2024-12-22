@@ -31,7 +31,7 @@ export default {
           :href="`${config.public.imageOrigin}/${row.original.key}`"
           target="_blank"
         >
-          <Icon name="radix-icons:external-link" />
+          <Icon name="lucide:external-link" />
         </a>
       </HoverCardTrigger>
       <HoverCardContent

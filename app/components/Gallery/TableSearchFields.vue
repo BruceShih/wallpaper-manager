@@ -41,7 +41,7 @@ const isFiltered = computed(() => table.getState().columnFilters.length > 0)
       Reset
       <Icon
         class="ml-2 size-4"
-        name="radix-icons:cross-2"
+        name="lucide:x"
       />
     </Button>
   </div>

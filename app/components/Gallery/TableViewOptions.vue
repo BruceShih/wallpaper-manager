@@ -22,7 +22,7 @@ const emits = defineEmits<{
   >
     <Icon
       class="size-4"
-      name="radix-icons:trash"
+      name="lucide:trash"
     />
     Delete Selected
   </Button>

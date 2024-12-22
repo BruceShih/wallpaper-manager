@@ -44,7 +44,6 @@
     "defu": "^6.1.4",
     "drizzle-kit": "^0.28.1",
     "drizzle-orm": "^0.36.4",
-    "lucide-vue-next": "^0.454.0",
     "nuxt": "^3.14.1592",
     "pinia": "^2.3.0",
     "radix-vue": "^1.9.11",

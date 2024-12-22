@@ -37,7 +37,7 @@ async function onDelete() {
   >
     <Icon
       class="size-4"
-      name="radix-icons:trash"
+      name="lucide:trash"
     />
     Delete Selected
   </Button>
@@ -49,7 +49,7 @@ async function onDelete() {
   >
     <Icon
       class="size-4"
-      name="radix-icons:plus"
+      name="lucide:plus"
     />
     Create Token
   </Button>
@@ -62,7 +62,7 @@ async function onDelete() {
       >
         <Icon
           class="mr-2 size-4"
-          name="radix-icons:mixer-horizontal"
+          name="lucide:sliders-horizontal"
         />
         View
       </Button>

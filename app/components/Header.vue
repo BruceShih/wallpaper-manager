@@ -28,7 +28,7 @@ function onSignOut() {
           variant="ghost"
           @click="onSignOut"
         >
-          <Icon name="radix-icons:exit" />
+          <Icon name="lucide:log-out" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
@@ -38,11 +38,11 @@ function onSignOut() {
             >
               <Icon
                 class="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-                name="radix-icons:moon"
+                name="lucide:moon"
               />
               <Icon
                 class="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-                name="radix-icons:sun"
+                name="lucide:sun"
               />
               <span class="sr-only">Toggle theme</span>
             </Button>

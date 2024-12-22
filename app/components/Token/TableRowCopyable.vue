@@ -45,7 +45,7 @@ export default {
               start()
             }"
           >
-            <Icon name="radix-icons:copy" />
+            <Icon name="lucide:copy" />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right">

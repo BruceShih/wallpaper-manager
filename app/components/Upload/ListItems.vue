@@ -39,7 +39,7 @@ function getImagePreview(image: File | null) {
         >
           <Icon
             class="size-4"
-            name="radix-icons:cross-2"
+            name="lucide:x"
           />
         </Button>
       </CardTitle>
@@ -57,22 +57,22 @@ function getImagePreview(image: File | null) {
         <Icon
           v-if="item.status === 'failed'"
           class="size-8 text-red-500"
-          name="radix-icons:cross-circled"
+          name="lucide:circle-x"
         />
         <Icon
           v-if="item.status === 'not-started'"
           class="size-8"
-          name="radix-icons:question-mark-circled"
+          name="lucide:circle-help"
         />
         <Icon
           v-if="item.status === 'uploaded'"
           class="size-8 text-green-400"
-          name="radix-icons:check-circled"
+          name="lucide:circle-check"
         />
         <Icon
           v-if="item.status === 'uploading'"
           class="size-8 animate-spin"
-          name="radix-icons:reload"
+          name="lucide:rotate-cw"
         />
       </div>
     </CardContent>

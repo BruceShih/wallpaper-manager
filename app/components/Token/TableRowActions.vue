@@ -25,7 +25,7 @@ function onUpdate(id: number, enable: boolean) {
       >
         <Icon
           class="size-4"
-          name="radix-icons:dots-horizontal"
+          name="lucide:more-horizontal"
         />
         <span class="sr-only">Open menu</span>
       </Button>

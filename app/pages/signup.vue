@@ -114,7 +114,7 @@ const onSignup = form.handleSubmit(async (values) => {
             <Icon
               v-if="loading"
               class="animate-spin"
-              name="radix-icons:reload"
+              name="lucide:rotate-cw"
             />
             <template v-if="loading">
               Signing up...

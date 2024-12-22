@@ -32,17 +32,17 @@ export default {
           <Icon
             v-if="column.getIsSorted() === 'desc'"
             class="ml-2 size-4"
-            name="radix-icons:arrow-down"
+            name="lucide:arrow-down"
           />
           <Icon
             v-else-if=" column.getIsSorted() === 'asc'"
             class="ml-2 size-4"
-            name="radix-icons:arrow-up"
+            name="lucide:arrow-up"
           />
           <Icon
             v-else
             class="ml-2 size-4"
-            name="radix-icons:caret-sort"
+            name="lucide:chevrons-up-down"
           />
         </Button>
       </DropdownMenuTrigger>
@@ -50,14 +50,14 @@ export default {
         <DropdownMenuItem @click="column.toggleSorting(false)">
           <Icon
             class="mr-2 size-3.5 text-muted-foreground/70"
-            name="radix-icons:arrow-up"
+            name="lucide:arrow-up"
           />
           Asc
         </DropdownMenuItem>
         <DropdownMenuItem @click="column.toggleSorting(true)">
           <Icon
             class="mr-2 size-3.5 text-muted-foreground/70"
-            name="radix-icons:arrow-down"
+            name="lucide:arrow-down"
           />
           Desc
         </DropdownMenuItem>

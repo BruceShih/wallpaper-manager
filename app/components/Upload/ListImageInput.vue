@@ -27,7 +27,7 @@ const fileInput = ref<HTMLInputElement>()
   >
     <Icon
       class="mr-2 size-4"
-      name="radix-icons:magnifying-glass"
+      name="lucide:search"
     />
     Select images...
   </label>

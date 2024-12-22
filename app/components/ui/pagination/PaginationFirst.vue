@@ -3,7 +3,6 @@ import {
   Button
 } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ChevronsLeft } from 'lucide-vue-next'
 import { PaginationFirst, type PaginationFirstProps } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
@@ -25,7 +24,10 @@ const delegatedProps = computed(() => {
       variant="outline"
     >
       <slot>
-        <ChevronsLeft class="size-4" />
+        <Icon
+          class="size-4"
+          name="lucide:chevron-left"
+        />
       </slot>
     </Button>
   </PaginationFirst>
