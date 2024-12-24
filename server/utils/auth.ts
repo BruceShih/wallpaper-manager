@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { D1Dialect } from '@atinux/kysely-d1'
 import { betterAuth, type BetterAuthOptions } from 'better-auth'
-import { admin, anonymous } from 'better-auth/plugins'
+import { admin, anonymous, bearer } from 'better-auth/plugins'
 import consola from 'consola'
 
 let _auth: ReturnType<typeof betterAuth>
@@ -38,7 +38,7 @@ export function serverAuth() {
           enabled: true
         }
       },
-      plugins: [anonymous(), admin()]
+      plugins: [anonymous(), admin(), bearer()]
     }
     _auth = betterAuth(options)
   }

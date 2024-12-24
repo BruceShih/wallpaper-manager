@@ -54,7 +54,12 @@ export function useWallpaperService() {
         return { data: ref(data), error: null }
       }
 
-      return await useFetch<ApiTagGetResponse>(`/api/tag/${id}`)
+      const token = useBearerToken()
+      return await useFetch<ApiTagGetResponse>(`/api/tag/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     },
     async getMany() {
       if (import.meta.dev) {
@@ -69,17 +74,30 @@ export function useWallpaperService() {
         return { data: ref(data), error: null }
       }
 
-      return await useFetch<ApiTagListResponse>('/api/tag/list')
+      const token = useBearerToken()
+      return await useFetch<ApiTagListResponse>('/api/tag/list', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     },
     async create(body: { name: string, sensitive: boolean }) {
+      const token = useBearerToken()
       return await useFetch<ApiTagCreateResponse>('/api/tag', {
         method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body
       })
     },
     async delete(id: number) {
+      const token = useBearerToken()
       return await useFetch<ApiTagDeleteResponse>(`/api/tag/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
     }
   }
@@ -104,18 +122,27 @@ export function useWallpaperService() {
         return { data: ref(data), error: null }
       }
 
+      const token = useBearerToken()
       return await useFetch<ApiImageListResponse>('/api/image/list', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         query
       })
     },
     async update(data: UpdateWallpaperApiArgsType) {
+      const token = useBearerToken()
       return await useFetch<ApiImageUpdateResponse>(`/api/image/${data.id}`, {
         method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: data.body
       })
     },
     async upload(data: UploadWallpaperApiArgsType, onSuccess: () => void, onError: () => void) {
       const store = useTagStore()
+      const token = useBearerToken()
       const tags = data.tags
         .map(tag => store.tags.find(t => t.tag === tag)?.id)
         .filter(Boolean)
@@ -124,6 +151,9 @@ export function useWallpaperService() {
       formData.append('file', data.body, data.body.name)
       return await useFetch<ApiImageUploadResponse>(`/api/image/${data.id}${queryString}`, {
         method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: formData,
         onResponse: () => {
           onSuccess()
@@ -134,8 +164,12 @@ export function useWallpaperService() {
       })
     },
     async delete(ids: string[]) {
+      const token = useBearerToken()
       return await useFetch<ApiImageDeleteResponse>('/api/image/delete', {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: { keys: ids }
       })
     }
@@ -156,22 +190,39 @@ export function useWallpaperService() {
         return { data: ref(data), error: null }
       }
 
-      return await useFetch<ApiTokenListResponse>('/api/token/list')
+      const token = useBearerToken()
+      return await useFetch<ApiTokenListResponse>('/api/token/list', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     },
     async create() {
+      const token = useBearerToken()
       return await useFetch<ApiTokenCreateResponse>('/api/token', {
-        method: 'PUT'
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
     },
     async update(id: number, enable: boolean) {
+      const token = useBearerToken()
       return await useFetch<ApiTokenUpdateResponse>(`/api/token/${id}`, {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({ enable })
       })
     },
     async delete(ids: number[]) {
+      const token = useBearerToken()
       return await useFetch<ApiTokenDeleteResponse>('/api/token', {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({ ids })
       })
     }
