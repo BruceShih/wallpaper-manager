@@ -29,7 +29,7 @@ const onLogin = form.handleSubmit(async (values) => {
   if (loading.value)
     return
   loading.value = true
-  const { data, error } = await auth.signIn.email({
+  const { error } = await auth.signIn.email({
     email: values.email,
     password: values.password
   })
@@ -41,8 +41,11 @@ const onLogin = form.handleSubmit(async (values) => {
     })
   }
   else {
-    if (import.meta.client)
-      localStorage.setItem('bearer_token', data.session.id)
+    if (import.meta.client) {
+      const session = await auth.fetchSession()
+      if (session)
+        localStorage.setItem('bearer_token', session.session.id)
+    }
     await navigateTo('/gallery')
   }
   loading.value = false
