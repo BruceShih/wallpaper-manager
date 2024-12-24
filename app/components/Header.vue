@@ -5,8 +5,6 @@ const { signOut, loggedIn } = useAuth()
 const colorMode = useColorMode()
 
 function onSignOut() {
-  if (import.meta.client)
-    localStorage.removeItem('bearer_token')
   signOut({ redirectTo: '/' })
 }
 </script>

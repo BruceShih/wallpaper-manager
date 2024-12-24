@@ -41,13 +41,6 @@ const onLogin = form.handleSubmit(async (values) => {
     })
   }
   else {
-    if (import.meta.client) {
-      const session = auth.useSession()
-      console.log(session.value)
-      if (session.value.data) {
-        localStorage.setItem('bearer_token', session.value.data.session.id)
-      }
-    }
     await navigateTo('/gallery')
   }
   loading.value = false
