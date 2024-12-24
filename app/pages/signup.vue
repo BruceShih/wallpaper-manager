@@ -7,6 +7,12 @@ if (import.meta.dev) {
     auth: false
   })
 }
+else {
+  definePageMeta({
+    auth: false,
+    validate: async () => false
+  })
+}
 
 useHead({
   title: 'Sign-up'
