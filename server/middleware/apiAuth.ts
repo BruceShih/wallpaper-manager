@@ -9,6 +9,10 @@ export default defineEventHandler(async (event) => {
     return
   }
 
+  if (event.path.startsWith('/api/_hub')) {
+    return
+  }
+
   if (event.path.startsWith('/api')) {
     const session = await serverAuth().api.getSession({
       headers: event.headers
