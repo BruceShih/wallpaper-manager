@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
 import type { WallpaperAndTags } from './types'
-import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
+import {
+  ComboboxAnchor,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxPortal,
+  ComboboxRoot,
+  DialogRoot
+} from 'radix-vue'
 
 interface GalleryTableRowActionsProps {
   row: Row<WallpaperAndTags>
@@ -50,8 +57,8 @@ function onEditSave() {
 </script>
 
 <template>
-  <Dialog
-    :open="open"
+  <DialogRoot
+    v-model:open="open"
     @update:open="onEditDialogOpen"
   >
     <DropdownMenu>
@@ -190,5 +197,5 @@ function onEditSave() {
         </DialogFooter>
       </div>
     </DialogContent>
-  </Dialog>
+  </DialogRoot>
 </template>
