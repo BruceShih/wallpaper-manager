@@ -19,11 +19,7 @@ export function useAuth() {
   const client = createAuthClient({
     baseURL: url.origin,
     fetchOptions: {
-      headers,
-      auth: {
-        type: 'Bearer',
-        token: () => localStorage.getItem('bearer_token') || ''
-      }
+      headers
     }
   })
 
