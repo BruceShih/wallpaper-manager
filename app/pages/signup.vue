@@ -2,10 +2,11 @@
 import { z } from 'zod'
 import { useToast } from '~/components/ui/toast/use-toast'
 
-definePageMeta({
-  auth: false,
-  validate: async () => false
-})
+if (import.meta.dev) {
+  definePageMeta({
+    auth: false
+  })
+}
 
 useHead({
   title: 'Sign-up'
