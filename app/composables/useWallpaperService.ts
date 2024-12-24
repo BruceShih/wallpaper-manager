@@ -1,6 +1,21 @@
-import type { ApiImageDeleteResponse, ApiImageListResponse, ApiImageUpdateResponse, ApiImageUploadResponse } from '~~/server/types/api/image'
-import type { ApiTagCreateResponse, ApiTagDeleteResponse, ApiTagGetResponse, ApiTagListResponse } from '~~/server/types/api/tag'
-import type { ApiTokenCreateResponse, ApiTokenDeleteResponse, ApiTokenListResponse, ApiTokenUpdateResponse } from '~~/server/types/api/token'
+import type {
+  ApiImageDeleteResponse,
+  ApiImageListResponse,
+  ApiImageUpdateResponse,
+  ApiImageUploadResponse
+} from '~~/server/types/api/image'
+import type {
+  ApiTagCreateResponse,
+  ApiTagDeleteResponse,
+  ApiTagGetResponse,
+  ApiTagListResponse
+} from '~~/server/types/api/tag'
+import type {
+  ApiTokenCreateResponse,
+  ApiTokenDeleteResponse,
+  ApiTokenListResponse,
+  ApiTokenUpdateResponse
+} from '~~/server/types/api/token'
 import type { Tag, UserToken } from '~~/server/types/drizzle'
 import type { WallpaperAndTags } from '~/components/Gallery/types'
 import { randBoolean, randFileName, randPastDate, randProductCategory, randUuid } from '@ngneat/falso'
