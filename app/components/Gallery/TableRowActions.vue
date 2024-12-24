@@ -18,6 +18,7 @@ const emits = defineEmits<{
 
 const tagStore = useTagStore()
 
+const open = ref(false)
 const tagComboboxOpen = ref(false)
 const tagSearchTerm = ref('')
 const editModels = reactive<{
@@ -44,11 +45,13 @@ function onEditSave() {
 
   editModels.favorite = false
   editModels.tags = []
+  open.value = false
 }
 </script>
 
 <template>
   <Dialog
+    :open="open"
     @update:open="onEditDialogOpen"
   >
     <DropdownMenu>
