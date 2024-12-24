@@ -43,8 +43,10 @@ const onLogin = form.handleSubmit(async (values) => {
   else {
     if (import.meta.client) {
       const session = auth.useSession()
-      if (session.value.data)
+      if (session.value.data) {
+        console.log(session.value.data)
         localStorage.setItem('bearer_token', session.value.data.session.id)
+      }
     }
     await navigateTo('/gallery')
   }
