@@ -32,11 +32,6 @@ const onLogin = form.handleSubmit(async (values) => {
   const { error } = await auth.signIn.email({
     email: values.email,
     password: values.password
-  }, {
-    onSuccess: (ctx) => {
-      const authToken = ctx.response.headers.get('set-auth-token')
-      localStorage.setItem('bearer_token', authToken || '')
-    }
   })
 
   if (error) {
