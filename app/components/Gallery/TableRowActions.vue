@@ -18,7 +18,6 @@ const emits = defineEmits<{
 
 const tagStore = useTagStore()
 
-const commitEdit = ref(false)
 const tagComboboxOpen = ref(false)
 const tagSearchTerm = ref('')
 const editModels = reactive<{
@@ -32,29 +31,17 @@ const editModels = reactive<{
 const allTags = computed(() => tagStore.tags.map(t => ({ label: t.tag, value: t.id.toString() })))
 const filteredTags = computed(() => allTags.value.filter(i => !editModels.tags.includes(i.label)))
 
-function onEditDialogOpen(val: boolean) {
-  if (val) {
-    editModels.favorite = props.row.original.favorite
-    editModels.tags = props.row.original.tags.map(t => t.tag)
-  }
-  else {
-    editModels.favorite = false
-    editModels.tags = []
-  }
+function onEditDialogOpen() {
+  editModels.favorite = props.row.original.favorite
+  editModels.tags = props.row.original.tags.map(t => t.tag)
 }
 function onEditSave() {
-  if (!commitEdit.value)
-    return
-
-  commitEdit.value = true
-
   emits('edit', {
     key: props.row.original.key,
     favorite: editModels.favorite,
     tags: tagStore.tags.filter(t => editModels.tags.includes(t.tag)).map(t => t.id)
   })
 
-  commitEdit.value = false
   editModels.favorite = false
   editModels.tags = []
 }
@@ -194,15 +181,7 @@ function onEditSave() {
           </Label>
         </div>
         <DialogFooter>
-          <Button
-            :disabled="commitEdit"
-            @click="onEditSave"
-          >
-            <Icon
-              v-if="commitEdit"
-              class="mr-2 size-4 animate-spin"
-              name="lucide:rotate-cw"
-            />
+          <Button @click="onEditSave">
             Save changes
           </Button>
         </DialogFooter>
