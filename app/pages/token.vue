@@ -9,12 +9,6 @@ import {
 } from '#components'
 import { Checkbox } from '~/components/ui/checkbox'
 
-if (import.meta.dev) {
-  definePageMeta({
-    auth: false
-  })
-}
-
 useHead({
   title: 'Token - Wallpaper Manager'
 })

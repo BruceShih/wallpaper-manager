@@ -3,26 +3,18 @@ import { eq } from 'drizzle-orm'
 import { userToken } from '../database/schema'
 import { useDrizzle } from '../types/drizzle'
 
+// this hits both the client and the server
 export default defineEventHandler(async (event) => {
-  if (import.meta.dev)
+  if (event.path.startsWith('/api/auth')) {
     return
-
-  const { origin } = useRuntimeConfig(event)
-
-  if (!origin) {
-    consola.error(new Error('Missing runtime config'))
-    throw createError({ statusCode: 500 })
   }
 
-  const headers = {
-    origin: event.headers.get('Origin') || '',
-    referer: event.headers.get('Referer') || ''
-  }
-  const isFromCloudflare
-    = headers.origin.startsWith(origin) || headers.referer.startsWith(origin)
+  if (event.path.startsWith('/api')) {
+    const session = await serverAuth().api.getSession({
+      headers: event.headers
+    })
 
-  if (!isFromCloudflare) {
-    if (event.path.startsWith('/api/')) {
+    if (!session) {
       const authHeader = event.headers.get('Authorization')
 
       if (!authHeader) {

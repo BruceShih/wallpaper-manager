@@ -27,16 +27,18 @@ declare module 'vue-router' {
   }
 }
 
+// this only hits the client
 export default defineNuxtRouteMiddleware(async (to) => {
   // If auth is disabled, skip middleware
   if (to.meta?.auth === false) {
     return
   }
-  const { loggedIn, options, fetchSession } = useAuth()
+  const { client, options } = useAuth()
+  const { data: session } = await client.useSession(useFetch)
   const { only, redirectUserTo, redirectGuestTo } = defu(to.meta?.auth, options)
 
   // If guest mode, redirect if authenticated
-  if (only === 'guest' && loggedIn.value) {
+  if (only === 'guest' && session.value) {
     // Avoid infinite redirect
     if (to.path === redirectUserTo) {
       return
@@ -44,12 +46,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(redirectUserTo)
   }
 
-  // If client-side, fetch session between each navigation
-  if (import.meta.client) {
-    await fetchSession()
-  }
   // If not authenticated, redirect to home
-  if (!loggedIn.value) {
+  if (!session.value) {
     // Avoid infinite redirect
     if (to.path === redirectGuestTo) {
       return

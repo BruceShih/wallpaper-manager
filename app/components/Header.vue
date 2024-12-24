@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
 
-const { signOut, loggedIn } = useAuth()
+const { client } = useAuth()
+const session = client.useSession()
 const colorMode = useColorMode()
 
-function onSignOut() {
-  if (import.meta.client)
-    localStorage.removeItem('bearer_token')
-  signOut({ redirectTo: '/' })
+async function onSignOut() {
+  await client.signOut({
+    fetchOptions: {
+      onSuccess: async () => {
+        await navigateTo('/')
+      }
+    }
+  })
 }
 </script>
 
@@ -22,7 +27,7 @@ function onSignOut() {
       <HeaderNav />
       <div class="ml-auto flex items-center space-x-2 px-6 lg:space-x-4">
         <Button
-          v-if="loggedIn"
+          v-if="session.data"
           color="black"
           size="icon"
           variant="ghost"

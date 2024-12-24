@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import type { UploadListItem } from '~/components/Upload/types'
 
-if (import.meta.dev) {
-  definePageMeta({
-    auth: false
-  })
-}
-
 useHead({
   title: 'Upload - Wallpaper Manager'
 })

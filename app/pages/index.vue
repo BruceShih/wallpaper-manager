@@ -13,7 +13,7 @@ useHead({
   title: 'Wallpaper Manager'
 })
 
-const auth = useAuth()
+const { client } = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
   password: z.string().min(6).max(50)
@@ -29,7 +29,7 @@ const onLogin = form.handleSubmit(async (values) => {
   if (loading.value)
     return
   loading.value = true
-  const { error } = await auth.signIn.email({
+  const { error } = await client.signIn.email({
     email: values.email,
     password: values.password
   }, {
@@ -50,6 +50,12 @@ const onLogin = form.handleSubmit(async (values) => {
   }
   loading.value = false
 })
+async function onSocialLogin() {
+  await client.signIn.social({
+    provider: 'github',
+    callbackURL: '/gallery'
+  })
+}
 </script>
 
 <template>
@@ -119,7 +125,7 @@ const onLogin = form.handleSubmit(async (values) => {
           <Button
             type="button"
             variant="secondary"
-            @click="auth.signIn.social({ provider: 'github', callbackURL: '/gallery' })"
+            @click="onSocialLogin"
           >
             <Icon name="lucide:github" />
             Sign In with Github

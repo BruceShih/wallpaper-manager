@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
 
-if (import.meta.dev) {
-  definePageMeta({
-    auth: false
-  })
-}
-
 useHead({
   title: 'Tags - Wallpaper Manager'
 })

@@ -2,23 +2,16 @@
 import { z } from 'zod'
 import { useToast } from '~/components/ui/toast/use-toast'
 
-if (import.meta.dev) {
-  definePageMeta({
-    auth: false
-  })
-}
-else {
-  definePageMeta({
-    auth: false,
-    validate: async () => false
-  })
-}
+definePageMeta({
+  auth: false,
+  validate: async () => false
+})
 
 useHead({
   title: 'Sign-up'
 })
 
-const auth = useAuth()
+const { client } = useAuth()
 const formSchema = toTypedSchema(z.object({
   email: z.string().min(2).max(50).email(),
   password: z.string().min(8).max(32),
@@ -35,7 +28,7 @@ const onSignup = form.handleSubmit(async (values) => {
   if (loading.value)
     return
   loading.value = true
-  const { error } = await auth.signUp.email({
+  const { error } = await client.signUp.email({
     email: values.email,
     password: values.password,
     name: values.name

@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   ],
   // https://devtools.nuxt.com
   devtools: { enabled: true },
+  ssr: false,
   // imports: {
   //   autoImport: false
   // },
