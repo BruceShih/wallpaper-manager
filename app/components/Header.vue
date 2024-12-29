@@ -24,7 +24,7 @@ async function onSignOut() {
       <div class="flex items-center px-6 text-lg font-semibold">
         Wallpaper Manager
       </div>
-      <HeaderNav />
+      <HeaderNav v-if="session.data" />
       <div class="ml-auto flex items-center space-x-2 px-6 lg:space-x-4">
         <Button
           v-if="session.data"
