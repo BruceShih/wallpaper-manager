@@ -21,7 +21,7 @@ export const apiImageDeleteBodySchema = z.object({
 })
 
 export const apiImageUpdateBodySchema = z.object({
-  favorite: z.boolean(),
+  favorite: z.boolean().optional(),
   tags: z.array(z.number()).optional()
 })
 

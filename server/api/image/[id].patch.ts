@@ -18,7 +18,7 @@ export default defineEventHandler<ApiImageUpdateRequest, ApiImageUpdateResponse>
   }
 
   try {
-    const favorite = body.data.favorite
+    const favorite = body.data.favorite === true
     const tags = body.data.tags || []
     const ownedTagsQuery = await useDrizzle()
       .select()
